@@ -67,9 +67,25 @@
     <div class="upcoming_day_sessions">
         <h3>Upcoming</h3>
         <div class="session_card">
-            <p><?php echo substr($tutor_session_data[0][1],15,6) ?></p>
-            <p><?php echo $tutor_session_data[0][3] ?></p>
-            <p><?php echo $tutor_session_data[0][4] ?></p>
+            <p>
+                <?php
+                //Convert 24h time to 12h time
+                $time_24h = substr($tutor_session_data[0][1],15,6);
+                $time_24h_hours = (int)substr($time_24h,0,3);
+                //If hours > 12 remove the extra time and add pm to end of number
+                $time_ending = "am";
+                if($time_24h_hours > 12)
+                {
+                    $time_24h_hours += -12;
+                    $time_ending = "pm";
+                }
+                //Combine everything back into one string
+                $time_12h = (string)$time_24h_hours . substr($time_24h,3,5) . $time_ending;
+                echo $time_12h;
+                ?>
+            </p>
+            <p><?php echo $tutor_session_data[0][3]; ?></p>
+            <p><?php echo $tutor_session_data[0][4]; ?></p>
         </div>
         <!-- THE NEXT FEW LINES ARE JUST TEMP TEXT -->
         <p>10:00am - Sarah (Chemistry)</p>

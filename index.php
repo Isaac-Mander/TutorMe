@@ -67,7 +67,7 @@
     <div class="upcoming_day_sessions">
         <h3>Upcoming</h3>
         <div class="session_card">
-            <p><?php echo $tutor_session_data[0][1] ?></p>
+            <p><?php echo substr($tutor_session_data[0][1],15,6) ?></p>
             <p><?php echo $tutor_session_data[0][3] ?></p>
             <p><?php echo $tutor_session_data[0][4] ?></p>
         </div>

@@ -28,6 +28,7 @@
     $sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_tutor_session.time LIKE '%$time_search_string%'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) { //if the number of rows are not zero
+    $no_today_sessions = true; //Tell other elements to expect session data
     // output data of each row into an array of session ids
     $tutor_session_data = [];
     $session_index = 0;
@@ -54,6 +55,7 @@
     }
     } else {
     echo "0 results";
+    $no_today_sessions = true; //This variable tells the page to show the no sessions today msg
     }
 
 
@@ -66,27 +68,34 @@
 
     <div class="upcoming_day_sessions">
         <h3>Upcoming</h3>
+        <?php
+        for(int i=0;i<sizeof($tutor_session_data);i++)
+        ?>
         <div class="session_card">
             <p>
                 <?php
-                //Convert 24h time to 12h time
-                $time_24h = substr($tutor_session_data[0][1],15,6);
-                $time_24h_hours = (int)substr($time_24h,0,3);
-                //If hours > 12 remove the extra time and add pm to end of number
-                $time_ending = "am";
-                if($time_24h_hours > 12)
+                if(!$no_today_sessions)
                 {
-                    $time_24h_hours += -12;
-                    $time_ending = "pm";
+                    //Convert 24h time to 12h time
+                    $time_24h = substr($tutor_session_data[0][1],15,6);
+                    $time_24h_hours = (int)substr($time_24h,0,3);
+                    //If hours > 12 remove the extra time and add pm to end of number
+                    $time_ending = "am";
+                    if($time_24h_hours > 12)
+                    {
+                        $time_24h_hours += -12;
+                        $time_ending = "pm";
+                    }
+                    //Combine everything back into one string
+                    $time_12h = (string)$time_24h_hours . substr($time_24h,3,5) . $time_ending;
+                    echo $time_12h;
                 }
-                //Combine everything back into one string
-                $time_12h = (string)$time_24h_hours . substr($time_24h,3,5) . $time_ending;
-                echo $time_12h;
                 ?>
             </p>
-            <p><?php echo $tutor_session_data[0][3]; ?></p>
-            <p><?php echo $tutor_session_data[0][4]; ?></p>
+            <p><?php if(!$no_today_sessions){ echo $tutor_session_data[0][3];} ?></p>
+            <p><?php if(!$no_today_sessions){ echo $tutor_session_data[0][4];} ?></p>
         </div>
+        
         <!-- THE NEXT FEW LINES ARE JUST TEMP TEXT -->
         <p>10:00am - Sarah (Chemistry)</p>
         <p>12:00pm - Paul (French)</p>

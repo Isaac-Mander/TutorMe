@@ -35,5 +35,5 @@ if(document.getElementById("index_date_time"))
 
     //Set div content to the current date and time with a line between each datapoint
     index_date_time.innerHTML = time + "<br>" + day_of_week + "<br>" + date_of_month + ordinal_suffix_of(date_of_month) + " " + current_month;
-    index_date_time.innerHTML=currentDate;
-}
+    //index_date_time.innerHTML=currentDate;
+}   

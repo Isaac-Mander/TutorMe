@@ -1,5 +1,4 @@
 <?php
-
 //CHECK IF USER IS LOGGED IN
 session_start();
 if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in redirect to login page
@@ -17,11 +16,14 @@ else //If user is logged in show rest of page content
             $tutor_session_data = []; //Output data of each row into an array of session ids
             $session_index = 0;
             while($row = $result->fetch_assoc()) {
-                //tutor_session_data is formatted like [index of session in array][Session id,session time,session tutee id,session tutee name (string),subject_id,subject_name]
+                //tutor_session_data is formatted like:
+                //[index of session in array][(0)Session id,  (1)session time,   (2)session tutee id,   (3)session tutee name,  (4)session tutor id,   (5)session tutor name,   (6)subject_id,   (7)subject_name]
                 $tutor_session_data[$session_index][0] = $row['id']; //Tutor Session Id
                 $tutor_session_data[$session_index][1] = $row['time']; //Session time
                 $tutor_session_data[$session_index][2] = $row['tutee_id']; //Session tutee id
                 $tutee_id = $tutor_session_data[$session_index][2]; //Set variable to session tutee id for sql query
+                $tutor_session_data[$session_index][4] = $row['tutor_id']; //Session tutor id
+                $tutor_id = $tutor_session_data[$session_index][4]; //Set variable to session tutor id for sql query
 
                 //Query the student list to get the tutee's name
                 $sql_tutee_name = "SELECT name FROM 6969_students WHERE id=$tutee_id";
@@ -29,16 +31,23 @@ else //If user is logged in show rest of page content
                 $data = $result_tutee->fetch_assoc();
                 $tutor_session_data[$session_index][3] = $data['name'];//Tutee name
 
+                //Query the student list to get the tutor's name
+                $sql_tutor_name = "SELECT name FROM 6969_students WHERE id=$tutor_id";
+                $result_tutor = $conn->query($sql_tutor_name);
+                $data = $result_tutor->fetch_assoc();
+                $tutor_session_data[$session_index][5] = $data['name'];//Tutor name
+
+
                 //Each tutor session can only have a single subject. This program will filter out any id that is zero
-                if($row['global_subject_id'] == 0) $tutor_session_data[$session_index][4] = $row['local_subject_id']; //Session subject
-                else $tutor_session_data[$session_index][4] = $row['global_subject_id']; //Session subject id
+                if($row['global_subject_id'] == 0) $tutor_session_data[$session_index][5] = $row['local_subject_id']; //Session subject
+                else $tutor_session_data[$session_index][6] = $row['global_subject_id']; //Session subject id
 
                 //Query the subject list to get the subjects's name
-                $subject_id = $tutor_session_data[$session_index][4];
+                $subject_id = $tutor_session_data[$session_index][6];
                 $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
                 $result_subject = $conn->query($sql_subject_name);
                 $data2 = $result_subject->fetch_assoc();
-                $tutor_session_data[$session_index][5] = $data2['name'];//Tutee name
+                $tutor_session_data[$session_index][7] = $data2['name'];//Tutee name
                 
                 //Increment the session index the data is stored under
                 $session_index += 1;
@@ -89,47 +98,25 @@ else //If user is logged in show rest of page content
 
     //Get the user info from the session cookie
     $user_id = $_SESSION['user_id'];
+    echo $time_search_string;
 
-    //Get the sessions this user is tutoring
+
+    //Get the sessions this user is tutoring today
     $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_tutor_session.time LIKE '%$time_search_string%' AND 6969_students.id=$user_id";  
     $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
-    //Get the sessions this user is tutoring
+    //Get the sessions this user is tutoring today
     $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_tutor_session.time LIKE '%$time_search_string%' AND 6969_students.id=$user_id";  
     $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
+    
+    //Combine the today sessions data into a single array
+    $session_combined_data = array_merge($session_today_tutor_data,$session_today_tutee_data);
+    usort($session_combined_data, function($a, $b) {
+        return $a[1] <=> $b[1];
+    });
+    ?>
 
     
-    //Put all of today's sessions into a list
-    $times=array();
-    for($i=0;$i<sizeof($session_today_tutor_data);$i++)
-    {
-        //The value to push into the times array
-        $val = (float)substr($session_today_tutor_data[$i][1],15,3); //Add hours as int
-        $val += (float)substr($session_today_tutor_data[$i][1],19,2) * 0.01; //Add min as decimals to end
-        $times += [(string)$val => $session_today_tutor_data[$i][0]];
-        //array_push($times,$val); //Append converted time to times array
-    }
-    for($i=0;$i<sizeof($session_today_tutee_data);$i++)
-    {
-        //The value to push into the times array
-        $val = (float)substr($session_today_tutee_data[$i][1],15,3); //Add hours as int
-        $val += (float)substr($session_today_tutee_data[$i][1],19,2) * 0.01; //Add min as decimals to end
-        //array_push($times,$val); //Append converted time to times array
-        $times += [(string)$val => $session_today_tutee_data[$i][0]];
-    }
-    //Sort the total list of times highest to lowest
-    ksort($times);
-    foreach ($times as &$a) {
-        if (is_array($a) && !empty($a)) {
-            deep_ksort($a);
-        }
-    }
-    //This loop prints out info in $times
-    foreach($times as $x => $x_value) {
-        echo "Key=" . $x . ", Value=" . $x_value;
-        echo "<br>";
-      }
-    ?>
     <div class="index_date_time"><p id = "index_date_time2"></p></div>
 
 
@@ -138,16 +125,16 @@ else //If user is logged in show rest of page content
         <?php
         
         //Show the sessions today this user is tutoring
-        for($i=0; $i<sizeof($session_today_tutor_data); $i++)
+        for($i=0; $i<sizeof($session_combined_data); $i++)
         {
         ?>
         <div class="session_card d-flex row border-top">
             <p class="py-2 m-0">
                 <?php
-                if($session_today_tutor_data != 1)
+                if($session_combined_data != 1)
                 {
                     //Convert 24h time to 12h time
-                    $time_24h = substr($session_today_tutor_data[$i][1],15,6);
+                    $time_24h = substr($session_combined_data[$i][1],15,6);
                     $time_24h_hours = (int)substr($time_24h,0,3);
                     //If hours > 12 remove the extra time and add pm to end of number
                     $time_ending = "am";
@@ -158,13 +145,21 @@ else //If user is logged in show rest of page content
                     }
                     //Combine everything back into one string
                     $time_12h = (string)$time_24h_hours . substr($time_24h,3,5) . $time_ending;
-                    echo $time_12h . " " . $session_today_tutor_data[$i][3] . " " . $session_today_tutor_data[$i][5];
-                   
+
+
+                    //Check if the user is tutoring or being tutored
+                    $is_tutor = false;
+                    if($session_combined_data[$i][4] == $user_id) $is_tutor = true;
+
+                    //Show the session time, name of person, subject, mark of tutor/tutee
+                    if($is_tutor) echo $time_12h . " " . $session_combined_data[$i][3] . " " . $session_combined_data[$i][7] . " -Tutor";
+                    else echo $time_12h . " " . $session_combined_data[$i][5] . " " . $session_combined_data[$i][7] . " -Tutee";
+                    
                 }
                 ?>
             </p>
         </div>
-        <?php } ?>
+        <?php } ?> 
     </div>
 
     <div class="upcoming_week_sessions container text-center border border-3 border-dark rounded w-75">

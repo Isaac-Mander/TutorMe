@@ -8,7 +8,7 @@
 </head>
 <body>
     <form action="login_check.php" method="post">
-
+    <p>Dexter Dark's login: dexter203 password</p>
     <div class="container">
         <label for="username"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" name="username" required><br>

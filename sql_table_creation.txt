@@ -1,0 +1,93 @@
+CREATE TABLE `Admin` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`school_name` varchar(40) NOT NULL,
+	`email` varchar(50) NOT NULL,
+	`password` varchar(70) NOT NULL,
+	`school_code` int(4) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE `Subjects` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(40) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE `Ext_Tutor` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`name` varchar(40) NOT NULL,
+	`picture` varchar(100) NOT NULL,
+	`description` varchar(140) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE `Ext_Tutor_Subject` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`ext_tutor_id` int(4) NOT NULL,
+	`subject_id` int(4) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Teachers` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`name` varchar(40) NOT NULL,
+	`picture` varchar(100) NOT NULL,
+	`description` varchar(140) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Students` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`name` varchar(40) NOT NULL,
+	`picture` varchar(100) NOT NULL,
+	`description` varchar(140) NOT NULL,
+	`tutee_status` int(1) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Subjects` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`name` varchar(40) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Year_Levels` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`year` int(2) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Ext_Tutor` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`tutor_id` int(4) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Tutor_Session` (
+	`id` int(7) NOT NULL AUTO_INCREMENT,
+	`tutee_id` int(4) NOT NULL,
+	`tutor_id` int(4) NOT NULL,
+	`teacher_id` int(4) NOT NULL,
+	`ext_tutor_id` int(4) NOT NULL,
+	`time` varchar(30) NOT NULL,
+	`subject_id` int(4) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Student_Teacher` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`student_id` int(4) NOT NULL,
+	`teacher_id` int(4) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Subjects_Teacher` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`teacher_id` int(4) NOT NULL,
+	`global_subject_id` int(4) NOT NULL,
+	`local_subject_id` int(4) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Subjects_Tutee` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`tutee_id` int(4) NOT NULL,
+	`global_subject_id` int(4) NOT NULL,
+	`local_subject_id` int(4) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+CREATE TABLE IF NOT EXISTS `{$school_code}_Subjects_Tutor` (
+	`id` int(4) NOT NULL AUTO_INCREMENT,
+	`tutor_id` int(4) NOT NULL,
+	`global_subject_id` int(4) NOT NULL,
+	`local_subject_id` int(4) NOT NULL,
+	PRIMARY KEY (`id`)
+);

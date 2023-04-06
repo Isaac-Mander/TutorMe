@@ -9,10 +9,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 {
     header("Location: login_form.php"); //Send to the shadow realm (login screen)
 }
-else //If user is logged in show rest of page content
-{
-    
-}?>
+?>
     
 
 
@@ -24,8 +21,7 @@ else //If user is logged in show rest of page content
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEV INDEX PAGE</title>
-    <link rel="stylesheet" href="sys_page/styles.css">
+    <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> 
 </head>
 <body>
@@ -34,20 +30,7 @@ else //If user is logged in show rest of page content
     //Add the header
     include("sys_page/header.html");
     //Connect to database
-    include("sys_page/db_connect.php");
-
-    //Query to check the sessions that the user has set up for today
-    //Get current day
-    $tz = new DateTimeZone('NZ');
-    $dt = new DateTime('now',$tz);
-    $time_day = $dt->format('D'); // output: 'Mon' - 'Sun'
-    $time_month = $dt->format('M'); // output: 'Jan' - 'Dec'
-    $time_day_month = $dt->format('d'); // output '1' - '31'
-    $time_year = $dt->format('Y'); // output: '2023'
-
-    //Combine the datetime info into the same format as the database
-    $time_search_string = $time_day . " " . $time_month . " " . $time_day_month . " " . $time_year;
-    
+    include("sys_page/db_connect.php");    
 
     //Get the user info from the session cookie
     $user_id = $_SESSION['user_id'];

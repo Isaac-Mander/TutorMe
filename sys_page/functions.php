@@ -1,15 +1,17 @@
 <?php
+//Returns the session data from a query into a single array formated as below
+//[index of session in array][(0)Session id,  (1)session start time, (2)session end time,   (3)session tutee id,   (4)session tutee name,  (5)session tutor id,   (6)session tutor name,   (7)subject_id,   (8)subject_name]
+//THE SQL ARGUMENT MUST RETURN ALL FROM SESSION, IF NOT ERROR WILL OCCUR
 function get_session_data($sql,$conn)
 {
     //Query the database to get all the sessions THE USER IS TUTORING TODAY =============================================================================================================================
     $result = $conn->query($sql); //Query database
     if ($result->num_rows > 0) { //If the number of rows are not zero
-        $no_today_sessions = false; //Tell other elements to expect session data
+        $no_sessions = false; //Tell other elements to expect session data
         $tutor_session_data = []; //Output data of each row into an array of session ids
         $session_index = 0;
         while($row = $result->fetch_assoc()) {
-            //tutor_session_data is formatted like:
-            //[index of session in array][(0)Session id,  (1)session start time, (2)session end time,   (3)session tutee id,   (4)session tutee name,  (5)session tutor id,   (6)session tutor name,   (7)subject_id,   (8)subject_name]
+            
             $tutor_session_data[$session_index][0] = $row['id']; //Tutor Session Id
             $tutor_session_data[$session_index][1] = $row['session_start']; //Session start time
             $tutor_session_data[$session_index][2] = $row['session_end']; //Session end time
@@ -45,12 +47,12 @@ function get_session_data($sql,$conn)
             $session_index += 1;
         }
     } else {
-        echo "0 results";
-        $no_today_sessions = true; //This variable tells the page to show the no sessions today msg
+        return 1;
+        $no_sessions = true; //This variable tells the page to show the no sessions today msg
     }
 
     //Return the result of the query 
-    if($no_today_sessions) return 1;
+    if($no_sessions) return 1;
     else return $tutor_session_data;
 }
 ?>

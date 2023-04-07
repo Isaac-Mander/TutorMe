@@ -16,17 +16,17 @@ tutor_id = 3
 global_subject_id = 3
 for i in range(80):
     #Add a bit of variablility in the times
-    hour_variable = random.randrange(-5,5)
-    min_variable = random.randrange(-15,15)
-    time = f"{weekdays[weekday]} {months[current_month]} {day} 2023 {12+hour_variable}:{30+min_variable}:00 GMT+1300 (New Zealand Daylight Time)"
-    #Add a bit of variablility in the times
-    hour_variable2 = random.randrange(-5,5)
-    min_variable2 = random.randrange(-15,15)
-    time2 = f"{weekdays[weekday]} {months[current_month]} {day} 2023 {12+hour_variable2}:{30+min_variable2}:00 GMT+1300 (New Zealand Daylight Time)"
-    #Add a bit of variablility in the times
-    hour_variable3 = random.randrange(-5,5)
-    min_variable3 = random.randrange(-15,15)
-    time3 = f"{weekdays[weekday]} {months[current_month]} {day} 2023 {12+hour_variable3}:{30+min_variable3}:00 GMT+1300 (New Zealand Daylight Time)"
+    hour = random.randrange(9,20)
+    minute = random.randrange(0,60)
+    if(day<10): day_string = f"0{day}"
+    else: day_string = f"{day}"
+    if(hour<10): hour_string = f"0{hour}"
+    else: hour_string = f"{hour}"
+    if(minute<10): min_string = f"0{minute}"
+    else: min_string = f"{minute}"
+    date = f"{2023}-0{current_month+4}-{day_string}"
+    time = f"{hour_string}:{min_string}:00.000000"
+    
     if(days[current_month]-1<day):
         day = 1
         current_month += 1
@@ -55,27 +55,6 @@ for i in range(80):
         tutee_id3 = 3
         tutor_id3 = 1
 
-    sql = f"INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `time`, `global_subject_id`, `local_subject_id`) VALUES ('{tutee_id}', '{tutor_id}', '0', '0', '{time}', '{global_subject_id}', '0');"    
-    sql2 = f"INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `time`, `global_subject_id`, `local_subject_id`) VALUES ('{tutee_id2}', '{tutor_id2}', '0', '0', '{time2}', '{global_subject_id}', '0');"    
-    sql3 = f"INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `time`, `global_subject_id`, `local_subject_id`) VALUES ('{tutee_id3}', '{tutor_id3}', '0', '0', '{time3}', '{global_subject_id}', '0');"    
-    if(sql[174] == " "):
-        sql_to_edit = list(sql)
-        sql_to_edit[174] = sql_to_edit[173]
-        sql_to_edit[173] = "0"
-        sql = ''.join(sql_to_edit)
-        sql = sql[:175] + " " + sql[175:]
+    sql = f"INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `session_start`, `session_end`, `global_subject_id`, `local_subject_id`) VALUES ('{tutee_id}', '{tutor_id}', '0', '0', '{date} {time}', '{date} {time}', '{global_subject_id}', '0');"    
+   
     print(sql)
-    if(sql2[174] == " "):
-        sql_to_edit = list(sql2)
-        sql_to_edit[174] = sql_to_edit[173]
-        sql_to_edit[173] = "0"
-        sql2 = ''.join(sql_to_edit)
-        sql2 = sql2[:175] + " " + sql2[175:]
-    print(sql2)
-    if(sql3[174] == " "):
-        sql_to_edit = list(sql3)
-        sql_to_edit[174] = sql_to_edit[173]
-        sql_to_edit[173] = "0"
-        sql3 = ''.join(sql_to_edit)
-        sql3 = sql3[:175] + " " + sql3[175:]
-    print(sql3)

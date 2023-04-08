@@ -1,5 +1,7 @@
 <?php
-//Import functions
+//Import functions\
+include("sys_page/header.html");
+include("sys_page/db_connect.php");
 include("sys_page/functions.php");
 
 ?>
@@ -11,12 +13,10 @@ include("sys_page/functions.php");
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <?php
-    include("sys_page/header.html");
-    include("sys_page/db_connect.php");
     $tz = new DateTimeZone('NZ');
     $dt = new DateTime('now',$tz);
     $time_day = $dt->format('d'); // output: '1' - '31'
-    $time_month = $dt->format('m'); // output: '1' - '12'
+    $time_month = $dt->format('m'); // output: '1' - '12'cc
     $time_year = $dt->format('Y'); // output: '2023'
     $time_hour = $dt ->format('h');
     $time_minute = $dt ->format('i');
@@ -24,14 +24,35 @@ include("sys_page/functions.php");
     $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
     $date =  $time_year . "-" . $time_month . "-" . $time_day;
     //Get the sessions this user is tutoring today
-    $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE date(6969_tutor_session.session_start) = CURRENT_DATE() AND 6969_students.id=3";  
+    $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=3";  
     $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
-    //Get the sessions this user is being tutoring today
-    $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE date(6969_tutor_session.session_start) = CURRENT_DATE() AND 6969_students.id=3";  
+    //Get the sessions this user is being tutored today
+    $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=3";  
     $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);?>
-    <?php echo $date; ?>
-    <?php echo $time?>
+
+    <?php
+    if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
+      $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
+      echo'╰(⇀︿⇀)つ-]═───';
+    } else {
+      // Handle the case where one or both variables is not an array
+      // For example:
+      echo '(･｀ｪ´･)つ';
+      $session_combined_data = array();
+    }if (is_array($session_combined_data)) {
+      for($i=0; $i<sizeof($session_combined_data); $i++){
+        $number = 0;
+        ?><p><?php
+        for($number = 0; $number<9; $number++)
+         echo " ".$session_combined_data[$i][$number];?> </p>
+         <?php
+      }
+    } else {
+      // Assign an array value to $session_today_tutor_data
+      echo '(」゜ロ゜)」';
+    }
+      ?>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src='fullcalendar-6.1.5\fullcalendar-6.1.5\dist\index.global.js'></script>
@@ -62,27 +83,57 @@ include("sys_page/functions.php");
       dayMaxEvents: true, // allow "more" link when too many events
       events: [
         {
-          title: 'All Day Event',
-          start: '2023-01-10'
-        },
-        {
           title: 'Conference',
-          start: '2023-01-11',
-          end: '2023-01-13'
-        },
-        {
-          title: 'Meeting',
-          start: '2023-01-12T10:30:00',
-          end: '2023-01-12T12:30:00'
+          start: '2023-04-05',
+          end: '2023-04-06'
         },
         {
           title: 'Lunch',
-          start: '2023-01-12T12:00:00'
+          start: '2023-04-02T12:00:00'
         },
         {
           title: 'Meeting',
-          start: '2023-01-12T14:30:00'
+          start: '2023-04-11T14:30:00'
         },
+        <?php
+        
+        //Show the sessions today this user is tutoring
+        for($i=0; $i<sizeof($session_today_tutor_data); $i++)
+        {
+        ?>
+                <?php
+                if($session_today_tutor_data != 1)
+                {
+                    //SESSION START TIME
+                    //Convert timestamp to 12h time
+                    $time_raw_start = $session_today_tutor_data[$i][1];
+                    $time_24h_hours_start = (int)substr($time_raw_start,10,3);
+                    //If hours > 12 remove the extra time and add pm to end of number
+                    $time_ending_start = "am";
+                    if($time_24h_hours_start > 12)
+                    {
+                        $time_24h_hours_start += -12;
+                        $time_ending_start = "pm";
+                    }
+                    //Combine everything back into one string
+                    $time_12h_start = (string)$time_24h_hours_start . ":" .  substr($time_raw_start,14,2) . $time_ending_start;
+
+                    //SESSION END TIME
+                    //Convert timestamp to 12h time
+                    $time_raw_end = $session_today_tutor_data[$i][2];
+                    $time_24h_hours_end = (int)substr($time_raw_end,10,3);
+                    //If hours > 12 remove the extra time and add pm to end of number
+                    $time_ending_end = "am";
+                    if($time_24h_hours_end > 12)
+                    {
+                        $time_24h_hours_end += -12;
+                        $time_ending_end = "pm";
+                    }
+                    //Combine everything back into one string
+                    $time_12h_end = (string)$time_24h_hours_end . ":" .  substr($time_raw_end,14,2) . $time_ending_end;
+                }
+                ?>
+        <?php } ?> 
       ]
     });
 

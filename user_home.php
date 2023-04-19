@@ -7,7 +7,7 @@ include("sys_page/functions.php");
 session_start();
 if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in redirect to login page
 {
-    header("Location: login_form.php"); //Send to the shadow realm (login screen)
+    header("Location: login_form.html"); //Send to the shadow realm (login screen)
 }
 ?>
     
@@ -71,7 +71,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
         //Check if there are any sessions today
         if($no_session_today == false)
         {
-            echo '<div class="upcoming_day_sessions container text-center border border-3 border-dark rounded text-primary">';
+            echo '<div class="upcoming_day_sessions container text-center border border-3 border-dark rounded">';
             echo '<h3 class="py-3 m-0">Upcoming</h3>';
             //Show the sessions today this user is tutoring
             for($i=0; $i<sizeof($session_combined_data); $i++)
@@ -144,7 +144,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
         
     </div>
 
-    <div class="upcoming_week_sessions container text-center border border-3 border-dark rounded w-75">
+    <div class="upcoming_week_sessions container text-center border border-3 border-dark rounded mt-4">
         <h3>Weekly</h3>
         
         <?php

@@ -22,6 +22,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="sys_page/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> 
 </head>
 <body>
@@ -66,12 +67,20 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 
     
     <div class="text-center fs-1"><p id = "index_date_time"></p></div>
+
+    <!-- Today Sessions -->
+    <div class="m-3">
     <?php
         //Check if there are any sessions today
         if($no_session_today == false)
         {
-            echo '<div class="upcoming_day_sessions container text-center border border-3 border-dark rounded">';
-            echo '<h3 class="py-3 m-0">Upcoming</h3>';
+            ?>
+            <div class="upcoming_day_sessions container text-center border border-3 border-dark extra_rounded">
+            <div class="row">
+                <h3 class="col text-center py-3 m-0">Upcoming</h3>
+                <div class="col red_box extra_rounded_tr"></div>
+            </div>
+            <?php
             //Show the sessions today this user is tutoring
             for($i=0; $i<sizeof($session_combined_data); $i++)
             {
@@ -140,11 +149,15 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
             echo '<p>no sessions today</p>';
         }
         ?> 
-        
-    </div>
+    </div></div>
 
-    <div class="upcoming_week_sessions container text-center border border-3 border-dark rounded mt-4">
-        <h3>Weekly</h3>
+    <!-- Sessions for the next week -->
+    <div class="m-3">
+    <div class="upcoming_week_sessions container text-center border border-3 border-dark extra_rounded mt-4">
+        <div class="row">
+            <h3 class="col text-center py-3 m-0">Weekly</h3>
+            <div class="col red_box extra_rounded_tr"></div>
+        </div>
         
         <?php
         $data_increment = 1;
@@ -162,7 +175,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
             $tutee_data = get_session_data($tutee_sql,$conn);
 
 
-            echo "<p>";
+            echo "<div class='d-flex row border-top'><p>";
             echo $day_data['DAYNAME(DATE_ADD(CURRENT_DATE(), INTERVAL ' . $data_increment . ' DAY))'] . ' - ';
             
             if($tutor_data != 1 && $tutee_data != 1) {echo sizeof($tutor_data) + sizeof($tutee_data);}
@@ -172,11 +185,11 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
                 else if($tutee_data != 1) {echo sizeof($tutee_data);}
                 else {echo "no";}
             }
-            echo " events</p>";
+            echo " events</p></div>";
             $data_increment += 1;
         }
         ?>
-    </div>
+    </div></div>
 
 
     <script src="content.js"></script>

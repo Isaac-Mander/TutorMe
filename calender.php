@@ -20,6 +20,12 @@ include("sys_page/functions.php");
     $time_year = $dt->format('Y'); // output: '2023'
     $time_hour = $dt ->format('h');
     $time_minute = $dt ->format('i');
+    $day = '╰(⇀︿⇀)つ-]═───';
+    $starttime = '╰(⇀︿⇀)つ-]═───';
+    $endtime = '╰(⇀︿⇀)つ-]═───';
+    $tutee =  '╰(⇀︿⇀)つ-]═───';
+    $tutor = '╰(⇀︿⇀)つ-]═───';
+    $subject = '╰(⇀︿⇀)つ-]═───';
 
     $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
     $date =  $time_year . "-" . $time_month . "-" . $time_day;
@@ -39,14 +45,18 @@ include("sys_page/functions.php");
       // Handle the case where one or both variables is not an array
       // For example:
       echo '(･｀ｪ´･)つ';
-      $session_combined_data = array();
-    }if (is_array($session_combined_data)) {
+      $session_combined_data = array();};
+    if (is_array($session_combined_data)) {
       for($i=0; $i<sizeof($session_combined_data); $i++){
-        $number = 0;
-        ?><p><?php
-        for($number = 0; $number<9; $number++)
-         echo " ".$session_combined_data[$i][$number];?> </p>
-         <?php
+        $day = substr($session_combined_data[$i][1],0,10);
+        $starttime = substr($session_combined_data[$i][1],11,8);
+        $endtime = substr($session_combined_data[$i][2],11,8);
+        $tutee =  $session_combined_data[$i][4];
+        $tutor = $session_combined_data[$i][6];
+        $subject = $session_combined_data[$i][8];
+        ?><p><?php echo $tutee.'  '.$tutor.'   '.$subject;        ?></p><?php
+        ?><p><?php echo $day . "T" . $starttime;        ?></p><?php
+        ?><p><?php echo $day."T".$endtime;        ?></p><?php
       }
     } else {
       // Assign an array value to $session_today_tutor_data
@@ -95,51 +105,38 @@ include("sys_page/functions.php");
           title: 'Meeting',
           start: '2023-04-11T14:30:00'
         },
-        <?php
-        
-        //Show the sessions today this user is tutoring
-        for($i=0; $i<sizeof($session_today_tutor_data); $i++)
         {
-        ?>
-                <?php
-                if($session_today_tutor_data != 1)
-                {
-                    //SESSION START TIME
-                    //Convert timestamp to 12h time
-                    $time_raw_start = $session_today_tutor_data[$i][1];
-                    $time_24h_hours_start = (int)substr($time_raw_start,10,3);
-                    //If hours > 12 remove the extra time and add pm to end of number
-                    $time_ending_start = "am";
-                    if($time_24h_hours_start > 12)
-                    {
-                        $time_24h_hours_start += -12;
-                        $time_ending_start = "pm";
-                    }
-                    //Combine everything back into one string
-                    $time_12h_start = (string)$time_24h_hours_start . ":" .  substr($time_raw_start,14,2) . $time_ending_start;
-
-                    //SESSION END TIME
-                    //Convert timestamp to 12h time
-                    $time_raw_end = $session_today_tutor_data[$i][2];
-                    $time_24h_hours_end = (int)substr($time_raw_end,10,3);
-                    //If hours > 12 remove the extra time and add pm to end of number
-                    $time_ending_end = "am";
-                    if($time_24h_hours_end > 12)
-                    {
-                        $time_24h_hours_end += -12;
-                        $time_ending_end = "pm";
-                    }
-                    //Combine everything back into one string
-                    $time_12h_end = (string)$time_24h_hours_end . ":" .  substr($time_raw_end,14,2) . $time_ending_end;
-                }
-                ?>
-        <?php } ?> 
+          title: 'Meeting',
+          start: '2023-04-12T10:30:00',
+          end: '2023-04-12T12:30:00'
+        },  
+        
       ]
     });
-
     calendar.render();
   });
-
+  <?php
+         if (is_array($session_combined_data)) {
+           for($i=0; $i<sizeof($session_combined_data); $i++){
+           $day = substr($session_combined_data[$i][1],0,10);
+           $starttime = substr($session_combined_data[$i][1],11,8);
+           $endtime = substr($session_combined_data[$i][2],11,8);
+           $tutee =  $session_combined_data[$i][4];
+           $tutor = $session_combined_data[$i][6];
+           $subject = $session_combined_data[$i][8];
+           ?>
+          
+            calender.addEvent({
+              title: 'meeting',
+              start: '<?php echo $day . "T" . $starttime ?>',
+              end:   '<?php echo $day."T".$endtime?>',
+              allDay : false
+            });
+            <?php
+            
+      }
+    }
+      ?>
 </script>
 <style>
 

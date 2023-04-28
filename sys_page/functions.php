@@ -11,7 +11,6 @@ function get_session_data($sql,$conn)
         $no_sessions = false; //Tell other elements to expect session data
         $tutor_session_data = []; //Output data of each row into an array of session ids
         $session_index = 0;
-        echo 'wopper';
         while($row = $result->fetch_assoc()) {
             
             $tutor_session_data[$session_index][0] = $row['id']; //Tutor Session Id
@@ -47,15 +46,15 @@ function get_session_data($sql,$conn)
             $session_index += 1;
         }
     } else {
-        echo'bugger   ';
+
         $no_sessions = true; //This variable tells the page to show the no sessions today msg
     }
-    echo'garbage';
+
     //Return the result of the query 
     if($no_sessions == true){
         return 1;
     } else {
-        echo'beef';
+
         return $tutor_session_data;}
 
 }

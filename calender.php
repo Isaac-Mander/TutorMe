@@ -54,10 +54,14 @@ include("sys_page/functions.php");
         $tutee =  $session_combined_data[$i][4];
         $tutor = $session_combined_data[$i][6];
         $subject = $session_combined_data[$i][8];
-        ?><p><?php echo $tutee.'  '.$tutor.'   '.$subject;        ?></p><?php
-        ?><p><?php echo $day . "T" . $starttime;        ?></p><?php
-        ?><p><?php echo $day."T".$endtime;        ?></p><?php
+        $events[] = [
+          "title" => $tutee.'  '.$tutor.'   '.$subject,
+          "start" => $day . "T" . $starttime,
+          "end"   => $day."T".$endtime,
+      ];
       }
+      print_r($events);
+      echo 'chicken';
     } else {
       // Assign an array value to $session_today_tutor_data
       echo '(」゜ロ゜)」';
@@ -70,7 +74,9 @@ include("sys_page/functions.php");
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-
+    $jsonString = json_encode($events);
+    var booking = @json.parse('<?php print_r($events) ?>');
+    console.log(booking);
     var calendar = new FullCalendar.Calendar(calendarEl, {
 
       headerToolbar: {
@@ -91,52 +97,10 @@ include("sys_page/functions.php");
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      events: [
-        {
-          title: 'Conference',
-          start: '2023-04-05',
-          end: '2023-04-06'
-        },
-        {
-          title: 'Lunch',
-          start: '2023-04-02T12:00:00'
-        },
-        {
-          title: 'Meeting',
-          start: '2023-04-11T14:30:00'
-        },
-        {
-          title: 'Meeting',
-          start: '2023-04-12T10:30:00',
-          end: '2023-04-12T12:30:00'
-        },  
-        
-      ]
+      events: booking
     });
     calendar.render();
   });
-  <?php
-         if (is_array($session_combined_data)) {
-           for($i=0; $i<sizeof($session_combined_data); $i++){
-           $day = substr($session_combined_data[$i][1],0,10);
-           $starttime = substr($session_combined_data[$i][1],11,8);
-           $endtime = substr($session_combined_data[$i][2],11,8);
-           $tutee =  $session_combined_data[$i][4];
-           $tutor = $session_combined_data[$i][6];
-           $subject = $session_combined_data[$i][8];
-           ?>
-          
-            calender.addEvent({
-              title: 'meeting',
-              start: '<?php echo $day . "T" . $starttime ?>',
-              end:   '<?php echo $day."T".$endtime?>',
-              allDay : false
-            });
-            <?php
-            
-      }
-    }
-      ?>
 </script>
 <style>
 

@@ -1,0 +1,12 @@
+.red_box
+{
+    background-color: #FE654F;
+}
+.extra_rounded 
+{
+    border-radius: 1.5rem;
+}
+.extra_rounded_tr
+{
+    border-top-right-radius: 1.3rem;
+}

@@ -45,17 +45,11 @@ function get_session_data($sql,$conn)
             //Increment the session index the data is stored under
             $session_index += 1;
         }
-    } else {
-
-        $no_sessions = true; //This variable tells the page to show the no sessions today msg
-    }
-
-    //Return the result of the query 
-    if($no_sessions == true){
+        return $tutor_session_data;
+    } 
+    else 
+    {
         return 1;
-    } else {
-
-        return $tutor_session_data;}
-
+    }
 }
 ?>

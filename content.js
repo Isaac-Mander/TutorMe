@@ -32,8 +32,9 @@ if(document.getElementById("index_date_time"))
         }
         return "th";
     }
-
+    //Check if time uses am or pm
+    time_suffix = "am";
+    if(currentDate.getHours() > 12) time_suffix = "pm";
     //Set div content to the current date and time with a line between each datapoint
-    index_date_time.innerHTML = time + "<br>" + day_of_week + "<br>" + date_of_month + ordinal_suffix_of(date_of_month) + " " + current_month;
-    //index_date_time.innerHTML=currentDate;
-}   
+    index_date_time.innerHTML = time + time_suffix + "<br>" + day_of_week + "<br>" + date_of_month + ordinal_suffix_of(date_of_month) + " " + current_month;
+}

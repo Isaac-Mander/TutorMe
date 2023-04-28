@@ -40,11 +40,9 @@ include("sys_page/functions.php");
     <?php
     if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
       $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
-      echo'╰(⇀︿⇀)つ-]═───';
     } else {
       // Handle the case where one or both variables is not an array
       // For example:
-      echo '(･｀ｪ´･)つ';
       $session_combined_data = array();};
     if (is_array($session_combined_data)) {
       for($i=0; $i<sizeof($session_combined_data); $i++){
@@ -73,7 +71,6 @@ include("sys_page/functions.php");
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     <?php $JsonEvents = json_encode($events); ?>;
-    //var booking = @json.parse('');
     console.log('<?php echo $JsonEvents?>');
     var calendar = new FullCalendar.Calendar(calendarEl, {
 

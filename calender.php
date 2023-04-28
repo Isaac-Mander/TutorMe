@@ -55,13 +55,11 @@ include("sys_page/functions.php");
         $tutor = $session_combined_data[$i][6];
         $subject = $session_combined_data[$i][8];
         $events[] = [
-          "title" => $tutee.'  '.$tutor.'   '.$subject,
+          "title" => $tutor.' tutoring '.$tutee.' in '.$subject,
           "start" => $day . "T" . $starttime,
           "end"   => $day."T".$endtime,
       ];
       }
-      print_r($events);
-      echo 'chicken';
     } else {
       // Assign an array value to $session_today_tutor_data
       echo '(」゜ロ゜)」';
@@ -74,9 +72,9 @@ include("sys_page/functions.php");
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    $jsonString = json_encode($events);
-    var booking = @json.parse('<?php print_r($events) ?>');
-    console.log(booking);
+    <?php $JsonEvents = json_encode($events); ?>;
+    //var booking = @json.parse('');
+    console.log('<?php echo $JsonEvents?>');
     var calendar = new FullCalendar.Calendar(calendarEl, {
 
       headerToolbar: {
@@ -89,7 +87,8 @@ include("sys_page/functions.php");
       // otherwise they'd all just say "list"
       views: {
         listDay: { buttonText: 'list day' },
-        listWeek: { buttonText: 'list week' }
+        listWeek: { buttonText: 'list week' },
+        listMonth: { buttonText: 'list month'}
       },
 
       initialView: 'listWeek',
@@ -97,7 +96,7 @@ include("sys_page/functions.php");
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      events: booking
+      events: <?php echo $JsonEvents ?>
     });
     calendar.render();
   });

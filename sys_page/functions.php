@@ -2,6 +2,7 @@
 //Returns the session data from a query into a single array formated as below
 //[index of session in array][(0)Session id,  (1)session start time, (2)session end time,   (3)session tutee id,   (4)session tutee name,  (5)session tutor id,   (6)session tutor name,   (7)subject_id,   (8)subject_name]
 //THE SQL ARGUMENT MUST RETURN ALL FROM SESSION, IF NOT ERROR WILL OCCUR
+include("sys_page/db_connect.php");
 function get_session_data($sql,$conn)
 {
     //Query the database to get all the sessions THE USER IS TUTORING TODAY =============================================================================================================================
@@ -19,7 +20,6 @@ function get_session_data($sql,$conn)
             $tutee_id = $tutor_session_data[$session_index][3]; //Set variable to session tutee id for sql query
             $tutor_session_data[$session_index][5] = $row['tutor_id']; //Session tutor id
             $tutor_id = $tutor_session_data[$session_index][5]; //Set variable to session tutor id for sql query
-
             //Query the student list to get the tutee's name
             $sql_tutee_name = "SELECT name FROM 6969_students WHERE id=$tutee_id";
             $result_tutee = $conn->query($sql_tutee_name);
@@ -31,7 +31,6 @@ function get_session_data($sql,$conn)
             $result_tutor = $conn->query($sql_tutor_name);
             $data = $result_tutor->fetch_assoc();
             $tutor_session_data[$session_index][6] = $data['name'];//Tutor name
-
 
             //Each tutor session can only have a single subject. This program will filter out any id that is zero
             if($row['global_subject_id'] == 0) $tutor_session_data[$session_index][7] = $row['local_subject_id']; //Session subject

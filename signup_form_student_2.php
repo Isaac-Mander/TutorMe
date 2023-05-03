@@ -103,7 +103,7 @@ if($page == 2)
       echo "New record created successfully in " . $table;
       //Clear session
       session_reset();
-      header("Location: login_form.html"); //Send to the shadow realm (login screen)
+      header("Location: login_form.php"); //Send to the shadow realm (login screen)
       
     } else {
       echo "Error: " . $sql . "<br>" . $conn->error;

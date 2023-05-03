@@ -38,3 +38,46 @@ if(document.getElementById("index_date_time"))
     //Set div content to the current date and time with a line between each datapoint
     index_date_time.innerHTML = time + time_suffix + "<br>" + day_of_week + "<br>" + date_of_month + ordinal_suffix_of(date_of_month) + " " + current_month;
 }
+
+//If the profile page is the current page
+profile_edit_mode = false;
+if(document.getElementById("profile_edit_button"))
+{
+    //Get the edit button
+    let profile_edit_button = document.getElementById("profile_edit_button");
+
+    //Get the desc text dom element
+    let profile_desc_text = document.getElementById('profile_desc_text');
+
+    let profile_desc_edit = document.createElement("input");
+    profile_desc_edit.type = "text";
+    profile_desc_edit.id = "profile_desc_edit";
+    
+    //If it is clicked toggle edit mode
+    profile_edit_button.onclick = function() {
+        profile_edit_mode = !profile_edit_mode;
+
+        //If edit mode is on
+        if(profile_edit_mode)
+        {
+            //Set button to edit mode
+            profile_edit_button.innerHTML = "Save";
+            //Get the value of the desc text and set the input field to be =
+            profile_desc_edit.value = profile_desc_text.innerHTML;
+            profile_desc_text.replaceWith(profile_desc_edit);
+        }
+        else
+        {   //Set button to save mode  
+            profile_edit_button.innerHTML = "Edit";
+            //Get the value of the input field and set the desc text to be =
+            profile_desc_text.innerHTML = profile_desc_edit.value;
+            profile_desc_edit.replaceWith(profile_desc_text);
+            
+            //Update the database with the new description
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "secure_query.php?description=" + profile_desc_text.innerHTML);
+            xhttp.send();
+        }
+     };
+     
+}

@@ -7,9 +7,16 @@
     <title>Want a hamburger</title>
 </head>
 <body>
-    <a href="../sys_page/hamburger.html"><img src="sys_img/icons8-menu-rounded-100.png" alt="Menu Button"></a>
-
-    <p><a href="../login_form.html">Login</a></p>
+    <a href="../sys_page/hamburger.php"><img src="sys_img/icons8-menu-rounded-100.png" alt="Menu Button"></a>
+<?php
+//If the user is logged in show logout button rather than login button
+session_start();
+if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in
+{
+    echo "<p><a href='../login_form.php'>Login</a></p>"; //Show login button
+}
+else {echo "<p><a href='logout.php'>Logout</a></p>";} //If logged in show logout button
+?>
     <p><a href="../user_home.php">Student Home</a></p>
     <p><a href="../user_profile.php">Profile</a></p>
     <p><a href="../#">Tutor Others</a></p>

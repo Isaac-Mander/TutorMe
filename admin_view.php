@@ -7,7 +7,7 @@ session_start();
 $_SESSION['admin_id'] = 1;
 if(!isset($_SESSION['admin_id'])) //If not logged in redirect to login page
 {
-    header("Location: login_form.html"); //Send to the shadow realm (login screen)
+    header("Location: login_form.php"); //Send to the shadow realm (login screen)
 }
 //Get info at school
 

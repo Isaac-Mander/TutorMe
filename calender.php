@@ -1,5 +1,5 @@
 <?php
-//Import functions\
+//Import functions
 include("sys_page/header.html");
 include("sys_page/db_connect.php");
 include("sys_page/functions.php");

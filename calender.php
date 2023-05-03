@@ -71,24 +71,24 @@ include("sys_page/functions.php");
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     <?php $JsonEvents = json_encode($events); ?>;
-    console.log('<?php echo $JsonEvents?>');
     var calendar = new FullCalendar.Calendar(calendarEl, {
-
+      height: 'auto',
       headerToolbar: {
         left: 'prev,next',
         center: 'title',
-        right: 'listDay,listWeek'
+        right: 'timeGridDay,timeGridWeek,dayGridMonth,listYear'
       },
 
       // customize the button names,
       // otherwise they'd all just say "list"
       views: {
-        listDay: { buttonText: 'list day' },
-        listWeek: { buttonText: 'list week' },
-        listMonth: { buttonText: 'list month'}
+        timeGridDay: { buttonText: 'grid day' },
+        timeGridWeek: { buttonText: 'grid week' },
+        dayGridMonth: { buttonText: 'grid month'},
+        listYear: { buttonText: 'list year' }
       },
 
-      initialView: 'listWeek',
+      initialView: 'timeGridWeek',
       initialDate:  '<?php echo $date?>',
       navLinks: true, // can click day/week names to navigate views
       editable: true,

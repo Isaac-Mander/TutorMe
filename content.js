@@ -52,7 +52,7 @@ if(document.getElementById("profile_edit_button"))
     let profile_desc_edit = document.createElement("input");
     profile_desc_edit.type = "text";
     profile_desc_edit.id = "profile_desc_edit";
-    
+
     //If it is clicked toggle edit mode
     profile_edit_button.onclick = function() {
         profile_edit_mode = !profile_edit_mode;
@@ -65,6 +65,11 @@ if(document.getElementById("profile_edit_button"))
             //Get the value of the desc text and set the input field to be =
             profile_desc_edit.value = profile_desc_text.innerHTML;
             profile_desc_text.replaceWith(profile_desc_edit);
+
+            var crosses_to_hide = document.getElementsByClassName("edit_cross");
+            for(var i = 0; i < crosses_to_hide.length; i++){
+                crosses_to_hide[i].style.display = "flex";
+            }
         }
         else
         {   //Set button to save mode  
@@ -77,6 +82,19 @@ if(document.getElementById("profile_edit_button"))
             const xhttp = new XMLHttpRequest();
             xhttp.open("GET", "secure_query.php?description=" + profile_desc_text.innerHTML);
             xhttp.send();
+
+            //Update subject preferences
+            profile_studying_parent = document.getElementById("studying");
+            //If there are any preferences to update
+            if(profile_studying_parent.children.length > 0)
+            {
+                
+            }
+            //Hide any crosses still visible using display = none
+            var crosses_to_hide = document.getElementsByClassName("edit_cross");
+            for(var i = 0; i < crosses_to_hide.length; i++){
+                crosses_to_hide[i].style.display = "none";
+            }
         }
      };
      

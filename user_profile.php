@@ -8,7 +8,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 //Connect to database
 include("sys_page/db_connect.php");
 
-//Get info about user
+//Get info about user =====================================================================================================================================================
 $user_id = $_SESSION['user_id'];
 $school_code = $_SESSION['school_code'];
 $sql = "SELECT * FROM " . $school_code . "_students WHERE id=" . $user_id;
@@ -20,13 +20,15 @@ if ($result->num_rows > 0) { //If the number of rows are not zero
   $hours_tutored = $data['hours_tutored'];
   $sessions_tutored = $data['sessions_tutored'];
 }
+//End of section ==========================================================================================================================================================
 
 
-//Get the info about the users subjects
+
+//Get the info about the users subjects that they tutor ===================================================================================================================
 $subject_tutor_sql = "SELECT * FROM `6969_subjects_tutor` WHERE tutor_id=$user_id";
 $subject_tutor_result = $conn->query($subject_tutor_sql); //Query database
 if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
-  $subject_array = [];
+  $subject_array_tutor = [];
   $i = 0;
   while($row = $subject_tutor_result->fetch_assoc()) {
     //Check which subject ID to use (if = 0 ignore ID)
@@ -37,21 +39,80 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
     if($is_global) {$subject_tutor_id = $row['global_subject_id'];}
     else {$subject_tutor_id = $row['local_subject_id'];}
     //Add the id to an array
-    $subject_array[$i][0] = $subject_tutor_id;
+    $subject_array_tutor[$i][0] = $subject_tutor_id;
     //Add the current state of is_global
-    $subject_array[$i][1] = $is_global;
+    $subject_array_tutor[$i][1] = $is_global;
 
     $i += 1;
   }
-  $no_subjects = false;
+  $no_tutor_subjects = false;
 
   //Get the subject names as an array
-  for($i=0;$i<sizeof($subject_array);$i++)
+  for($i=0;$i<sizeof($subject_array_tutor);$i++)
   {
     //Change the query type depending if the subject is global or local
 
     //Global
-    if($subject_array[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `subjects` ON `6969_subjects_tutee`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id;";}
+    if($subject_array_tutor[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutor` INNER JOIN `subjects` ON `6969_subjects_tutor`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutor`.`tutor_id`=$user_id;";}
+    
+    //Local
+    else {$subject_name_sql = "SELECT * FROM `6969_subjects_tutor` INNER JOIN `6969_subjects` ON `6969_subjects_tutor`.`local_subject_id`=`6969_subjects`.`id` WHERE `6969_subjects_tutor`.`tutor_id`=$user_id;";}
+    
+
+    //Query the database to find the subject name
+    $subject_name_result = $conn->query($subject_name_sql); //Query database
+    if ($subject_name_result->num_rows > 0) { //If the number of rows are not zero
+      $subject_name_array = [];
+      $i = 0;
+      while($row = $subject_name_result->fetch_assoc()) {
+        $subject_array_tutor[$i][2] = $row['name'];
+        $i += 1;
+      }
+    }
+  }
+  
+}
+else
+{
+  //If no subjects are found
+  $no_tutor_subjects = true;
+}
+//End of section =========================================================================================================================================================
+
+
+
+
+//Get the info about the users subjects that they are tutored in ===================================================================================================================
+$subject_tutee_sql = "SELECT * FROM `6969_subjects_tutee` WHERE tutee_id=$user_id";
+$subject_tutee_result = $conn->query($subject_tutee_sql); //Query database
+if ($subject_tutee_result->num_rows > 0) { //If the number of rows are not zero
+  $subject_array_tutee = [];
+  $i = 0;
+
+  while($row = $subject_tutee_result->fetch_assoc()) {
+    //Check which subject ID to use (if = 0 ignore ID)
+    $is_global = false;
+    if($row['global_subject_id'] == "0") {$is_global = false;}
+    else {$is_global = true;}
+
+    if($is_global) {$subject_tutee_id = $row['global_subject_id'];}
+    else {$subject_tutee_id = $row['local_subject_id'];}
+    //Add the id to an array
+    $subject_array_tutee[$i][0] = $subject_tutee_id;
+    //Add the current state of is_global
+    $subject_array_tutee[$i][1] = $is_global;
+
+    $i += 1;
+  }
+  $no_tutee_subjects = false;
+
+  //Get the subject names as an array
+  for($i=0;$i<sizeof($subject_array_tutee);$i++)
+  {
+    //Change the query type depending if the subject is global or local
+
+    //Global
+    if($subject_array_tutee[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `subjects` ON `6969_subjects_tutee`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id;";}
     
     //Local
     else {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `6969_subjects` ON `6969_subjects_tutee`.`local_subject_id`=`6969_subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id;";}
@@ -63,7 +124,7 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
       $subject_name_array = [];
       $i = 0;
       while($row = $subject_name_result->fetch_assoc()) {
-        $subject_array[$i][2] = $row['name'];
+        $subject_array_tutee[$i][2] = $row['name'];
         $i += 1;
       }
     }
@@ -73,8 +134,16 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
 else
 {
   //If no subjects are found
-  $no_subjects = true;
+  $no_tutee_subjects = true;
 }
+//End of section =========================================================================================================================================================
+?>
+
+
+
+<?php 
+$subject_element_tutee_id = 0; //This id allows for a unique id to be set to each subject for js purposes 
+$subject_element_tutor_id = 0;
 ?>
 <!doctype html>
 <html lang="en">
@@ -95,28 +164,60 @@ else
                   <h3 class="col text-center py-3 m-0">Studying</h3>
                   <div class="col purple_box extra_rounded_r"></div>
               </div>
-      </div>
-      
-      <div>
-        <div class="row" id="studying">
-          <?php
-            //Get number of items in subject array
-            if($no_subjects == false)
-            {
-              for($x=0;$x<sizeof($subject_array);$x++)
-              {
-                echo "<div class='col'><p class='nowrap'>";
-                echo $subject_array[$x][2];
-                echo "</p><img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''></div>";
-              }
-            }
-          ?>
-          
-          
-
-        </div>
     </div>
-    <h3>Tutoring</h3>
+
+
+
+    <div class="row" id="studying">
+        <?php
+          //Get number of items in subject array
+          if($no_tutee_subjects == false)
+          {
+            for($x=0;$x<sizeof($subject_array_tutee);$x++)
+            {
+              echo "<div ";
+              echo "id=tutee_" . $subject_element_tutee_id;//Give the element a unqiue id
+              echo " class='col'><p ";
+              echo "class='nowrap'>";
+              echo $subject_array_tutee[$x][2];
+              echo "</p><img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''></div>";
+              //Increment the id
+              $subject_element_tutee_id += 1;
+            }
+          }
+        ?>
+    </div>
+
+
+
+
+    <div class="container text-center border border-3 border-dark extra_rounded">
+              <div class="row">
+                <h3 class="col text-center py-3 m-0">Tutoring</h3>
+                  <div class="col purple_box extra_rounded_r"></div>
+              </div>
+    </div>
+      
+    <div class="row" id="tutoring">
+      <?php
+        //Get number of items in subject array
+        if($no_tutor_subjects == false)
+        {
+          for($x=0;$x<sizeof($subject_array_tutor);$x++)
+          {
+            echo "<div ";
+            echo "id=tutor_" . $subject_element_tutor_id;//Give the element a unqiue id
+            echo " class='col'><p ";
+            echo "class='nowrap'>";
+            echo $subject_array_tutor[$x][2];
+            echo "</p><img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''></div>";
+            //Increment the id
+            $subject_element_tutor_id += 1;
+          }
+        }
+      ?>
+    </div>
+    
     <h3>Description</h3>
     <p id="profile_desc_text"><?php echo $desc; ?></p>
     <div class="profile_statistics">

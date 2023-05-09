@@ -1,3 +1,5 @@
+
+
 //Store days of week and months for future use
 const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
@@ -39,7 +41,7 @@ if(document.getElementById("index_date_time"))
     index_date_time.innerHTML = time + time_suffix + "<br>" + day_of_week + "<br>" + date_of_month + ordinal_suffix_of(date_of_month) + " " + current_month;
 }
 
-//If the profile page is the current page
+//If the profile page is the current page ===========================================================================================================
 profile_edit_mode = false;
 if(document.getElementById("profile_edit_button"))
 {
@@ -49,15 +51,39 @@ if(document.getElementById("profile_edit_button"))
     //Get the desc text dom element
     let profile_desc_text = document.getElementById('profile_desc_text');
 
+    //Create a input text box to replace the desc text element when in edit mode
     let profile_desc_edit = document.createElement("input");
     profile_desc_edit.type = "text";
     profile_desc_edit.id = "profile_desc_edit";
+
+    //Find the subjects that php generated
+    tutor_subject_divs = [];
+    element_id = "tutor_0";
+    i = 0;
+    while(document.getElementById(element_id))
+    {
+        element_id = "tutor_" + i;
+        tutor_subject_divs[i] = element_id;
+        i += 1;
+    }
+    tutee_subject_divs = [];
+    element_id = "tutee_0";
+    i = 0;
+    while(document.getElementById(element_id))
+    {
+        element_id = "tutee_" + i;
+        tutee_subject_divs[i] = element_id;
+        i += 1;
+    }
+    //These loops add on extra id that is invalid, so this function will remove them
+    tutor_subject_divs.pop();
+    tutee_subject_divs.pop();
 
     //If it is clicked toggle edit mode
     profile_edit_button.onclick = function() {
         profile_edit_mode = !profile_edit_mode;
 
-        //If edit mode is on
+        //If edit mode is on ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         if(profile_edit_mode)
         {
             //Set button to edit mode
@@ -66,13 +92,31 @@ if(document.getElementById("profile_edit_button"))
             profile_desc_edit.value = profile_desc_text.innerHTML;
             profile_desc_text.replaceWith(profile_desc_edit);
 
+            //Set remove crosses to display: flex
             var crosses_to_hide = document.getElementsByClassName("edit_cross");
             for(var i = 0; i < crosses_to_hide.length; i++){
                 crosses_to_hide[i].style.display = "flex";
             }
+
+            //Remove crosses if clicked
+            for(i=0;i<tutee_subject_divs.length;i++)
+            {
+                let div_element = document.getElementById(tutee_subject_divs[i])
+                div_element.onclick = function() {
+                    div_element.remove();
+                }
+            }
+            for(i=0;i<tutor_subject_divs.length;i++)
+            {
+                let div_element = document.getElementById(tutor_subject_divs[i])
+                div_element.onclick = function() {
+                    div_element.remove();
+                }
+            }
         }
-        else
-        {   //Set button to save mode  
+        else //Edit mode is off ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        {   
+            //Set button to save mode  
             profile_edit_button.innerHTML = "Edit";
             //Get the value of the input field and set the desc text to be =
             profile_desc_text.innerHTML = profile_desc_edit.value;
@@ -96,6 +140,9 @@ if(document.getElementById("profile_edit_button"))
                 crosses_to_hide[i].style.display = "none";
             }
         }
+        //End of section ===========================================================================================================================================
+
+        
      };
      
 }

@@ -7,11 +7,9 @@ include("sys_page/functions.php");
 $end_time = $_POST["end_time"];
 $start_time = $_POST["start_time"];
 $student_id = "3";
-echo $end_time."  . ".$start_time."  / ".$student_id;
 $query = "INSERT INTO 6969_student_times (student_id, session_start, session_end)
 VALUES ('3', '$start_time', '$end_time')";
 $res = mysqli_query($conn, $query);
-echo $end_time."  . ".$start_time."  / ".$student_id;
 ?>
 <script>
   window.location.href = "calender_1.php";

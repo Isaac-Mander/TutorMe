@@ -26,16 +26,7 @@ include("sys_page/functions.php");
     $date =  $time_year . "-" . $time_month . "-" . $time_day;
     $avaliable_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
     $avaliable_session_times_data = get_avaliable_session_data($avaliable_session_times_sql, $conn);
-    if (is_array($avaliable_session_times_data)) {
-      for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
-        $name = $avaliable_session_times_data[$i][0];
-        $potential_starttime = $avaliable_session_times_data[$i][1];
-        $potential_endtime = $avaliable_session_times_data[$i][2];
-        $chicken = $name."  qweoir  ".$potential_starttime."  the gerbster ".$potential_endtime;
-        echo $chicken;
-        ?> <script> console.log(<?php echo $chicken; ?>) </script> <?php
-      }
-    }
+
     function grab_events($conn){
     //Get the sessions this user is tutoring today
     $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=3";  
@@ -80,8 +71,12 @@ include("sys_page/functions.php");
           "end"   => $day."T".$endtime,
       ];
       }
-      
-      return $events;
+      if (is_array($events) && is_array($potential_events)) {
+        $all_events = array_merge($events, $potential_events);
+        return $all_events;
+      }else {
+        return '(」゜ロ゜)」';
+      }
     } else {
       // Assign an array value to $session_today_tutor_data
       return '(」゜ロ゜)」';
@@ -99,23 +94,21 @@ include("sys_page/functions.php");
     var calendar = new FullCalendar.Calendar(calendarEl, {
       height: 'auto',
       headerToolbar: {
-        left: 'prev,next,addEventButton',
+        left:'',
         center: 'title',
-        right: 'timeGridDay,timeGridWeek,dayGridMonth,listYear'
+        right:''
       },
       // customize the button names,
       // otherwise they'd all just say "list"
       views: {
-        timeGridDay: { buttonText: 'grid day' },
-        timeGridWeek: { buttonText: 'grid week' },
-        dayGridMonth: { buttonText: 'grid month'},
-        listYear: { buttonText: 'list year' }
+        timeGridWeek: { buttonText: 'grid week' }
       },
 
       initialView: 'timeGridWeek',
       initialDate:  '<?php echo $date?>',
       navLinks: true, // can click day/week names to navigate views
       editable: true,
+      businessHours: true,
       dayMaxEvents: true, // allow "more" link when too many events
       events: <?php echo $JsonEvents ?>
     });
@@ -150,6 +143,17 @@ include("sys_page/functions.php");
         <input type="submit">
     </div>
     </form> 
+    <?php    
+    if (is_array($avaliable_session_times_data)) {
+      for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
+        $name = $avaliable_session_times_data[$i][0];
+        $potential_starttime = $avaliable_session_times_data[$i][1];
+        $potential_endtime = $avaliable_session_times_data[$i][2];
+        ?>    <div class='session_card'><?php
+        echo $name."     ".$potential_starttime."       ".$potential_endtime;
+        ?>     </div><?php
+      }
+    }?>
     <?php
     ?>
     <h1>Hello, world!</h1>

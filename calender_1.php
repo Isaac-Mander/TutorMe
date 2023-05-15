@@ -20,10 +20,22 @@ include("sys_page/functions.php");
     $time_year = $dt->format('Y'); // output: '2023'
     $time_hour = $dt ->format('h');
     $time_minute = $dt ->format('i');
-
     $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
     $date =  $time_year . "-" . $time_month . "-" . $time_day;
-
+    $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
+    $date =  $time_year . "-" . $time_month . "-" . $time_day;
+    $avaliable_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
+    $avaliable_session_times_data = get_avaliable_session_data($avaliable_session_times_sql, $conn);
+    if (is_array($avaliable_session_times_data)) {
+      for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
+        $name = $avaliable_session_times_data[$i][0];
+        $potential_starttime = $avaliable_session_times_data[$i][1];
+        $potential_endtime = $avaliable_session_times_data[$i][2];
+        $chicken = $name."  qweoir  ".$potential_starttime."  the gerbster ".$potential_endtime;
+        echo $chicken;
+        ?> <script> console.log(<?php echo $chicken; ?>) </script> <?php
+      }
+    }
     function grab_events($conn){
     //Get the sessions this user is tutoring today
     $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=3";  
@@ -31,9 +43,23 @@ include("sys_page/functions.php");
 
     //Get the sessions this user is being tutored today
     $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=3";  
-    $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);?>
+    $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
+    $avaliable_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
+    $avaliable_session_times_data = get_avaliable_session_data($avaliable_session_times_sql, $conn);
 
-    <?php
+    if (is_array($avaliable_session_times_data)) {
+      for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
+        $name = $avaliable_session_times_data[$i][0];
+        $potential_starttime = $avaliable_session_times_data[$i][1];
+        $potential_endtime = $avaliable_session_times_data[$i][2];
+        $potential_events[]=[
+          "title" => "potential session",
+          "start" => $potential_starttime,
+          "end"   => $potential_endtime,
+          "color" => "purple"
+        ];
+      }
+    }
     if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
       $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
     } else {
@@ -53,14 +79,15 @@ include("sys_page/functions.php");
           "start" => $day . "T" . $starttime,
           "end"   => $day."T".$endtime,
       ];
-      return $events;
       }
+      
+      return $events;
     } else {
       // Assign an array value to $session_today_tutor_data
       return '(」゜ロ゜)」';
     }
   };
-    grab_events($conn);  ?>
+    $events = grab_events($conn);  ?>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src='fullcalendar-6.1.5\fullcalendar-6.1.5\dist\index.global.js'></script>
@@ -112,6 +139,19 @@ include("sys_page/functions.php");
 </style>
   </head>
   <body>
+  <form action='calender_2.php' method='post'>
+    <div class="container">
+        <label for="start_time"><b>Start time</b></label>
+        <input type="datetime-local" id="start_time" placeholder="Start time" name="start_time" required><br>
+
+
+        <label for="end_time"><b>Start time</b></label>
+        <input type="datetime-local" id="end_time" placeholder="End time" name="end_time" required><br>
+        <input type="submit">
+    </div>
+    </form> 
+    <?php
+    ?>
     <h1>Hello, world!</h1>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <div id='calendar'></div>

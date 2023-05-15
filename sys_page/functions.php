@@ -52,4 +52,28 @@ function get_session_data($sql,$conn)
         return 1;
     }
 }
+function get_avaliable_session_data($sql,$conn)
+{
+    //Query the database to get all the sessions THE USER IS TUTORING TODAY =============================================================================================================================
+    $result = $conn->query($sql); //Query database
+    if ($result->num_rows > 0) { //If the number of rows are not zero
+        $no_sessions = false; //Tell other elements to expect session data
+        $tutor_session_data = []; //Output data of each row into an array of session ids
+        $session_index = 0;
+        while($row = $result->fetch_assoc()) {
+            
+            $tutor_session_data[$session_index][0] = $row['name']; //Tutor Session Id
+            $tutor_session_data[$session_index][1] = $row['session_start']; //Session start time
+            $tutor_session_data[$session_index][2] = $row['session_end']; //Session end time
+            
+            //Increment the session index the data is stored under
+            $session_index += 1;
+        }
+        return $tutor_session_data;
+    } 
+    else 
+    {
+        return 1;
+    }
+}
 ?>

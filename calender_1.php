@@ -107,7 +107,6 @@ include("sys_page/functions.php");
       initialView: 'timeGridWeek',
       initialDate:  '<?php echo $date?>',
       navLinks: true, // can click day/week names to navigate views
-      editable: true,
       businessHours: true,
       dayMaxEvents: true, // allow "more" link when too many events
       events: <?php echo $JsonEvents ?>
@@ -149,14 +148,13 @@ include("sys_page/functions.php");
         $name = $avaliable_session_times_data[$i][0];
         $potential_starttime = $avaliable_session_times_data[$i][1];
         $potential_endtime = $avaliable_session_times_data[$i][2];
-        ?>    <div class='session_card'><?php
+        ?>    <div class='card' style="width: 18rem;"><?php
         echo $name."     ".$potential_starttime."       ".$potential_endtime;
         ?>     </div><?php
       }
     }?>
     <?php
     ?>
-    <h1>Hello, world!</h1>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <div id='calendar'></div>
   </body>

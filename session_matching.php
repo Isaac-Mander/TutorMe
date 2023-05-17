@@ -6,12 +6,15 @@ include("sys_page/functions.php");
 
 ?>
   <?php
-      $avaliable_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
-      $avaliable_session_times_data = get_avaliable_session_data($avaliable_session_times_sql, $conn);
+      $avaliable_session_tutor_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_subjects_tutor ON 6969_subjects_tutor.tutor_id=6969_students.id WHERE 6969_students.id=3";
+      $avaliable_tutor_times_data = get_session_select_data($avaliable_session_times_sql, $conn);
 
       
-      $avaliable_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id!=3";
-      $avaliable_session_times_data = get_avaliable_session_data($avaliable_session_times_sql, $conn);?>
+      $avaliable_session_tutee_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_subjects_tutee ON 6969_subjects_tutee.tutee_id=6969_students.id WHERE 6969_students_id!=3";
+      $avaliable_tutee_times_data = get_session_select_data($avaliable_session_times_sql, $conn);
+      
+      
+      ?>
 <!doctype html>
 <html lang="en">
   <head>

@@ -75,9 +75,29 @@ if(document.getElementById("profile_edit_button"))
         tutee_subject_divs[i] = element_id;
         i += 1;
     }
+
+    //Find the checkboxes that php generated
+    checkbox_subject_divs = [];
+    element_id = "checkbox_0";
+    i = 0;
+    while(document.getElementById(element_id))
+    {
+        element_id = "checkbox_" + i;
+        checkbox_subject_divs[i] = element_id;
+        i += 1;
+    }
     //These loops add on extra id that is invalid, so this function will remove them
     tutor_subject_divs.pop();
     tutee_subject_divs.pop();
+
+    //Get the checkbox elements
+    checkbox_study_subjects = document.getElementById("tutoring_subjects_checkbox_studying");
+    checkbox_tutor_subjects = document.getElementById("tutoring_subjects_checkbox_tutoring");
+
+    //Get the subject card container div
+    studying_subject_card_div = document.getElementById("studying_subject_cards");
+    tutoring_subject_card_div = document.getElementById("tutoring_subject_cards");
+
 
     //If it is clicked toggle edit mode
     profile_edit_button.onclick = function() {
@@ -93,13 +113,15 @@ if(document.getElementById("profile_edit_button"))
             profile_desc_text.replaceWith(profile_desc_edit);
 
             //Set remove crosses to display: flex
-            var crosses_to_hide = document.getElementsByClassName("edit_cross");
+            //CROSSES ARE NOT CURRENTLY USED
+            /*var crosses_to_hide = document.getElementsByClassName("edit_cross");
             for(var i = 0; i < crosses_to_hide.length; i++){
                 crosses_to_hide[i].style.display = "flex";
-            }
+            }*/
 
             //Remove crosses if clicked
-            for(i=0;i<tutee_subject_divs.length;i++)
+            //THIS CODE IS NOT CURRENTLY USED BY ANYTHING
+            /*for(i=0;i<tutee_subject_divs.length;i++)
             {
                 let div_element = document.getElementById(tutee_subject_divs[i])
                 div_element.onclick = function() {
@@ -112,7 +134,15 @@ if(document.getElementById("profile_edit_button"))
                 div_element.onclick = function() {
                     div_element.remove();
                 }
-            }
+            }*/
+
+            //Make the subject edit checkboxes visible
+            checkbox_study_subjects.style.display = "flex";
+            checkbox_tutor_subjects.style.display = "flex";
+            
+            //Hide subject cards when edit mode is on
+            studying_subject_card_div.style.display = "none";
+            tutoring_subject_card_div.style.display = "none";
         }
         else //Edit mode is off ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         {   
@@ -122,26 +152,50 @@ if(document.getElementById("profile_edit_button"))
             profile_desc_text.innerHTML = profile_desc_edit.value;
             profile_desc_edit.replaceWith(profile_desc_text);
             
-            //Update the database with the new description
-            const xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "secure_query.php?description=" + profile_desc_text.innerHTML);
-            xhttp.send();
-
-            //Update subject preferences
-            profile_studying_parent = document.getElementById("studying");
-            //If there are any preferences to update
-            if(profile_studying_parent.children.length > 0)
-            {
-                
-            }
+            
             //Hide any crosses still visible using display = none
-            var crosses_to_hide = document.getElementsByClassName("edit_cross");
+            //THIS CODE IS NOT CURRENTLY USED BY ANYTHING
+            /*var crosses_to_hide = document.getElementsByClassName("edit_cross");
             for(var i = 0; i < crosses_to_hide.length; i++){
                 crosses_to_hide[i].style.display = "none";
+            }*/
+
+            //Make the subject edit checkboxes hidden
+            checkbox_study_subjects.style.display = "none";
+            checkbox_tutor_subjects.style.display = "none";
+
+            //Make subject cards visible when edit mode is turned off
+            studying_subject_card_div.style.display = "flex";
+            tutoring_subject_card_div.style.display = "flex";
+
+            //Check what subjects are checked, so we know what to save
+            let subjects_status = "";
+            for(i=0;i<checkbox_subject_divs.length-1;i++)
+            {
+                if(document.getElementById(checkbox_subject_divs[i]).checked) {subjects_status += "1";}
+                else {subjects_status += "0";}
             }
+            
+
+            //Update the database with the new info
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "secure_query.php?description=" + profile_desc_text.innerHTML + "&subjects=" + subjects_status);
+            xhttp.send();
+            //If the request failed, send user to error page
+            xhttp.onreadystatechange = function() {
+                if (this.readyState != 4 && this.status != 200) {
+                    alert("Something went wrong, you are being redirected back to safety");
+                    window.location = "http://localhost/dashboard/TutorMe";
+                }
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    //Create the new subjects if needed
+                    window.location.reload();
+                }};
+            
         }
         //End of section ===========================================================================================================================================
-
+        
         
      };
      

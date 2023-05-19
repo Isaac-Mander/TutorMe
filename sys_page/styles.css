@@ -2,6 +2,10 @@
 {
     background-color: #FE654F;
 }
+.purple_box
+{
+    background-color: #B780FF;
+}
 .extra_rounded 
 {
     border-radius: 1.5rem;
@@ -9,4 +13,18 @@
 .extra_rounded_tr
 {
     border-top-right-radius: 1.3rem;
+}
+.extra_rounded_r
+{
+    border-top-right-radius: 1.3rem;
+    border-bottom-right-radius: 1.3rem;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.hide_on_start
+{
+    display: none;
 }

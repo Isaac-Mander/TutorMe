@@ -2,9 +2,9 @@
 //Returns the session data from a query into a single array formated as below
 //[index of session in array][(0)Session id,  (1)session start time, (2)session end time,   (3)session tutee id,   (4)session tutee name,  (5)session tutor id,   (6)session tutor name,   (7)subject_id,   (8)subject_name]
 //THE SQL ARGUMENT MUST RETURN ALL FROM SESSION, IF NOT ERROR WILL OCCUR
-include("sys_page/db_connect.php");
 function get_session_data($sql,$conn)
 {
+    include("sys_page/db_connect.php");
     //Query the database to get all the sessions THE USER IS TUTORING TODAY =============================================================================================================================
     $result = $conn->query($sql); //Query database
     if ($result->num_rows > 0) { //If the number of rows are not zero
@@ -51,5 +51,44 @@ function get_session_data($sql,$conn)
     {
         return 1;
     }
+}
+
+//This function gets the subjects available to a specific user =========================================================================================================================================
+function get_available_subjects($school_code)
+{
+    //Connect to db
+    include("sys_page/db_connect.php");
+
+    //Get the subjects of the school 
+    $all_local_subject_sql = "SELECT * FROM `" . $school_code . "_subjects` WHERE 1;";
+    $all_global_subject_sql = "SELECT * FROM `subjects` WHERE 1;";
+
+    //Get local data
+    $all_local_subject_result = $conn->query($all_local_subject_sql); //Query database
+    if ($all_local_subject_result->num_rows > 0) { //If the number of rows are not zero
+    $all_available_subject_array = []; //This array is formatted as [index][isglobalvariable?, name of subject, id of subject]
+    $i = 0;
+    while($row = $all_local_subject_result->fetch_assoc()) {
+        $all_available_subject_array[$i][0] = false; //This variable is set to false as this is not a global table info
+        $all_available_subject_array[$i][1] = $row['name'];
+        $all_available_subject_array[$i][2] = $row['id'];
+        $i += 1;
+    }
+    }
+
+    //Get global data
+    $all_global_subject_result = $conn->query($all_global_subject_sql); //Query database
+    if ($all_global_subject_result->num_rows > 0) { //If the number of rows are not zero
+    while($row = $all_global_subject_result->fetch_assoc()) {
+        $all_available_subject_array[$i][0] = true; //This variable is set to true as this is the global table info
+        $all_available_subject_array[$i][1] = $row['name'];
+        $all_available_subject_array[$i][2] = $row['id'];
+        $i += 1;
+    }
+    }
+
+    //Return the available subjects as an array
+    return $all_available_subject_array;
+    
 }
 ?>

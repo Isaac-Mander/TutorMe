@@ -43,11 +43,18 @@ include("sys_page/functions.php");
         $name = $avaliable_session_times_data[$i][0];
         $potential_starttime = $avaliable_session_times_data[$i][1];
         $potential_endtime = $avaliable_session_times_data[$i][2];
+        $day = (int)substr($avaliable_session_times_data[$i][1],8,2);
+        $month = (int)substr($avaliable_session_times_data[$i][1],5,2);
+        $year = (int)substr($avaliable_session_times_data[$i][1],0,4);
+        $week_day =  idate('w', mktime(0,0,0,$month,$day,$year));
+
         $potential_events[]=[
           "title" => "potential session",
           "start" => $potential_starttime,
           "end"   => $potential_endtime,
-          "color" => "purple"
+          "color" => "purple",
+          "daysOfWeek" => [$week_day]
+          
         ];
       }
     }
@@ -134,11 +141,14 @@ include("sys_page/functions.php");
   <form action='calender_2.php' method='post'>
     <div class="container">
         <label for="start_time"><b>Start time</b></label>
-        <input type="datetime-local" id="start_time" placeholder="Start time" name="start_time" required><br>
+        <input type="time" id="start_time" placeholder="Start time" name="start_time" required><br>
 
 
         <label for="end_time"><b>Start time</b></label>
-        <input type="datetime-local" id="end_time" placeholder="End time" name="end_time" required><br>
+        <input type="time" id="end_time" placeholder="End time" name="end_time" required><br>
+        
+        <label for="day_of_week">Day of the week (between 0 and 6) 0 = Sunday, 6 = Saturday:</label>
+        <input type="number" id="day_of_week" name="day_of_week" min="0" max="6">
         <input type="submit">
     </div>
     </form> 
@@ -146,7 +156,9 @@ include("sys_page/functions.php");
     if (is_array($avaliable_session_times_data)) {
       for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
         $name = $avaliable_session_times_data[$i][0];
-        $potential_starttime = $avaliable_session_times_data[$i][1];
+        $potential_starttime_year = date();
+        $potential_starttime_month = date():
+
         $potential_endtime = $avaliable_session_times_data[$i][2];
         ?>    <div class='card' style="width: 18rem;"><?php
         echo $name."     ".$potential_starttime."       ".$potential_endtime;

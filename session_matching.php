@@ -7,13 +7,35 @@ include("sys_page/functions.php");
 ?>
   <?php
       $avaliable_session_tutor_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_subjects_tutor ON 6969_subjects_tutor.tutor_id=6969_students.id WHERE 6969_students.id=3";
-      $avaliable_tutor_times_data = get_session_select_data($avaliable_session_times_sql, $conn);
+      $avaliable_tutor_times_data = get_session_select_data($avaliable_session_tutor_times_sql, $conn);
 
       
-      $avaliable_session_tutee_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_subjects_tutee ON 6969_subjects_tutee.tutee_id=6969_students.id WHERE 6969_students_id!=3";
-      $avaliable_tutee_times_data = get_session_select_data($avaliable_session_times_sql, $conn);
+      $avaliable_session_tutee_times_sql = "SELECT * FROM 6969_subjects_tutee INNER JOIN 6969_students ON 6969_subjects_tutee.tutee_id=6969_students.id WHERE 6969_subjects_tutee.tutee_id!=3;";
+      $avaliable_tutee_times_data = get_session_select_data($avaliable_session_tutee_times_sql, $conn);
       
-      
+      /*check for subject matches*/
+
+        for($k=0; $k<sizeof($avaliable_tutee_times_data); $k++){
+          for($l=0; $l<sizeof($avaliable_tutor_times_data); $l++){
+            if ($avaliable_tutee_times_data[$k][6]== $avaliable_tutor_times_data[$l][6]); {
+              if($avaliable_tutee_times_data[$k][3] == $avaliable_tutor_times_data[$l][3]){
+                if ($avaliable_tutee_times_data[$k][1]>= $avaliable_tutor_times_data[$l][1]){
+                  if($avaliable_tutee_times_data[$k][2]<= $avaliable_tutor_times_data[$l][2]){
+                   $potential_starttime = $avaliable_tutee_times_data[$k][1];
+                   $potential_endtime = $avaliable_tutee_times_data[$k][2];
+                   $name = $avaliable_tutee_times_data[$k][4];
+                   $subject = $avaliable_tutee_times_data[$k][6];
+                   $day_of_week = date("l", $avaliable_tutor_times_data[$l][3]);
+                   ?>    <div class='card' style="width: 18rem;"><?php
+                   echo $name."     ".$potential_starttime."       ".$potential_endtime."    ".$subject."     ".$day_of_week;
+                   ?>     </div><?php
+                 }
+               }
+              }
+          }
+        }
+      }
+    
       ?>
 <!doctype html>
 <html lang="en">

@@ -11,6 +11,9 @@ include("sys_page/db_connect.php");
 //Import functions
 include("sys_page/functions.php");
 
+//Include the navbar
+include("sys_page/header.html");
+
 //Get info about user =====================================================================================================================================================
 $user_id = $_SESSION['user_id'];
 $school_code = $_SESSION['school_code'];
@@ -53,24 +56,20 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
   //Get the subject names as an array
   for($i=0;$i<sizeof($subject_array_tutor);$i++)
   {
-    //Change the query type depending if the subject is global or local
 
+    $subject_id = $subject_array_tutor[$i][0];
+    //Change the query type depending if the subject is global or local
     //Global
-    if($subject_array_tutor[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutor` INNER JOIN `subjects` ON `6969_subjects_tutor`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutor`.`tutor_id`=$user_id;";}
+    if($subject_array_tutor[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutor` INNER JOIN `subjects` ON `6969_subjects_tutor`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutor`.`tutor_id`=$user_id AND `global_subject_id`=$subject_id;";}
     
     //Local
-    else {$subject_name_sql = "SELECT * FROM `6969_subjects_tutor` INNER JOIN `6969_subjects` ON `6969_subjects_tutor`.`local_subject_id`=`6969_subjects`.`id` WHERE `6969_subjects_tutor`.`tutor_id`=$user_id;";}
-    
+    else {$subject_name_sql = "SELECT * FROM `6969_subjects_tutor` INNER JOIN `6969_subjects` ON `6969_subjects_tutor`.`local_subject_id`=`6969_subjects`.`id` WHERE `6969_subjects_tutor`.`tutor_id`=$user_id AND `local_subject_id`=$subject_id;";}
 
     //Query the database to find the subject name
     $subject_name_result = $conn->query($subject_name_sql); //Query database
     if ($subject_name_result->num_rows > 0) { //If the number of rows are not zero
-      $subject_name_array = [];
-      $i = 0;
-      while($row = $subject_name_result->fetch_assoc()) {
-        $subject_array_tutor[$i][2] = $row['name'];
-        $i += 1;
-      }
+      $row = $subject_name_result->fetch_assoc();
+      $subject_array_tutor[$i][2] = $row['name'];
     }
   }
   
@@ -107,32 +106,28 @@ if ($subject_tutee_result->num_rows > 0) { //If the number of rows are not zero
 
     $i += 1;
   }
+
   $no_tutee_subjects = false;
 
   //Get the subject names as an array
   for($i=0;$i<sizeof($subject_array_tutee);$i++)
   {
-    //Change the query type depending if the subject is global or local
 
+    $subject_id = $subject_array_tutee[$i][0];
+    //Change the query type depending if the subject is global or local
     //Global
-    if($subject_array_tutee[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `subjects` ON `6969_subjects_tutee`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id;";}
+    if($subject_array_tutee[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `subjects` ON `6969_subjects_tutee`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id AND `global_subject_id`=$subject_id;";}
     
     //Local
-    else {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `6969_subjects` ON `6969_subjects_tutee`.`local_subject_id`=`6969_subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id;";}
-    
+    else {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `6969_subjects` ON `6969_subjects_tutee`.`local_subject_id`=`6969_subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id AND `local_subject_id`=$subject_id;";}
 
     //Query the database to find the subject name
     $subject_name_result = $conn->query($subject_name_sql); //Query database
     if ($subject_name_result->num_rows > 0) { //If the number of rows are not zero
-      $subject_name_array = [];
-      $i = 0;
-      while($row = $subject_name_result->fetch_assoc()) {
-        $subject_array_tutee[$i][2] = $row['name'];
-        $i += 1;
-      }
+      $row = $subject_name_result->fetch_assoc();
+      $subject_array_tutee[$i][2] = $row['name'];
     }
   }
-  
 }
 else
 {
@@ -143,7 +138,6 @@ else
 
 //Get the subjects of the school =========================================================================================================================================
 $all_available_subject_array = get_available_subjects($school_code);
-
 if(!$no_tutee_subjects)
 {
   //Check if the subject is currently selected by the user as a subject they wish to be tutored in

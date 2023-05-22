@@ -6,14 +6,17 @@ include("sys_page/functions.php");
 
 ?>
   <?php
-      $avaliable_session_tutor_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=3;";
-      $avaliable_tutor_times_data = get_tutor_session_select_data($avaliable_session_tutor_times_sql, $conn);
+      $available_session_tutor_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=3;";
+      $status = TRUE;
+      $available_tutor_times_data = get_session_select_data($available_session_tutor_times_sql, $conn, $status);
 
       
-      $avaliable_session_tutee_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=3;";
-      $avaliable_tutee_times_data = get_tutee_session_select_data($avaliable_session_tutee_times_sql, $conn);
+      $available_session_tutee_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=3;";
+      $status = FALSE;
+      $available_tutee_times_data = get_session_select_data($available_session_tutee_times_sql, $conn, $status);
       
       /*check for subject matches*/
+
 
         for($k=0; $k<sizeof($avaliable_tutee_times_data); $k++){
           for($l=0; $l<sizeof($avaliable_tutor_times_data); $l++){

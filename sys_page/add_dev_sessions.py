@@ -4,7 +4,7 @@ import random
 output = ""
 weekdays = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
 months = ["Mar","Apr","May","Jun","Jul","Aug"]
-days = [31,30,31,30,31,31]
+days = [31,30,30,30,31,31]
 
 day = 1
 weekday = 2

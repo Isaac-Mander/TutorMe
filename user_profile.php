@@ -11,6 +11,9 @@ include("sys_page/db_connect.php");
 //Import functions
 include("sys_page/functions.php");
 
+//Include the navbar
+include("sys_page/header.html");
+
 //Get info about user =====================================================================================================================================================
 $user_id = $_SESSION['user_id'];
 $school_code = $_SESSION['school_code'];

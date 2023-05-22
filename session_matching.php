@@ -6,31 +6,31 @@ include("sys_page/functions.php");
 
 ?>
   <?php
-      $avaliable_session_tutor_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=3;";
-      $avaliable_tutor_times_data = get_tutor_session_select_data($avaliable_session_tutor_times_sql, $conn);
+      $available_session_tutor_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=3;";
+      $available_tutor_times_data = get_tutor_session_select_data($available_session_tutor_times_sql, $conn);
 
       
-      $avaliable_session_tutee_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=3;";
-      $avaliable_tutee_times_data = get_tutee_session_select_data($avaliable_session_tutee_times_sql, $conn);
+      $available_session_tutee_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=3;";
+      $available_tutee_times_data = get_tutee_session_select_data($available_session_tutee_times_sql, $conn);
       
       /*check for subject matches*/
 
-        for($k=0; $k<sizeof($avaliable_tutee_times_data); $k++){
-          for($l=0; $l<sizeof($avaliable_tutor_times_data); $l++){
-            if ($avaliable_tutee_times_data[$k][6]== $avaliable_tutor_times_data[$l][6]); {
+        for($k=0; $k<sizeof($available_tutee_times_data); $k++){
+          for($l=0; $l<sizeof($available_tutor_times_data); $l++){
+            if ($available_tutee_times_data[$k][6]== $available_tutor_times_data[$l][6]); {
 
-              if($avaliable_tutee_times_data[$k][3] == $avaliable_tutor_times_data[$l][3]){
+              if($available_tutee_times_data[$k][3] == $available_tutor_times_data[$l][3]){
 
-                if ($avaliable_tutee_times_data[$k][1]>= $avaliable_tutor_times_data[$l][1]){
+                if ($available_tutee_times_data[$k][1]>= $available_tutor_times_data[$l][1]){
 
-                  if($avaliable_tutee_times_data[$k][2]<= $avaliable_tutor_times_data[$l][2]){
-                    
-                   $potential_starttime = $avaliable_tutee_times_data[$k][1];
-                   $potential_endtime = $avaliable_tutee_times_data[$k][2];
-                   $name = $avaliable_tutee_times_data[$k][4];
-                   $subject = $avaliable_tutee_times_data[$k][6];
+                  if($available_tutee_times_data[$k][2]<= $available_tutor_times_data[$l][2]){
+
+                   $potential_starttime = $available_tutee_times_data[$k][1];
+                   $potential_endtime = $available_tutee_times_data[$k][2];
+                   $name = $available_tutee_times_data[$k][4];
+                   $subject = $available_tutee_times_data[$k][6];
                    $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-                   $day_of_week = $days_of_week_array[$avaliable_tutor_times_data[$l][3]-1];
+                   $day_of_week = $days_of_week_array[$available_tutor_times_data[$l][3]-1];
                    ?>    <div class='card' style="width: 18rem;"><?php
                    echo $name."     ".$potential_starttime."       ".$potential_endtime."    ".$subject."     ".$day_of_week;
                    ?>     </div><?php

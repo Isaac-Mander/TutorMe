@@ -18,61 +18,71 @@ include("sys_page/functions.php");
     $time_day = $dt->format('d'); // output: '1' - '31'
     $time_month = $dt->format('m'); // output: '1' - '12'cc
     $time_year = $dt->format('Y'); // output: '2023'
-    $time_hour = $dt ->format('h');
-    $time_minute = $dt ->format('i');
+    $time_hour = $dt ->format('h');// output: '09'
+    $time_minute = $dt ->format('i');// out: ':46'
     $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
     $date =  $time_year . "-" . $time_month . "-" . $time_day;
 
-    $avaliable_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
-    $avaliable_session_times_data = get_avaliable_session_data($avaliable_session_times_sql, $conn);
-
+    $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
+    $available_session_times_data = get_available_session_data($available_session_times_sql, $conn);
+    //pulls all the potential times from the database, runs through function
     function grab_events($conn){
+    //function so that when the database is updated the calender's events can be as well
+
     //Get the sessions this user is tutoring today
     $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=3";  
     $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
+
     //Get the sessions this user is being tutored today
     $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=3";  
     $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
-    $avaliable_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
-    $avaliable_session_times_data = get_avaliable_session_data($avaliable_session_times_sql, $conn);
 
-    if (is_array($avaliable_session_times_data)) {
-      for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
-        $name = $avaliable_session_times_data[$i][0];
-        $potential_start_time = $avaliable_session_times_data[$i][1];
-        $potential_end_time = $avaliable_session_times_data[$i][2];
-        $week_day =  $avaliable_session_times_data[$i][3];
+    $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
+    $available_session_times_data = get_available_session_data($available_session_times_sql, $conn);
+    //pulls all the potential times from the database, runs through function
+
+    if (is_array($available_session_times_data)) {
+      for($i=0; $i<sizeof($available_session_times_data); $i++){
+        //looping through all of the lines of the array
+        $name = $available_session_times_data[$i][0]; //sets the name
+        $potential_start_time = $available_session_times_data[$i][1]; //sets the start time
+        $potential_end_time = $available_session_times_data[$i][2]; //sets the end time
+        $week_day =  $available_session_times_data[$i][3]; //sets the day of the week 1-7
+
         $tz = new DateTimeZone('NZ');
         $dt = new DateTime('now',$tz);
         $time_day = $dt->format('d'); // output: '1' - '31'
         $time_month = $dt->format('m'); // output: '1' - '12'cc
         $time_year = $dt->format('Y'); // output: '2023'
         $date =  $time_year . "-" . $time_month . "-" . $time_day;
-        $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-        $day_of_week = $days_of_week_array[$week_day-1];
 
-        $blob = date('N');
-        if ($blob == 7){
+        $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+        $day_of_week = $days_of_week_array[$week_day-1]; //converts integer value to word, as $weekday is 1-7 and array is 0-6, 1 is minused
+
+        $day_current_week = date('N');
+        if ($day_current_week == 7){
+          //checking if the day is Sunday, because the week on the calendar starts on Sunday, this if it is the events need to be for the next week
           $value_day_actual = Strtotime("Next week ".$day_of_week);
           $date_actual = date("Y-m-d",$value_day_actual);
           $potential_start_datetime = $date_actual."T".$potential_start_time;
           $potential_end_datetime = $date_actual."T".$potential_end_time;
-
+          //converting values for the upcomming week
         } else {
+          //if it is not Sunday
           $value_day_actual = Strtotime("This week ".$day_of_week);
           $date_actual = date("Y-m-d",$value_day_actual);
           $potential_start_datetime = $date_actual."T".$potential_start_time;
           $potential_end_datetime = $date_actual."T".$potential_end_time;
-
+          //converting values for the current values
         }
         $potential_events[]=[
           "title" => "potential session",
           "start" => $potential_start_datetime,
           "end"   => $potential_end_datetime,
           "color" => "purple"
-          
         ];
+        //putting all of the potential sessions into an array
         }
       }
     
@@ -84,21 +94,28 @@ include("sys_page/functions.php");
       $session_combined_data = array();};
     if (is_array($session_combined_data)) {
       for($i=0; $i<sizeof($session_combined_data); $i++){
-        $day = substr($session_combined_data[$i][1],0,10);
-        $starttime = substr($session_combined_data[$i][1],11,8);
-        $endtime = substr($session_combined_data[$i][2],11,8);
-        $tutee =  $session_combined_data[$i][4];
-        $tutor = $session_combined_data[$i][6];
-        $subject = $session_combined_data[$i][8];
+        //looping through all of the lines of the array
+        $day = substr($session_combined_data[$i][1],0,10); //setting the day value
+        $starttime = substr($session_combined_data[$i][1],11,8); //setting the start time
+        $endtime = substr($session_combined_data[$i][2],11,8); //setting the end time
+        $tutee =  $session_combined_data[$i][4]; //setting tutee name
+        $tutor = $session_combined_data[$i][6]; //setting tutor name
+        $subject = $session_combined_data[$i][8]; //setting subject name
         $events[] = [
           "title" => $tutor.' tutoring '.$tutee.' in '.$subject,
+          //setting a title
           "start" => $day . "T" . $starttime,
+          //setting the start time
           "end"   => $day."T".$endtime,
+          //setting the end time
       ];
+      //creating an array of all of the sessions that have been booked in
       }
       if (is_array($events) && is_array($potential_events)) {
+        //making sure that both arrays are arrays
         $all_events = array_merge($events, $potential_events);
         return $all_events;
+        //merging the arrays to be input into the calendar api
       }else {
         return '(」゜ロ゜)」';
       }
@@ -107,15 +124,16 @@ include("sys_page/functions.php");
       return '(」゜ロ゜)」';
     }
   };
-    $events = grab_events($conn);  ?>
-
+    $events = grab_events($conn);  
+    //calling the events function, and setting the events?>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src='fullcalendar-6.1.5\fullcalendar-6.1.5\dist\index.global.js'></script>
 <script>
-
+//loading in the calender
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    <?php $JsonEvents = json_encode($events);  ?>
+    <?php $JsonEvents = json_encode($events); //putting the array into a format the calendar can read ?>
     var calendar = new FullCalendar.Calendar(calendarEl, {
       height: 'auto',
       headerToolbar: {
@@ -123,20 +141,22 @@ include("sys_page/functions.php");
         center: 'title',
         right:''
       },
+      //setting the tool bar
       // customize the button names,
       // otherwise they'd all just say "list"
       views: {
         timeGridWeek: { buttonText: 'grid week' }
       },
-
+      //only having the initial view
       initialView: 'timeGridWeek',
       initialDate:  '<?php echo $date?>',
       navLinks: true, // can click day/week names to navigate views
       businessHours: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      events: <?php echo $JsonEvents ?>
+      events: <?php echo $JsonEvents ?> //uploading all of the events
     });
     calendar.render();
+    //rendering calendar
   });
 </script>
 <style>
@@ -156,7 +176,7 @@ include("sys_page/functions.php");
 </style>
   </head>
   <body>
-  <form action='calender_2.php' method='post'>
+  <form action='calendar_2.php' method='post'>
     <div class="container">
         <label for="start_time"><b>Start time</b></label>
         <input type="time" id="start_time" placeholder="Start time" name="start_time" required><br>
@@ -168,41 +188,44 @@ include("sys_page/functions.php");
         <label for="day_of_week">Day of the week (between 1 and 7) 1 = Monday, 7 = Sunday:</label>
         <input type="number" id="day_of_week" name="day_of_week" min="1" max="7">
         <input type="submit">
+        <!-- form for uploading new potential sessions to the database-->
     </div>
     </form> 
     <?php    
-    if (is_array($avaliable_session_times_data)) {
-      for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
+    if (is_array($available_session_times_data)) {
+      //if is array
+      for($i=0; $i<sizeof($available_session_times_data); $i++){
+        //running through all of the array
         $tz = new DateTimeZone('NZ');
         $dt = new DateTime('now',$tz);
         $time_day = $dt->format('d'); // output: '1' - '31'
         $time_month = $dt->format('m'); // output: '1' - '12'cc
         $time_year = $dt->format('Y'); // output: '2023'
         $day =  $time_year . "-" . $time_month . "-" . $time_day;
-        $name = $avaliable_session_times_data[$i][0];
-        $day_of_week = $avaliable_session_times_data[$i][3];
+        $name = $available_session_times_data[$i][0]; //setting name
+        $day_of_week = $available_session_times_data[$i][3]; //setting day of the week
 
-        $potential_start_time_session = $avaliable_session_times_data[$i][1];
-        $potential_end_time_session = $avaliable_session_times_data[$i][2]; 
-        $potential_starttime_rough = strtotime($day.$potential_start_time_session);
-        $potential_endtime_rough = strtotime($day.$potential_end_time_session);
-        if (date('N') == $day_of_week){
-          $potential_starttime = $potential_starttime_rough;
+        $potential_start_time_session = $available_session_times_data[$i][1]; //setting potential start time
+        $potential_end_time_session = $available_session_times_data[$i][2]; //setting potential end time
+        $potential_starttime_rough = strtotime($day.$potential_start_time_session); //getting a time value
+        $potential_endtime_rough = strtotime($day.$potential_end_time_session); //getting a time value
+        if (date('N') == $day_of_week){ //checking if the date is the same
+          $potential_starttime = $potential_starttime_rough; //if so the times need no change
           $potential_endtime = $potential_endtime_rough;
 
-        } elseif (date('N') > $day_of_week){
-          $time_diff = date('N') - $day_of_week;
-          $potential_starttime = $potential_starttime_rough - ($time_diff * 86400);
+        } elseif (date('N') > $day_of_week){ //if it is different 
+          $time_diff = date('N') - $day_of_week; //find the time difference
+          $potential_starttime = $potential_starttime_rough - ($time_diff * 86400);//accounts for the diffence
           $potential_endtime = $potential_endtime_rough - ($time_diff * 86400);
 
-        } elseif(date('N') < $day_of_week){
-          $time_diff = $day_of_week - date('N');
-          $potential_starttime = $potential_starttime_rough + ($time_diff * 86400);
+        } elseif(date('N') < $day_of_week){//if it is different
+          $time_diff = $day_of_week - date('N'); //finds the time difference 
+          $potential_starttime = $potential_starttime_rough + ($time_diff * 86400); //acounts for the difference
           $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
         }
         ?>    <div class='card' style="width: 18rem;"><?php
         echo ($name."<br>".date("l jS \of F Y h:i:s A", $potential_starttime) . "<br>");
-        echo date("l jS \of F Y h:i:s A", $potential_endtime);
+        echo date("l jS \of F Y h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
         ?>     </div><?php
       }
     }?>

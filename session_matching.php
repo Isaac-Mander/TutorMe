@@ -18,9 +18,13 @@ include("sys_page/functions.php");
         for($k=0; $k<sizeof($avaliable_tutee_times_data); $k++){
           for($l=0; $l<sizeof($avaliable_tutor_times_data); $l++){
             if ($avaliable_tutee_times_data[$k][6]== $avaliable_tutor_times_data[$l][6]); {
+
               if($avaliable_tutee_times_data[$k][3] == $avaliable_tutor_times_data[$l][3]){
+
                 if ($avaliable_tutee_times_data[$k][1]>= $avaliable_tutor_times_data[$l][1]){
+
                   if($avaliable_tutee_times_data[$k][2]<= $avaliable_tutor_times_data[$l][2]){
+                    
                    $potential_starttime = $avaliable_tutee_times_data[$k][1];
                    $potential_endtime = $avaliable_tutee_times_data[$k][2];
                    $name = $avaliable_tutee_times_data[$k][4];

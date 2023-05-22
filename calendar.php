@@ -20,12 +20,7 @@ include("sys_page/functions.php");
     $time_year = $dt->format('Y'); // output: '2023'
     $time_hour = $dt ->format('h');
     $time_minute = $dt ->format('i');
-    $day = '╰(⇀︿⇀)つ-]═───';
-    $starttime = '╰(⇀︿⇀)つ-]═───';
-    $endtime = '╰(⇀︿⇀)つ-]═───';
-    $tutee =  '╰(⇀︿⇀)つ-]═───';
-    $tutor = '╰(⇀︿⇀)つ-]═───';
-    $subject = '╰(⇀︿⇀)つ-]═───';
+
 
     $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
     $date =  $time_year . "-" . $time_month . "-" . $time_day;

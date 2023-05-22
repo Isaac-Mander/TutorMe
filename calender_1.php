@@ -22,8 +22,7 @@ include("sys_page/functions.php");
     $time_minute = $dt ->format('i');
     $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
     $date =  $time_year . "-" . $time_month . "-" . $time_day;
-    $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
-    $date =  $time_year . "-" . $time_month . "-" . $time_day;
+
     $avaliable_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
     $avaliable_session_times_data = get_avaliable_session_data($avaliable_session_times_sql, $conn);
 
@@ -41,23 +40,42 @@ include("sys_page/functions.php");
     if (is_array($avaliable_session_times_data)) {
       for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
         $name = $avaliable_session_times_data[$i][0];
-        $potential_starttime = $avaliable_session_times_data[$i][1];
-        $potential_endtime = $avaliable_session_times_data[$i][2];
-        $day = (int)substr($avaliable_session_times_data[$i][1],8,2);
-        $month = (int)substr($avaliable_session_times_data[$i][1],5,2);
-        $year = (int)substr($avaliable_session_times_data[$i][1],0,4);
-        $week_day =  idate('w', mktime(0,0,0,$month,$day,$year));
+        $potential_start_time = $avaliable_session_times_data[$i][1];
+        $potential_end_time = $avaliable_session_times_data[$i][2];
+        $week_day =  $avaliable_session_times_data[$i][3];
+        $tz = new DateTimeZone('NZ');
+        $dt = new DateTime('now',$tz);
+        $time_day = $dt->format('d'); // output: '1' - '31'
+        $time_month = $dt->format('m'); // output: '1' - '12'cc
+        $time_year = $dt->format('Y'); // output: '2023'
+        $date =  $time_year . "-" . $time_month . "-" . $time_day;
+        $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+        $day_of_week = $days_of_week_array[$week_day-1];
 
+        $blob = date('N');
+        if ($blob == 7){
+          $value_day_actual = Strtotime("Next week ".$day_of_week);
+          $date_actual = date("Y-m-d",$value_day_actual);
+          $potential_start_datetime = $date_actual."T".$potential_start_time;
+          $potential_end_datetime = $date_actual."T".$potential_end_time;
+
+        } else {
+          $value_day_actual = Strtotime("This week ".$day_of_week);
+          $date_actual = date("Y-m-d",$value_day_actual);
+          $potential_start_datetime = $date_actual."T".$potential_start_time;
+          $potential_end_datetime = $date_actual."T".$potential_end_time;
+
+        }
         $potential_events[]=[
           "title" => "potential session",
-          "start" => $potential_starttime,
-          "end"   => $potential_endtime,
-          "color" => "purple",
-          "daysOfWeek" => [$week_day]
+          "start" => $potential_start_datetime,
+          "end"   => $potential_end_datetime,
+          "color" => "purple"
           
         ];
+        }
       }
-    }
+    
     if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
       $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
     } else {
@@ -97,7 +115,7 @@ include("sys_page/functions.php");
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    <?php         grab_events($conn); $JsonEvents = json_encode($events);  ?>
+    <?php $JsonEvents = json_encode($events);  ?>
     var calendar = new FullCalendar.Calendar(calendarEl, {
       height: 'auto',
       headerToolbar: {
@@ -147,26 +165,47 @@ include("sys_page/functions.php");
         <label for="end_time"><b>Start time</b></label>
         <input type="time" id="end_time" placeholder="End time" name="end_time" required><br>
         
-        <label for="day_of_week">Day of the week (between 0 and 6) 0 = Sunday, 6 = Saturday:</label>
-        <input type="number" id="day_of_week" name="day_of_week" min="0" max="6">
+        <label for="day_of_week">Day of the week (between 1 and 7) 1 = Monday, 7 = Sunday:</label>
+        <input type="number" id="day_of_week" name="day_of_week" min="1" max="7">
         <input type="submit">
     </div>
     </form> 
     <?php    
     if (is_array($avaliable_session_times_data)) {
       for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
+        $tz = new DateTimeZone('NZ');
+        $dt = new DateTime('now',$tz);
+        $time_day = $dt->format('d'); // output: '1' - '31'
+        $time_month = $dt->format('m'); // output: '1' - '12'cc
+        $time_year = $dt->format('Y'); // output: '2023'
+        $day =  $time_year . "-" . $time_month . "-" . $time_day;
         $name = $avaliable_session_times_data[$i][0];
-        $potential_starttime_year = date();
-        $potential_starttime_month = date():
+        $day_of_week = $avaliable_session_times_data[$i][3];
 
-        $potential_endtime = $avaliable_session_times_data[$i][2];
+        $potential_start_time_session = $avaliable_session_times_data[$i][1];
+        $potential_end_time_session = $avaliable_session_times_data[$i][2]; 
+        $potential_starttime_rough = strtotime($day.$potential_start_time_session);
+        $potential_endtime_rough = strtotime($day.$potential_end_time_session);
+        if (date('N') == $day_of_week){
+          $potential_starttime = $potential_starttime_rough;
+          $potential_endtime = $potential_endtime_rough;
+
+        } elseif (date('N') > $day_of_week){
+          $time_diff = date('N') - $day_of_week;
+          $potential_starttime = $potential_starttime_rough - ($time_diff * 86400);
+          $potential_endtime = $potential_endtime_rough - ($time_diff * 86400);
+
+        } elseif(date('N') < $day_of_week){
+          $time_diff = $day_of_week - date('N');
+          $potential_starttime = $potential_starttime_rough + ($time_diff * 86400);
+          $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
+        }
         ?>    <div class='card' style="width: 18rem;"><?php
-        echo $name."     ".$potential_starttime."       ".$potential_endtime;
+        echo ($name."<br>".date("l jS \of F Y h:i:s A", $potential_starttime) . "<br>");
+        echo date("l jS \of F Y h:i:s A", $potential_endtime);
         ?>     </div><?php
       }
     }?>
-    <?php
-    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <div id='calendar'></div>
   </body>

@@ -65,7 +65,7 @@ function get_avaliable_session_data($sql,$conn)
             $tutor_session_data[$session_index][0] = $row['name']; //Tutor Session Id
             $tutor_session_data[$session_index][1] = $row['session_start']; //Session start time
             $tutor_session_data[$session_index][2] = $row['session_end']; //Session end time
-            
+            $tutor_session_data[$session_index][3] = $row['day_of_week'];
             //Increment the session index the data is stored under
             $session_index += 1;
         }

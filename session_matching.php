@@ -7,11 +7,13 @@ include("sys_page/functions.php");
 ?>
   <?php
       $available_session_tutor_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=3;";
-      $available_tutor_times_data = get_tutor_session_select_data($available_session_tutor_times_sql, $conn);
+      $status = TRUE;
+      $available_tutor_times_data = get_session_select_data($available_session_tutor_times_sql, $conn, $status);
 
       
       $available_session_tutee_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=3;";
-      $available_tutee_times_data = get_tutee_session_select_data($available_session_tutee_times_sql, $conn);
+      $status = FALSE;
+      $available_tutee_times_data = get_session_select_data($available_session_tutee_times_sql, $conn, $status);
       
       /*check for subject matches*/
 

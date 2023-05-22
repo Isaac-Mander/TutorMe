@@ -76,87 +76,6 @@ function get_available_session_data($sql,$conn)
         return 1; //if there is no data then it returns a 1
     }
 }
-function get_tutee_session_select_data($sql,$conn)
-{   //(0)id, (1)potential session start times, (2)potential session end time, (3)name of the person, (4)subject_id, (5) Subject name.
-    //Query the database to get all the sessions THE USER IS TUTORING TODAY =============================================================================================================================
-    $result = $conn->query($sql); //Query database
-    if ($result->num_rows > 0) { //If the number of rows are not zero
-        $no_sessions = false; //Tell other elements to expect session data
-        $session_select_data = []; //Output data of each row into an array of session ids
-        $session_index = 0;
-        while($row = $result->fetch_assoc()) {
-            
-            $session_select_data[$session_index][0] = $row['student_id']; //Tutor student Id
-            $id = $row['student_id']; //sets id as the student_id value
-            $session_select_data[$session_index][1] = $row['session_start'];//Session start time
-            $session_select_data[$session_index][2] = $row['session_end'];//Session end time
-            $session_select_data[$session_index][3] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
-            $session_select_data[$session_index][4] = $row['name'];//Gets the person's name
-            $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutee WHERE tutee_id=$id";
-            $result_subject = $conn->query($sql_subject);
-            $data = $result_subject->fetch_assoc();
-            //querys the database to obtain the global_subject_id and local_subject_id from the tutee table
-
-            //Each tutor session can only have a single subject. This program will filter out any id that is zero
-            if($data['global_subject_id'] == 0) $session_select_data[$session_index][5] = $data['local_subject_id']; //Session subject
-            else $session_select_data[$session_index][5] = $data['global_subject_id']; //Session subject id
-            //Query the subject list to get the subjects's name
-            $subject_id = $session_select_data[$session_index][5];
-            $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
-            $result_subject = $conn->query($sql_subject_name);
-            $data2 = $result_subject->fetch_assoc();
-            $session_select_data[$session_index][6] = $data2['name'];//Subject english name
-            //Increment the session index the data is stored under
-            $session_index += 1;
-        }
-        return $session_select_data;//Returns the data
-    } 
-    else 
-    {
-        return 1;//if there is no data then it returns a 1
-    }
-}
-function get_tutor_session_select_data($sql,$conn)
-{   //(0)id, (1)potential session start times, (2)potential session end time, (3)name of the person, (4)subject_id, (5) Subject name.
-    //Query the database to get all the sessions THE USER IS TUTORING TODAY =============================================================================================================================
-    $result = $conn->query($sql); //Query database
-    if ($result->num_rows > 0) { //If the number of rows are not zero
-        $no_sessions = false; //Tell other elements to expect session data
-        $session_select_data = []; //Output data of each row into an array of session ids
-        $session_index = 0;
-        while($row = $result->fetch_assoc()) {
-            
-            $session_select_data[$session_index][0] = $row['student_id']; //Tutor Session Id
-            $id = $row['student_id'];
-            $session_select_data[$session_index][1] = $row['session_start'];//Session start time
-            $session_select_data[$session_index][2] = $row['session_end'];//Session end time
-            $session_select_data[$session_index][3] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
-            $session_select_data[$session_index][4] = $row['name'];//Gets the person's name
-
-            $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutor WHERE tutor_id=$id";
-            $result_start_time = $conn->query($sql_subject);
-            $data = $result_start_time->fetch_assoc();
-            //querys the database to obtain the global_subject_id and local_subject_id from the tutor table
-
-            //Each tutor session can only have a single subject. This program will filter out any id that is zero
-            if($data['global_subject_id'] == 0) $session_select_data[$session_index][5] = $data['local_subject_id']; //Session subject
-            else $session_select_data[$session_index][5] = $data['global_subject_id']; //Session subject id
-            //Query the subject list to get the subjects's name
-            $subject_id = $session_select_data[$session_index][5];
-            $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
-            $result_subject = $conn->query($sql_subject_name);
-            $data2 = $result_subject->fetch_assoc();
-            $session_select_data[$session_index][6] = $data2['name'];//Subject english name
-            //Increment the session index the data is stored under
-            $session_index += 1;
-        }
-        return $session_select_data;//Returns the data
-    } 
-    else 
-    {
-        return 1;//if there is no data then it returns a 1
-    }
-}
 //This function gets the subjects available to a specific user =========================================================================================================================================
 function get_available_subjects($school_code)
 {
@@ -194,5 +113,53 @@ function get_available_subjects($school_code)
     //Return the available subjects as an array
     return $all_available_subject_array;
     
+}
+function get_session_select_data($sql,$conn,$status)
+{   //(0)id, (1)potential session start times, (2)potential session end time, (3)name of the person, (4)subject_id, (5) Subject name.
+    //Query the database to get all the sessions THE USER IS TUTORING TODAY =============================================================================================================================
+    $result = $conn->query($sql); //Query database
+    if ($result->num_rows > 0) { //If the number of rows are not zero
+        $no_sessions = false; //Tell other elements to expect session data
+        $session_select_data = []; //Output data of each row into an array of session ids
+        $session_index = 0;
+        while($row = $result->fetch_assoc()) {
+            
+            $session_select_data[$session_index][0] = $row['student_id']; //Tutor Session Id
+            $id = $row['student_id'];
+            $session_select_data[$session_index][1] = $row['session_start'];//Session start time
+            $session_select_data[$session_index][2] = $row['session_end'];//Session end time
+            $session_select_data[$session_index][3] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
+            $session_select_data[$session_index][4] = $row['name'];//Gets the person's name
+
+            if ($status == TRUE) {
+                $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutor WHERE tutor_id=$id";
+                $result_subject = $conn->query($sql_subject);
+                $data = $result_subject->fetch_assoc();
+                //querys the database to obtain the global_subject_id and local_subject_id from the tutor table
+            }else{
+                $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutee WHERE tutee_id=$id";
+                $result_subject = $conn->query($sql_subject);
+                $data = $result_subject->fetch_assoc();
+                //querys the database to obtain the global_subject_id and local_subject_id from the tutee table
+            }
+
+            //Each tutor session can only have a single subject. This program will filter out any id that is zero
+            if($data['global_subject_id'] == 0) $session_select_data[$session_index][5] = $data['local_subject_id']; //Session subject
+            else $session_select_data[$session_index][5] = $data['global_subject_id']; //Session subject id
+            //Query the subject list to get the subjects's name
+            $subject_id = $session_select_data[$session_index][5];
+            $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
+            $result_subject = $conn->query($sql_subject_name);
+            $data2 = $result_subject->fetch_assoc();
+            $session_select_data[$session_index][6] = $data2['name'];//Subject english name
+            //Increment the session index the data is stored under
+            $session_index += 1;
+        }
+        return $session_select_data;//Returns the data
+    } 
+    else 
+    {
+        return 1;//if there is no data then it returns a 1
+    }
 }
 ?>

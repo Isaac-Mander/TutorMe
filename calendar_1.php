@@ -182,7 +182,7 @@ include("sys_page/functions.php");
         <input type="time" id="start_time" placeholder="Start time" name="start_time" required><br>
 
 
-        <label for="end_time"><b>Start time</b></label>
+        <label for="end_time"><b>End time</b></label>
         <input type="time" id="end_time" placeholder="End time" name="end_time" required><br>
         
         <label for="day_of_week">Day of the week (between 1 and 7) 1 = Monday, 7 = Sunday:</label>

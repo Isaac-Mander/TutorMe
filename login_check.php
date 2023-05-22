@@ -31,7 +31,7 @@ if ($result->num_rows > 0) { //If the number of rows are not zero
     }
     else
     {
-        echo "password is wrong lel";
+        echo "password is wrong";
     }
 }
 else //If user does not exist give error msg

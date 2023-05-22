@@ -2,19 +2,16 @@
 //Import functions
 include("sys_page/functions.php");
 
-
+$_SESSION['school_code'] = 9696; //REMOVE THIS LINE THIS IS A DEBUG LINE REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME 
+// REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME 
+// REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME 
 //CHECK IF USER IS LOGGED IN
 session_start();
 if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in redirect to login page
 {
-    header("Location: login_form.html"); //Send to the shadow realm (login screen)
+    header("Location: login_form.php"); //Send to the shadow realm (login screen)
 }
 ?>
-    
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,17 +31,20 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 
     //Get the user info from the session cookie
     $user_id = $_SESSION['user_id'];
+    $school_code = $_SESSION['school_code'];
 
     //Session error code array
     $session_error_codes = [0,0];
 
     //Get the sessions this user is tutoring today
-    $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE date(6969_tutor_session.session_start) = CURRENT_DATE() AND 6969_students.id=$user_id";  
+    $session_today_tutor_sql = "SELECT * FROM $school_code" . "_students INNER JOIN $school_code" . "_tutor_session ON $school_code" . "_tutor_session.tutor_id=$school_code" . "_students.id
+     WHERE date($school_code" . "_tutor_session.session_start) = CURRENT_DATE() AND $school_code" . "_students.id=$user_id";  
     $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
     if($session_today_tutor_data == 1) {$session_error_codes[0] = 1;} //If error code = 1 set error code array to true
 
     //Get the sessions this user is tutoring today
-    $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE date(6969_tutor_session.session_start) = CURRENT_DATE() AND 6969_students.id=$user_id";  
+    $session_today_tutee_sql = "SELECT * FROM $school_code" . "_students INNER JOIN $school_code" . "_tutor_session ON $school_code" . "_tutor_session.tutee_id=$school_code" . "_students.id
+     WHERE date($school_code" . "_tutor_session.session_start) = CURRENT_DATE() AND $school_code" . "_students.id=$user_id";  
     $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
     if($session_today_tutee_data == 1) {$session_error_codes[1] = 1;} //If error code = 1 set error code array to true
 
@@ -118,9 +118,6 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
                         //Combine everything back into one string
                         $time_12h_end = (string)$time_24h_hours_end . ":" .  substr($time_raw_end,14,2) . $time_ending_end;
 
-
-
-
                         //Check if the user is tutoring or being tutored
                         $is_tutor = false;
                         if($session_combined_data[$i][5] == $user_id) $is_tutor = true;
@@ -142,7 +139,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
                 </p>
             </div>
             <?php } 
-        }
+            }
         else //IF THERE ARE NO SESSIONS TODAY
         {
             echo '<div class="no_sessions_today text-center">';
@@ -169,9 +166,9 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
             $day_data = $day_result->fetch_assoc();
             
             //Get the sessions over the next few days
-            $tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE date(6969_tutor_session.session_start) = DATE_ADD(CURRENT_DATE(), INTERVAL $data_increment DAY) AND 6969_students.id=$user_id;";
+            $tutor_sql = "SELECT * FROM $school_code" . "_students INNER JOIN $school_code" . "_tutor_session ON $school_code" . "_tutor_session.tutor_id=$school_code" . "_students.id WHERE date($school_code" . "_tutor_session.session_start) = DATE_ADD(CURRENT_DATE(), INTERVAL $data_increment DAY) AND $school_code" . "_students.id=$user_id;";
             $tutor_data = get_session_data($tutor_sql,$conn);
-            $tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE date(6969_tutor_session.session_start) = DATE_ADD(CURRENT_DATE(), INTERVAL $data_increment DAY) AND 6969_students.id=$user_id;";
+            $tutee_sql = "SELECT * FROM $school_code" . "_students INNER JOIN $school_code" . "_tutor_session ON $school_code" . "_tutor_session.tutee_id=$school_code" . "_students.id WHERE date($school_code" . "_tutor_session.session_start) = DATE_ADD(CURRENT_DATE(), INTERVAL $data_increment DAY) AND $school_code" . "_students.id=$user_id;";
             $tutee_data = get_session_data($tutee_sql,$conn);
 
 

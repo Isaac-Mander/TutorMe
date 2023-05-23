@@ -73,7 +73,7 @@ function get_available_session_data($sql,$conn)
     } 
     else 
     {
-        return 1; //if there is no data then it returns a 1
+        return 1;
     }
 }
 //This function gets the subjects available to a specific user =========================================================================================================================================

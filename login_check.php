@@ -31,12 +31,14 @@ if ($result->num_rows > 0) { //If the number of rows are not zero
     }
     else
     {
-        echo "password is wrong";
+        echo "Username or password is incorrect";
+        header("Location: login_form.php?error=Inccorect login details");
     }
 }
 else //If user does not exist give error msg
 {
     echo "Username or password is incorrect";
+    header("Location: login_form.php?error=Inccorect login details");
 }
 
 }

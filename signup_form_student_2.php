@@ -86,6 +86,7 @@ if($page == 2)
     //Write to session tokens
     $_SESSION['username'] = $_POST['username'];
     $_SESSION['school_code'] = $school_code;
+    $_SESSION['name'] = $_POST['name'];
     
 
 
@@ -93,10 +94,11 @@ if($page == 2)
     $email = $_SESSION['email'];
     $hashed_password = $_SESSION['hashed_password'];
     $username = $_SESSION['username'];
+    $name = $_SESSION['name'];
 
     //Set up sql query
     $table = $school_code . "_students";
-    $sql = "INSERT INTO `$table` (`email`, `hashed_password` ,`username`) VALUES ('$email', '$hashed_password', '$username');";
+    $sql = "INSERT INTO `$table` (`email`, `hashed_password` ,`username`, `name`) VALUES ('$email', '$hashed_password', '$username', '$name');";
 
     //If insertion was successful redirect to login page
     if ($conn->query($sql) === TRUE) {
@@ -152,8 +154,10 @@ if($error) $page += -1; //Stop progression if error with user input
         <option value="1">DESOEAT</option>
         <option value="2">School 2</option>
       </select><br><br>
-      <label for="username">What do you want other people to call you? (Display Name)</label><br>
+      <label for="username">Pick a username (You will be using this to login so please do not use any spaces)</label><br>
       <input type="text" name="username"><br><br>
+      <label for="name">What do you want other people to call you? (Display Name)</label><br>
+      <input type="text" name="name"><br><br>
       ';
     }
     ?>

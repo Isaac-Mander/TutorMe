@@ -195,8 +195,16 @@ if(document.getElementById("profile_edit_button"))
             
         }
         //End of section ===========================================================================================================================================
-        
-        
      };
      
+}
+
+//If the navbar is present
+if(document.getElementById("notification_bell"))
+{
+    notif_button = document.getElementById("notification_bell");
+    notif_button.onclick = function()
+    {
+        
+    }
 }

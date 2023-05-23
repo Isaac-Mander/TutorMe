@@ -191,7 +191,8 @@ include("sys_page/functions.php");
         <!-- form for uploading new potential sessions to the database-->
     </div>
     </form> 
-    <?php    
+    <?php
+    $card_id_increment = 0;
     if (is_array($available_session_times_data)) {
       //if is array
       for($i=0; $i<sizeof($available_session_times_data); $i++){
@@ -223,11 +224,12 @@ include("sys_page/functions.php");
           $potential_starttime = $potential_starttime_rough + ($time_diff * 86400); //acounts for the difference
           $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
         }
-        ?>    <div class='card' style="width: 18rem;"><?php
+        $card_id = "card_" . $card_id_increment;
+        $card_id_increment += 1;
+        ?>    <div id=<?php echo $card_id; ?> class='card' style="width: 18rem;"><?php
         echo ($name."<br>".date("l jS \of F Y h:i:s A", $potential_starttime) . "<br>");
         echo date("l jS \of F Y h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
-        ?>     </div><?php
-      }
+        ?>     </div><?php      }
     }?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <div id='calendar'></div>

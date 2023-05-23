@@ -6,7 +6,7 @@ include("sys_page/functions.php");
 
 $end_time =  $_POST["end_time"];
 $start_time = $_POST["start_time"];
-$day_of_week = $_POST['day_of_week']
+$day_of_week = $_POST['day_of_week'];
 $student_id = "3";
 $query = "INSERT INTO 6969_student_times (student_id, session_start, session_end, day_of_week)
 VALUES ('$student_id', '$start_time', '$end_time','$day_of_week')";

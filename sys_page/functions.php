@@ -92,6 +92,7 @@ function get_tutee_session_select_data($sql,$conn)
             $session_select_data[$session_index][2] = $row['session_end'];
             $session_select_data[$session_index][3] = $row['day_of_week'];
             $session_select_data[$session_index][4] = $row['name'];
+            
             $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutee WHERE tutee_id=$id";
             $result_subject = $conn->query($sql_subject);
             $data = $result_subject->fetch_assoc();

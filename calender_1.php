@@ -70,8 +70,7 @@ include("sys_page/functions.php");
           "title" => "potential session",
           "start" => $potential_start_datetime,
           "end"   => $potential_end_datetime,
-          "color" => "purple"
-          
+          "color" => "yellow"
         ];
         }
       }
@@ -170,7 +169,8 @@ include("sys_page/functions.php");
         <input type="submit">
     </div>
     </form> 
-    <?php    
+    <?php
+    $card_id_increment = 0;
     if (is_array($avaliable_session_times_data)) {
       for($i=0; $i<sizeof($avaliable_session_times_data); $i++){
         $tz = new DateTimeZone('NZ');
@@ -200,10 +200,12 @@ include("sys_page/functions.php");
           $potential_starttime = $potential_starttime_rough + ($time_diff * 86400);
           $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
         }
-        ?>    <div class='card' style="width: 18rem;"><?php
+        $card_id = "card_" . $card_id_increment;
+        $card_id_increment += 1;
+        ?>    <div id=<?php echo $card_id; ?> class='card' style="width: 18rem;"><?php
         echo ($name."<br>".date("l jS \of F Y h:i:s A", $potential_starttime) . "<br>");
         echo date("l jS \of F Y h:i:s A", $potential_endtime);
-        ?>     </div><?php
+        ?>    </div><?php
       }
     }?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>

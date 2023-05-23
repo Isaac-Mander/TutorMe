@@ -1,3 +1,11 @@
+<?php
+//Check if an error msg has appeared
+$error_msg = "";
+if(isset($_GET['error']))
+{
+    $error_msg = $_GET['error'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +22,8 @@
     include("sys_page/header.html");
     ?>
     <h1>Student Login</h1>
+    <p class="error_msg"><?php echo $error_msg; ?></p>
     <form action="login_check.php" method="post">
-    <p>Dexter Dark's login: dexter203 password</p>
     <div class="container">
         <label for="username"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" name="username" required><br>

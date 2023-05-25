@@ -18,8 +18,9 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 else {echo "<p><a href='logout.php'>Logout</a></p>";} //If logged in show logout button
 ?>
     <p><a href="../user_home.php">Student Home</a></p>
+    <p><a href="../calendar_1.php">Set your free slots</a></p>
     <p><a href="../user_profile.php">Profile</a></p>
-    <p><a href="../#">Tutor Others</a></p>
+    <p><a href="../session_matching.php">Tutor Others</a></p>
     <p><a href="../tutorial.php">Tutorials</a></p>
     <p><a href="../past_sessions.php">Past Sessions</a></p>
     <p><a href="../#">EEEEEEEE</a></p>

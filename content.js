@@ -199,12 +199,45 @@ if(document.getElementById("profile_edit_button"))
      
 }
 
+//Calendar page
+if(document.getElementById("calendar"))
+{
+    //Find any cards marked with a number id
+    //THIS IS A VERY BAD SOLUTION SO PLEASE REPLACE THIS LATER
+    calendar_id_array = [];
+    for(var i = 0; i < 1000; i++)
+    {
+        if(document.getElementById(i)) calendar_id_array.push(i);
+    }
+    
+}
 //If the navbar is present
 if(document.getElementById("notification_bell"))
 {
     notif_button = document.getElementById("notification_bell");
-    notif_button.onclick = function()
-    {
-        
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = notif_button;
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
 }

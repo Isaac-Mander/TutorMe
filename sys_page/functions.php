@@ -66,6 +66,7 @@ function get_available_session_data($sql,$conn)
             $tutor_session_data[$session_index][1] = $row['session_start']; //Session start time
             $tutor_session_data[$session_index][2] = $row['session_end']; //Session end time
             $tutor_session_data[$session_index][3] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
+            $tutor_session_data[$session_index][4] = $row['id']; //Id in table
             //Increment the session index the data is stored under
             $session_index += 1;
         }
@@ -130,6 +131,7 @@ function get_session_select_data($sql,$conn,$status)
             $session_select_data[$session_index][2] = $row['session_end'];//Session end time
             $session_select_data[$session_index][3] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
             $session_select_data[$session_index][4] = $row['name'];//Gets the person's name
+            $session_select_data[$session_index][7] = $row['id']; //Gets the id in the table
 
             if ($status == TRUE) {
                 $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutor WHERE tutor_id=$id";

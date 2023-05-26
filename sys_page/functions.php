@@ -126,7 +126,7 @@ function get_session_select_data($sql,$conn,$status)
         while($row = $result->fetch_assoc()) {
             
             $session_select_data[$session_index][0] = $row['student_id']; //Tutor Session Id
-            $id = $row['student_id'];
+            $student_id = $row['student_id'];
             $session_select_data[$session_index][1] = $row['session_start'];//Session start time
             $session_select_data[$session_index][2] = $row['session_end'];//Session end time
             $session_select_data[$session_index][3] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
@@ -134,12 +134,12 @@ function get_session_select_data($sql,$conn,$status)
             $session_select_data[$session_index][7] = $row['id']; //Gets the id in the table
 
             if ($status == TRUE) {
-                $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutor WHERE tutor_id=$id";
+                $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutor WHERE tutor_id=$student_id";
                 $result_subject = $conn->query($sql_subject);
                 $data = $result_subject->fetch_assoc();
                 //querys the database to obtain the global_subject_id and local_subject_id from the tutor table
             }else{
-                $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutee WHERE tutee_id=$id";
+                $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutee WHERE tutee_id=$student_id";
                 $result_subject = $conn->query($sql_subject);
                 $data = $result_subject->fetch_assoc();
                 //querys the database to obtain the global_subject_id and local_subject_id from the tutee table

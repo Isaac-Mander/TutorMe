@@ -6,17 +6,16 @@ include("sys_page/functions.php");
 
 ?>
   <?php
-      $available_session_tutor_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=3;";
+      $available_session_tutor_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=3;";
       $status = TRUE;
       $available_tutor_times_data = get_session_select_data($available_session_tutor_times_sql, $conn, $status);
 
       
-      $available_session_tutee_times_sql = "SELECT * FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=3;";
+      $available_session_tutee_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=3;";
       $status = FALSE;
       $available_tutee_times_data = get_session_select_data($available_session_tutee_times_sql, $conn, $status);
       
       /*check for subject matches*/
-
 
         for($k=0; $k<sizeof($available_tutee_times_data); $k++){
           for($l=0; $l<sizeof($available_tutor_times_data); $l++){
@@ -40,8 +39,14 @@ include("sys_page/functions.php");
                     $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
                     $day_of_week = $days_of_week_array[$available_tutor_times_data[$l][3]-1];
                     $card_id = $available_tutee_times_data[$k][7];?>
-
-                    <div id = '<?php echo $card_id; ?>' class='card' style="width: 18rem;"> <?php echo $name."     ".$potential_starttime."       ".$potential_endtime."    ".$subject."     ".$day_of_week; ?></div></a><?php
+                    <div id = '<?php echo $card_id; ?>' class='card' style="width: 18rem;"> 
+                    <?php 
+                    echo "<p id='name'>" . $name . "</p>";
+                    echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";
+                    echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";
+                    echo "<p id='subject'>" . $subject . "</p>";
+                    echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?>
+                    </div></a><?php
                  }
                }
               }
@@ -55,9 +60,25 @@ include("sys_page/functions.php");
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Session Matching</title>
+    <link rel="stylesheet" href="sys_page/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
+
+    <div id="session_accept_popup" class="modal_session_match">
+      <div class="modal-content_session_match">
+        <p id="popup_name">Name</p>
+        <p id="popup_subject_name">Subject Name</p>
+        <p id="popup_day">Day of week</p>
+        <p id="popup_session_length">Session length (hours)</p><input type="text">
+        <button>Accept</button>
+        <button id="session_match_close">Close</button>
+        <span class="close_session_match">&times;</span>
+      </div>
+    </div>
+
+    <div id="session_matching"></div>
+    <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   </body>
 </html>

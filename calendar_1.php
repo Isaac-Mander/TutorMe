@@ -80,7 +80,7 @@ include("sys_page/functions.php");
           "title" => "potential session",
           "start" => $potential_start_datetime,
           "end"   => $potential_end_datetime,
-          "color" => "purple"
+          "color" => "yellow"
         ];
         //putting all of the potential sessions into an array
         }
@@ -223,9 +223,9 @@ include("sys_page/functions.php");
           $potential_starttime = $potential_starttime_rough + ($time_diff * 86400); //acounts for the difference
           $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
         }
-        ?>    <div class='card' style="width: 18rem;"><?php
-        echo ($name."<br>".date("l jS \of F Y h:i:s A", $potential_starttime) . "<br>");
-        echo date("l jS \of F Y h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
+        ?>    <div class='card' style="width: 24 rem;">
+       <p class="card-text" <?php echo ($name."<br>".date("l jS \of F Y h:i:s A", $potential_starttime) . "<br>"); ?> </p>
+       <p class="card-text" <?php  echo date("l jS \of F Y h:i:s A", $potential_endtime); ?> </p> <?php //prints out the cards of the time sessions.
         ?>     </div><?php
       }
     }?>

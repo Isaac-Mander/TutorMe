@@ -195,8 +195,86 @@ if(document.getElementById("profile_edit_button"))
             
         }
         //End of section ===========================================================================================================================================
-        
-        
      };
      
+}
+
+//Calendar page
+if(document.getElementById("calendar"))
+{
+        
+}
+
+
+//If the navbar is present ==================================================================================================================================================
+if(document.getElementById("notification_bell"))
+{
+    notif_button = document.getElementById("notification_bell");
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = notif_button;
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+}
+
+//If the session matching page is present
+if(document.getElementById("session_matching"))
+{
+    // Get the modal
+    var modal_session_match = document.getElementById("session_accept_popup");
+
+    // Get the button that opens the modal
+
+    // Get the <span> element that closes the modal
+    var span_session = document.getElementsByClassName("close_session_match")[0];
+
+    var session_match_close_button = document.getElementById("session_match_close");
+
+    // When the user clicks on <span> (x), close the modal
+    span_session.onclick = function() {
+        modal_session_match.style.display = "none";
+    }
+
+    session_match_close_button.onclick = function() {
+        modal_session_match.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal_session_match) {
+            modal_session_match.style.display = "none";
+        }
+    }
+    //Get the cards on the page
+    pot_sesssion_cards = [];
+    for(var i = 0; i < 1000; i++){
+        if(document.getElementById(i))
+        {
+            pot_sesssion_cards.push(document.getElementById(i));
+            document.getElementById(i).onclick = function() {
+                modal_session_match.style.display = "block";
+                
+            }
+        }
+    }
 }

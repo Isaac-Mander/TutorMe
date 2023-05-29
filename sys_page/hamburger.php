@@ -29,7 +29,8 @@ else {echo "<p><a href='logout.php'>Logout</a></p>";}?></li>
 <li class="list-group-item"><a href="../sys_page/hamburger.php">Menu</a> </li>
 <li class="list-group-item"><a href="../user_home.php">Student Home</a> </li>
 <li class="list-group-item"><a href="../user_profile.php">Profile</a> </li>
-<li class="list-group-item"><a href="../#">Tutor Others</a> </li>
+<li class="list-group-item"><a href="../session_matching.php">Tutor Others</a> </li>
+<li class="list-group-item"><a href="../calendar_1.php">Set your free slots</a> </li>
 <li class="list-group-item"><a href="../tutorial.php">Tutorials</a> </li>
 <li class="list-group-item"><a href="../past_sessions.php">Past Sessions</a> </li>
 <li class="list-group-item"><a href="../#">EEEEEEEE</a> </li>

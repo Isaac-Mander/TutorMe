@@ -1,3 +1,11 @@
+<?php
+//Check if an error msg has appeared
+$error_msg = "";
+if(isset($_GET['error']))
+{
+    $error_msg = $_GET['error'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +22,21 @@
     //Add the header
     include("sys_page/header.html");
     ?>
+    <h1>Student Login</h1>
+    <p class="error_msg"><?php echo $error_msg; ?></p>
+    <form action="login_check.php" method="post">
+    <div class="container">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" required><br>
+
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required><br>
+
+        <button type="submit">Login</button>
+        <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
+    </div>
 
 <div id="login">
         <h3 class="text-center text pt-5">Dexter Dark's login: dexter203 password</h3>

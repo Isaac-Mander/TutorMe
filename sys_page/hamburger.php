@@ -33,7 +33,6 @@ else {echo "<p><a href='logout.php'>Logout</a></p>";}?></li>
 <li class="list-group-item"><a href="../calendar_1.php">Set your free slots</a> </li>
 <li class="list-group-item"><a href="../tutorial.php">Tutorials</a> </li>
 <li class="list-group-item"><a href="../past_sessions.php">Past Sessions</a> </li>
-<li class="list-group-item"><a href="../#">EEEEEEEE</a> </li>
 <li class="list-group-item"><a href="../admin_view.php">Admin Dashboard</a> </li>
 </ul>
     <h2><p><object data="testing" type=""></object></p></h2>

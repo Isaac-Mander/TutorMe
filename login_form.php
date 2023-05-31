@@ -15,34 +15,44 @@ if(isset($_GET['error']))
     <title>Login</title>
     <link rel="stylesheet" href="sys_page/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> 
+
 </head>
 <body>
     <?php
     //Add the header
     include("sys_page/header.html");
     ?>
-    <h1>Student Login</h1>
     <p class="error_msg"><?php echo $error_msg; ?></p>
-    <form action="login_check.php" method="post">
-    <div class="container">
-        <label for="username"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username" required><br>
-
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required><br>
-
-        <button type="submit">Login</button>
-        <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-        </label>
+<div id="login">
+        <h3 class="text-center text pt-5">Dexter Dark's login: dexter203 password</h3>
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="login_check.php" method="post">
+                            <h3 class="text-center text">Student Login</h3>
+                            <div class="form-group">
+                                <label for="username" class="text">Username:</label><br>
+                                <input type="text" placeholder="Enter Username" name="username" id="username" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="text">Password:</label><br>
+                                <input type="text"  placeholder="Enter Password" name="password" id="password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="remember" class="text"><span>Remember me</span> <span><input id="remember-me" checked="checked" name="remember" type="checkbox"></span></label><br>
+                                <input type="submit" name="submit" class="btn btn-success btn-md" value="submit">
+                            </div>
+                            <div id="form-group" class="text-right">
+                                <a href="#" class="text">Sign up form</a>
+                                <span class="password">Forgot <a href="#">password?</a></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn">Cancel</button>
-        <span class="password">Forgot <a href="#">password?</a></span>
-    </div>
-    </form> 
-    <a href="signup_form_1.html">Signup form</a>
 
     
     <script src="content.js"></script>

@@ -75,7 +75,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
         if($no_session_today == false)
         {
             ?>
-            <div class="upcoming_day_sessions container text-center border border-3 border-dark extra_rounded">
+            <div class="upcoming_day_sessions container text-center border border-2 border-dark extra_rounded">
             <div class="row">
                 <h3 class="col text-center py-3 m-0">Upcoming</h3>
                 <div class="col red_box extra_rounded_tr"></div>
@@ -150,13 +150,15 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 
     <!-- Sessions for the next week -->
     <div class="m-3">
-    <div class="upcoming_week_sessions container text-center border border-3 border-dark extra_rounded mt-4">
+    <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
-            <h3 class="col text-center py-3 m-0">Weekly</h3>
+            <h3 class="col text-center py-1 m-0">Weekly</h3>
             <div class="col red_box extra_rounded_tr"></div>
         </div>
-        
-        <?php
+     <div class="card">
+     <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+    <?php
         $data_increment = 1;
         for($i=0; $i<7; $i++)
         {
@@ -185,7 +187,12 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
             echo " events</p></div>";
             $data_increment += 1;
         }
-        ?>
+        ?>        
+
+    </li>
+  </ul>
+      
+    </div>
     </div></div>
 
 

@@ -1,4 +1,16 @@
 <?php
+//Check if the user to logged in
+session_start();
+if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in redirect to login page
+{
+    header("Location: login_form.php"); //Send to the shadow realm (login screen)
+}
+
+//Get relevant info from session
+$user_id = $_SESSION['user_id'];
+
+
+
 //Import functions
 include("sys_page/header.html");
 include("sys_page/db_connect.php");
@@ -7,18 +19,20 @@ include("sys_page/functions.php");
 ?>
   <?php
     //need to change first 4 digits of the sql for the tables to variable
-      $available_session_tutor_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=3;";
+
+      $available_session_tutor_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=$user_id;";
       $status = TRUE;
       $available_tutor_times_data = get_session_select_data($available_session_tutor_times_sql, $conn, $status);
 
       
-      $available_session_tutee_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=3;";
+      $available_session_tutee_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=$user_id;";
       $status = FALSE;
       $available_tutee_times_data = get_session_select_data($available_session_tutee_times_sql, $conn, $status);
       
       /*check for subject matches*/
 
         for($k=0; $k<sizeof($available_tutee_times_data); $k++){
+
           for($l=0; $l<sizeof($available_tutor_times_data); $l++){
             //If the selected tutor and tutee have the same subject
               //If the selected tutor and tutee potential time has the same day of the week
@@ -79,8 +93,8 @@ include("sys_page/functions.php");
         <p id="popup_name">Name</p>
         <p id="popup_subject_name">Subject Name</p>
         <p id="popup_day">Day of week</p>
-        <p id="popup_session_length">Session length (hours)</p><input type="text">
-        <button>Accept</button>
+        <p id="popup_session_length">Session length (hours)</p>
+        <a href=""><button>Accept</button></a>
         <button id="session_match_close">Close</button>
         <span class="close_session_match">&times;</span>
       </div>

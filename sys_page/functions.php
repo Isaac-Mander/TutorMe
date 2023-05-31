@@ -138,15 +138,16 @@ function get_session_select_data($sql,$conn,$status)
                 $result_subject = $conn->query($sql_subject);
                 //querys the database to obtain the global_subject_id and local_subject_id from the tutor table//Query database
                 if ($result_subject->num_rows > 0) { //If the number of rows are not zero
-                $subject_index =0;
+                $subject_index = 0;
+                
                 while($row_2 = $result_subject->fetch_assoc()) {
                     if($row_2['global_subject_id'] == 0) $session_select_data[$session_index][5][$subject_index] = $row_2['local_subject_id']; //Session subject
                     else $session_select_data[$session_index][5][$subject_index] = $row_2['global_subject_id']; //Session subject id
                     //Query the subject list to get the subjects's name
                     $subject_id = $session_select_data[$session_index][5][$subject_index];
                     $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
-                    $result_subject = $conn->query($sql_subject_name);
-                    $data2 = $result_subject->fetch_assoc();
+                    $result_subject_name = $conn->query($sql_subject_name);
+                    $data2 = $result_subject_name->fetch_assoc();
                     $session_select_data[$session_index][6][$subject_index] = $data2['name'];//Subject english name
                     //Increment the session index the data is stored under
                     $subject_index += 1;
@@ -163,8 +164,8 @@ function get_session_select_data($sql,$conn,$status)
                     //Query the subject list to get the subjects's name
                     $subject_id = $session_select_data[$session_index][5][$subject_index];
                     $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
-                    $result_subject = $conn->query($sql_subject_name);
-                    $data2 = $result_subject->fetch_assoc();
+                    $result_subject_name = $conn->query($sql_subject_name);
+                    $data2 = $result_subject_name->fetch_assoc();
                     $session_select_data[$session_index][6][$subject_index] = $data2['name'];//Subject english name
                     //Increment the session index the data is stored under
                     $subject_index += 1;

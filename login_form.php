@@ -23,6 +23,7 @@ if(isset($_GET['error']))
     include("sys_page/header.html");
     ?>
     <p class="error_msg"><?php echo $error_msg; ?></p>
+
 <div id="login">
         <h3 class="text-center text pt-5">Dexter Dark's login: dexter203 password</h3>
         <div class="container">
@@ -44,7 +45,7 @@ if(isset($_GET['error']))
                                 <input type="submit" name="submit" class="btn btn-success btn-md" value="submit">
                             </div>
                             <div id="form-group" class="text-right">
-                                <a href="#" class="text">Sign up form</a>
+                                <a href="signup_form_1.html" class="text">Sign up form</a>
                                 <span class="password">Forgot <a href="#">password?</a></span>
                             </div>
                         </form>

@@ -273,7 +273,28 @@ if(document.getElementById("session_matching"))
             pot_sesssion_cards.push(document.getElementById(i));
             document.getElementById(i).onclick = function() {
                 modal_session_match.style.display = "block";
+                modal_session_match.children[0].children[0].innerHTML = this.children[0].innerHTML;
+                modal_session_match.children[0].children[1].innerHTML = this.children[3].innerHTML;
+                modal_session_match.children[0].children[2].innerHTML = this.children[4].innerHTML;
+
+                //Calculate the session hours
+                start_time_array = this.children[1].innerHTML.match(/^\d+|\d+\b|\d+(?=\w)/g).map(function (v) {return +v;});
+                end_time_array = this.children[2].innerHTML.match(/^\d+|\d+\b|\d+(?=\w)/g).map(function (v) {return +v;});
+                hours = end_time_array[0] - start_time_array[0]
+                min = (end_time_array[1] - start_time_array[1])
+                min_in_hours = min/60
+                hours_combined = hours + min_in_hours;
+                hours_combined_rounded = Number((hours_combined).toFixed(1));
+
+                //Check if the number should be displayed in mins or hours
+                if(hours_combined_rounded < 1) final_time = min + " min";
+                else final_time = hours_combined_rounded + " h";
                 
+                modal_session_match.children[0].children[3].innerHTML = "Slot time: " + final_time;
+
+
+                //Set the id of the session card as a value to send if submit is pressed
+                modal_session_match.children[0].children[4].href="tutor_accept.php?id=" + this.id;
             }
         }
     }

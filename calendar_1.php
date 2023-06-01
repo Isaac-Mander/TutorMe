@@ -44,18 +44,9 @@ $tz = new DateTimeZone('NZ');
     $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
     $date =  $time_year . "-" . $time_month . "-" . $time_day;
 
+    $events = grab_events($conn,$user_id);
+
     $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=$user_id";
-    $test_event[] = [
-      "title" => "potential session",
-      "start" => '2023-06-01T11:00:00',
-      "end"   => '2023-06-01T13:00:00',
-      "color" => "purple",
-      "resourceId" => 'a'
-    ];
-
-    $events = grab_events($conn);
-
-
     $available_session_times_data = get_available_session_data($available_session_times_sql, $conn);
     //pulls all the potential times from the database, runs through function
     //$events = grab_events($conn);
@@ -87,7 +78,6 @@ $tz = new DateTimeZone('NZ');
       initialView: 'timeGridWeek',
       initialDate:  '<?php echo $date?>',
       navLinks: true, // can click day/week names to navigate views
-      businessHours: true,
       dayMaxEvents: true, // allow "more" link when too many events
       events: <?php echo $JsonEvents ?> //uploading all of the events
     });
@@ -112,22 +102,79 @@ $tz = new DateTimeZone('NZ');
 </style>
   </head>
   <body>
-  <form action='calendar_2.php' method='post'>
-    <div class="container">
-        <label for="start_time"><b>Start time</b></label>
-        <input type="time" id="start_time" placeholder="Start time" name="start_time" required><br>
+    <div class="card mx-auto w-75">
+    <form action='calendar_2.php' method='post'>
+    <div class="card-body">
+    <div class="form-group row">
+        <label for="start_time" class="col-sm-2 col-form-label"><b>Start time</b></label>
+        <div class="col-sm-10">
+        <input type="time" class="form-control" id="start_time" placeholder="Start time" name="start_time" required><br>
+        </div>
+        </div>
 
+        <div class="form-group row">
+        <label for="end_time" class="col-sm-2 col-form-label"><b>End time</b></label>
+        <div class="col-sm-10">
+        <input type="time" class="form-control" id="end_time" placeholder="End time" name="end_time" required><br>
+        </div>
+        </div>
 
-        <label for="end_time"><b>End time</b></label>
-        <input type="time" id="end_time" placeholder="End time" name="end_time" required><br>
-        
-        <label for="day_of_week">Day of the week (between 1 and 7) 1 = Monday, 7 = Sunday:</label>
-        <input type="number" id="day_of_week" name="day_of_week" min="1" max="7">
+        <fieldset class="form-group">
+          <div class="row">
+            <legend class="col-form-label col-sm-2 pt-0">Day of week</legend>
+            <div class="col-sm-10">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="day_of_weeks" id="day_of_week1" value=1>
+                <label class="form-check-label" for="gridRadios1">
+                  Monday
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week2" value=2>
+                <label class="form-check-label" for="gridRadios2">
+                  Tuesday
+                </label>
+              </div>
+              <div class="form-check disabled">
+                <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week3" value=3>
+                <label class="form-check-label" for="gridRadios3">
+                  Wednesday
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week4" value=4>
+                <label class="form-check-label" for="gridRadios4">
+                  Thursday
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week5" value=5>
+                <label class="form-check-label" for="gridRadios5">
+                  Friday
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week6" value=6>
+                <label class="form-check-label" for="gridRadios6">
+                  Saturday
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week7" value=7>
+                <label class="form-check-label" for="gridRadios7">
+                  Sunday
+                </label>
+              </div>
+            </div>
+          </div>
+  </fieldset>
         <input type="hidden" id="student_id" name="student_id" value="<?php echo $user_id ?>">
         <input type="submit">
-        <!-- form for uploading new potential sessions to the database-->
     </div>
     </form> 
+    </div>
+    </div>
+
     <?php
     if (is_array($available_session_times_data)) {
       //if is array
@@ -164,10 +211,10 @@ $tz = new DateTimeZone('NZ');
 
         $card_id = $available_session_times_data[$i][4];
   
-        ?>    <div id=<?php echo $card_id; ?> class='card' style="width: 18rem;"><?php
+        ?>    <div id=<?php echo $card_id; ?> class='card mx-auto' style="width: 35rem;"><?php
         echo ($name."<br>".date("l jS \of F Y h:i:s A", $potential_starttime) . "<br>");
         echo date("l jS \of F Y h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
-        ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a>     </div><?php      }
+        ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a>     </div>   <?php      }
     }?>
     <div id='calendar'></div>
     <script src="content.js"></script>

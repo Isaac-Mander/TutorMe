@@ -183,26 +183,30 @@ function get_session_select_data($sql,$conn,$status)
     }
 }
 
-function grab_events($conn)
+function grab_events($conn,$id)
 {
     //function so that when the database is updated the calender's events can be as well
 
     //Get the sessions this user is tutoring today
-    $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=3";  
+    $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$id";  
     $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
 
     //Get the sessions this user is being tutored today
-    $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=3";  
+    $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$id";  
     $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 
-    $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
+    $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=$id";
     $available_session_times_data = get_available_session_data($available_session_times_sql, $conn);
     //pulls all the potential times from the database, runs through function
-
+    $potential_events = array();
+    $events = array();
     if (is_array($available_session_times_data)) {
+
+
       for($i=0; $i<sizeof($available_session_times_data); $i++){
         //looping through all of the lines of the array
+
         $name = $available_session_times_data[$i][0]; //sets the name
         $potential_start_time = $available_session_times_data[$i][1]; //sets the start time
         $potential_end_time = $available_session_times_data[$i][2]; //sets the end time
@@ -228,12 +232,14 @@ function grab_events($conn)
           //converting values for the upcomming week
         } else {
           //if it is not Sunday
+
           $value_day_actual = Strtotime("This week ".$day_of_week);
           $date_actual = date("Y-m-d",$value_day_actual);
           $potential_start_datetime = $date_actual."T".$potential_start_time;
           $potential_end_datetime = $date_actual."T".$potential_end_time;
           //converting values for the current values
         }
+
         $potential_events[] =[
           "title" => "potential session",
           "start" => $potential_start_datetime,
@@ -259,6 +265,7 @@ function grab_events($conn)
         $tutee =  $session_combined_data[$i][4]; //setting tutee name
         $tutor = $session_combined_data[$i][6]; //setting tutor name
         $subject = $session_combined_data[$i][8]; //setting subject name
+
         $events[] = [
           "title" => $tutor.' tutoring '.$tutee.' in '.$subject,
           //setting a title
@@ -272,6 +279,7 @@ function grab_events($conn)
       if (is_array($events) && is_array($potential_events)) {
         //making sure that both arrays are arrays
         $all_events = array_merge($events, $potential_events);
+
         return $all_events;
         //merging the arrays to be input into the calendar api
       }else {

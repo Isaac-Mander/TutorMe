@@ -199,9 +199,7 @@ $checkbox_id_increment = 0; //Checkbox id for js
   </head>
   <body>
     
-    <button id=profile_edit_button>Edit</button>
-    <p><?php echo $display_name;?></p>
-
+    <h1><p class="text-center"><?php echo $display_name."'s profile";?></p></h1>
     <div class="container text-center border border-3 border-dark extra_rounded">
               <div class="row">
                   <h3 class="col text-center py-3 m-0">Studying</h3>
@@ -211,34 +209,47 @@ $checkbox_id_increment = 0; //Checkbox id for js
 
     <div class="row" id="studying">
       <div id="tutoring_subjects_checkbox_studying" class="hide_on_start">
+         <div class="card mx-auto" style="width: 18rem;">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <?php 
+              for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
+                ?> <li class="list-group-item"> <?php
+                $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
+                if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
+                if($all_available_subject_array[$i][3] == true) {echo "<input id=" . $checkbox_id . " type='checkbox' checked>" . "  ".$all_available_subject_array[$i][1];} //Create a checked checkbox
+                else {echo "<input id=" . $checkbox_id . " type='checkbox'>" . "  ".$all_available_subject_array[$i][1];} //Create an empty checkbox ?></li><?php
+                $checkbox_id_increment += 1; //Increment the checkbox id by 1
+                }?>
+            </ul>
 
-          <?php 
-          for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-            $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
-            if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
-            if($all_available_subject_array[$i][3] == true) {echo "<input id=" . $checkbox_id . " type='checkbox' checked>" . $all_available_subject_array[$i][1];} //Create a checked checkbox
-            else {echo "<input id=" . $checkbox_id . " type='checkbox'>" . $all_available_subject_array[$i][1];} //Create an empty checkbox
-            $checkbox_id_increment += 1; //Increment the checkbox id by 1
-            }?>
-
+          </div>
+         </div>
         </div>
         <div id="studying_subject_cards">
-          <?php
+          <div class="card mx-auto" style="width: 18rem;">
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+              <?php
             //Get number of items in subject array
             if($no_tutee_subjects == false)
             {
               for($x=0;$x<sizeof($subject_array_tutee);$x++)
               {
+                ?> <li class="list-group-item"> <?php
                 echo "<div ";
                 echo "id=tutee_" . $subject_element_tutee_id;//Give the element a unqiue id
                 echo " class='col'><p class='nowrap'>";
                 echo $subject_array_tutee[$x][2];
-                echo "</p><img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''></div>";
-                //Increment the id
+                echo "</p></div>";
+                //Increment the id?></li> <?php 
                 $subject_element_tutee_id += 1;
               }
             }
           ?>
+              </ul>
+            </div>
+          </div>
       </div>
     </div>
 
@@ -257,44 +268,61 @@ $checkbox_id_increment = 0; //Checkbox id for js
     <div class="row" id="tutoring">
       
       <div id="tutoring_subjects_checkbox_tutoring" class="hide_on_start">
-
+        <div class="card mx-auto" style="width: 18rem;">
+          <div class="card-body">
+          <ul class="list-group list-group-flush">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
+          ?> <li class="list-group-item"> <?php
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
-            if($all_available_subject_array[$i][4] == true) {echo "<input id=" . $checkbox_id . " type='checkbox' checked>" . $all_available_subject_array[$i][1];} //Create a checked checkbox
-            else {echo "<input id=" . $checkbox_id . " type='checkbox'>" . $all_available_subject_array[$i][1];} //Create an empty checkbox
+            if($all_available_subject_array[$i][4] == true) {echo "<input id=" . $checkbox_id . " type='checkbox' checked>" . "  ".$all_available_subject_array[$i][1];} //Create a checked checkbox
+            else {echo "<input id=" . $checkbox_id . " type='checkbox'>" . "  ".$all_available_subject_array[$i][1];} //Create an empty checkbox ?></li> <?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
             }?>
-      
+          </ul>
+          </div>
+        </div>
       </div>
 
       <div id="tutoring_subject_cards">
-      <?php
-        //Get number of items in subject array
-        if($no_tutor_subjects == false)
-        {
-          for($x=0;$x<sizeof($subject_array_tutor);$x++)
-          {
-            echo "<div ";
-            echo "id=tutor_" . $subject_element_tutor_id;//Give the element a unqiue id
-            echo " class='col'><p class='nowrap'>";
-            echo $subject_array_tutor[$x][2];
-            echo "</p><img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''></div>";
-            //Increment the id
-            $subject_element_tutor_id += 1;
-          }
-        }
-      ?>
+        <div class="card mx-auto" style="width: 18rem;">
+          <div class="card-body">
+          <ul class="list-group list-group-flush">
+                <?php
+              //Get number of items in subject array
+              if($no_tutor_subjects == false)
+              {
+                for($x=0;$x<sizeof($subject_array_tutor);$x++)
+                {
+                  ?><li class="list-group-item"><?php
+                  echo "<div ";
+                  echo "id=tutor_" . $subject_element_tutor_id;//Give the element a unqiue id
+                  echo " class='col'><p class='nowrap'>";
+                  echo $subject_array_tutor[$x][2];
+                  echo "</p><img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''></div>";
+                  //Increment the id ?></li><?php
+                  $subject_element_tutor_id += 1;
+                }
+              }
+            ?>
+          </ul>
+          </div>
+        </div>
       </div>
     </div>
-    
-    <h3>Description</h3>
-    <p id="profile_desc_text"><?php echo $desc; ?></p>
-    <div class="profile_statistics">
-      <h3>Statistics</h3>
-      <p>Hours spent tutoring: <?php echo $hours_tutored; ?></p>
-      <p>Sessions tutored: <?php echo $sessions_tutored; ?></p>
+    <button id=profile_edit_button>Edit</button>
+    <div class="card mx-auto">
+      <div class="card-header text-white bg-primary">       <h3>Description</h3>   </div>
+        <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"> <p id="profile_desc_text"><?php echo $desc; ?></p></li>
+          <li class="list-group-item text-white bg-primary">          <h3>Statistics</h3></li>
+          <li class="list-group-item">          <p>Hours spent tutoring: <?php echo $hours_tutored; ?></p></li>
+          <li class="list-group-item">          <p>Sessions tutored: <?php echo $sessions_tutored; ?></p></li>
+        </ul>
+        </div>
     </div>
+    
 
     <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>

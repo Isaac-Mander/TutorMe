@@ -198,7 +198,6 @@ if(document.getElementById("profile_edit_button"))
      };
      
 }
-
 //Calendar page
 if(document.getElementById("calendar"))
 {
@@ -209,6 +208,8 @@ if(document.getElementById("calendar"))
 //If the navbar is present ==================================================================================================================================================
 if(document.getElementById("notification_bell"))
 {
+    var notif_content = document.getElementById("notif_content");
+
     notif_button = document.getElementById("notification_bell");
     // Get the modal
     var modal = document.getElementById("myModal");
@@ -235,6 +236,69 @@ if(document.getElementById("notification_bell"))
             modal.style.display = "none";
         }
     }
+
+    //Set the notifications to update every few seconds
+    const notification_check_loop = setInterval(function() {
+        const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "sys_page/notification_check.php");
+            xhttp.send();
+            //Use data sent back to create a new notification card
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    //Check if any data was returned
+                    if(this.responseText != "nodata")
+                    {
+                        // Converting JSON-encoded string to JS object
+                        var notif_data = JSON.parse(this.responseText);
+                        //Set the number of notifications to the length of the parsed array
+                        document.getElementById("number_notif").innerHTML = notif_data.length;
+                        //Delete all children of the notification menu
+                        while (notif_content.hasChildNodes()) {
+                            notif_content.removeChild(notif_content.firstChild);
+                            }
+                        for(var i = 0; i < notif_data.length; i++){
+                            console.log(notif_data[i]);
+                            //Create the relevant session requests
+                            var session_card = document.createElement("div");
+                            session_card.className = "session_card";
+                            notif_content.appendChild(session_card);
+                            var tutor_name = document.createElement("p");
+                            session_card.appendChild(tutor_name);
+                            var subject_name = document.createElement("p");
+                            session_card.appendChild(subject_name);
+                            var time_start = document.createElement("p");
+                            session_card.appendChild(time_start);
+                            var time_end = document.createElement("p");
+                            session_card.appendChild(time_end);
+
+                            //Set up links for buttons
+                            var accept_link = document.createElement("a");
+                            session_card.appendChild(accept_link);
+                            var reject_link = document.createElement("a");
+                            session_card.appendChild(reject_link);
+                            
+                            accept_link.href = "a_or_r_session.php?page=" + window.location.href + "&action=1&id=" + notif_data[i]['id'];
+                            reject_link.href = "a_or_r_session.php?page=" + window.location.href + "&action=2&id=" + notif_data[i]['id'];
+
+                            //Create ui buttons
+                            var accept_button = document.createElement("button");
+                            accept_link.appendChild(accept_button);
+                            accept_button.innerHTML = "Accept session";
+                            var reject_button = document.createElement("button");
+                            reject_link.appendChild(reject_button);
+                            reject_button.innerHTML = "Reject session";
+
+
+                            tutor_name.innerHTML = notif_data[i]['tutor_name'];
+                            subject_name.innerHTML = notif_data[i]['subject'];
+                            time_start.innerHTML = notif_data[i]['session_start'];
+                            time_end.innerHTML = notif_data[i]['session_end'];
+                            
+                        }
+                    }
+
+                }};
+    },5000)
 }
 
 //If the session matching page is present
@@ -267,35 +331,57 @@ if(document.getElementById("session_matching"))
     }
     //Get the cards on the page
     pot_sesssion_cards = [];
-    for(var i = 0; i < 1000; i++){
-        if(document.getElementById(i))
-        {
-            pot_sesssion_cards.push(document.getElementById(i));
-            document.getElementById(i).onclick = function() {
-                modal_session_match.style.display = "block";
-                modal_session_match.children[0].children[0].innerHTML = this.children[0].innerHTML;
-                modal_session_match.children[0].children[1].innerHTML = this.children[3].innerHTML;
-                modal_session_match.children[0].children[2].innerHTML = this.children[4].innerHTML;
+    //A card has an id formatted as
+    // x-x-x-x-x-x
+    // table_id - subject_id  - tutee_id - tutor_id - start_time - end_time
 
-                //Calculate the session hours
-                start_time_array = this.children[1].innerHTML.match(/^\d+|\d+\b|\d+(?=\w)/g).map(function (v) {return +v;});
-                end_time_array = this.children[2].innerHTML.match(/^\d+|\d+\b|\d+(?=\w)/g).map(function (v) {return +v;});
-                hours = end_time_array[0] - start_time_array[0]
-                min = (end_time_array[1] - start_time_array[1])
-                min_in_hours = min/60
-                hours_combined = hours + min_in_hours;
-                hours_combined_rounded = Number((hours_combined).toFixed(1));
-
-                //Check if the number should be displayed in mins or hours
-                if(hours_combined_rounded < 1) final_time = min + " min";
-                else final_time = hours_combined_rounded + " h";
-                
-                modal_session_match.children[0].children[3].innerHTML = "Slot time: " + final_time;
-
-
-                //Set the id of the session card as a value to send if submit is pressed
-                modal_session_match.children[0].children[4].href="tutor_accept.php?id=" + this.id;
+    //Find all the elements with card as name
+    pot_sesssion_cards = document.getElementsByName("card");
+    for(var i = 0; i < pot_sesssion_cards.length; i++){
+        pot_sesssion_cards[i].onclick = function() {
+            modal_session_match.style.display = "block";
+            modal_session_match.children[0].children[0].innerHTML = this.children[0].children[0].innerHTML;
+            modal_session_match.children[0].children[1].innerHTML = this.children[0].children[3].innerHTML;
+            modal_session_match.children[0].children[2].innerHTML = this.children[0].children[4].innerHTML;
+            
+            //Add the next 10 dates to the dropdown menu
+            //Get current date and time
+            dropdown_date = document.getElementById("date");
+            while (dropdown_date.hasChildNodes()) {
+                dropdown_date.removeChild(dropdown_date.firstChild);
+              }
+            start_day = weekday.findIndex((element) => element > this.children[0].children[4].innerHTML) + 1;
+            for (let i = 1; i < 11; i++)
+            {
+                var d2 = new Date();
+                d2 = new Date(d2.setDate(d2.getDate() + 7*i + start_day - d2.getDay()));
+                //Create new option based on current date
+                let option = document.createElement("option");
+                option.innerHTML = d2;
+                option.id = d2.toISOString().slice(0, 19).replace('T', ' ');
+                dropdown_date.appendChild(option);
             }
+            var options = dropdown_date.options;
+            var id      = options[options.selectedIndex].id;
+            var value   = options[options.selectedIndex].value;
+            //Calculate the session hours
+            start_time_array = this.children[0].children[1].innerHTML.match(/^\d+|\d+\b|\d+(?=\w)/g).map(function (v) {return +v;});
+            end_time_array = this.children[0].children[2].innerHTML.match(/^\d+|\d+\b|\d+(?=\w)/g).map(function (v) {return +v;});
+            hours = end_time_array[0] - start_time_array[0]
+            min = (end_time_array[1] - start_time_array[1])
+            min_in_hours = min/60
+            hours_combined = hours + min_in_hours;
+            hours_combined_rounded = Number((hours_combined).toFixed(1));
+
+            //Check if the number should be displayed in mins or hours
+            if(hours_combined_rounded < 1) final_time = min + " min";
+            else final_time = hours_combined_rounded + " h";
+            
+            modal_session_match.children[0].children[3].innerHTML = "Max Session Length: " + final_time;
+
+
+            //Set the id of the session card as a value to send if submit is pressed
+            modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + this.id + "-" + id;
         }
     }
 }

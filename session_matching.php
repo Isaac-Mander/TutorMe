@@ -16,6 +16,28 @@ include("sys_page/header.html");
 include("sys_page/db_connect.php");
 include("sys_page/functions.php");
 
+
+//Set card function
+function create_card($available_tutee_times_data,$available_tutor_times_data)
+{
+  $name = $available_tutee_times_data[$k][4];
+  $subject = $available_tutee_times_data[$k][6][$y];
+  $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+  $day_of_week = $days_of_week_array[$available_tutor_times_data[$l][3]-1];
+  $card_id = $available_tutee_times_data[$k][7];?>
+  <div id = '<?php echo $card_id; ?>' class='card mx-auto' style="width: 18rem;"> 
+  <?php ?>
+  <div class="card-body">
+  <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
+  <div>  <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
+  <div> <?php echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";?></div>
+  <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
+  <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>
+  </div>
+  </div></a><?php
+}
+
+
 ?>
   <?php
     //need to change first 4 digits of the sql for the tables to variable
@@ -51,113 +73,60 @@ include("sys_page/functions.php");
                         
                           $potential_starttime = $available_tutee_times_data[$k][1];
                           $potential_endtime = $available_tutee_times_data[$k][2];
-                          $name = $available_tutee_times_data[$k][4];
-                          $subject = $available_tutee_times_data[$k][6][$y];
-                          $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-                          $day_of_week = $days_of_week_array[$available_tutor_times_data[$l][3]-1];
-                          $card_id = $available_tutee_times_data[$k][7];?>
-                          <div id = '<?php echo $card_id; ?>' class='card mx-auto' style="width: 18rem;"> 
-                          <?php ?>
-                          <div class="card-body">
-                          <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
-                          <div>  <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
-                          <div> <?php echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";?></div>
-                          <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
-                          <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>
-                          </div>
-                          </div></a><?php
-                          }
+                          create_card($available_tutee_times_data,$available_tutor_times_data);
+                        }
                       }
                     }
-                    } elseif ($available_tutee_times_data[$k][1] < $available_tutor_times_data[$l][2]) {  
-                      if ($available_tutee_times_data[$k][2] > $available_tutor_times_data[$l][2]){
-                                            //If the selected tutor and tutee have the same subject
-                    for ($y=0; $y<sizeof($available_tutee_times_data[$k][6]); $y++){
-                      for ($t=0; $t<sizeof($available_tutor_times_data[$l][6]); $t++){
-                        if ($available_tutee_times_data[$k][5][$y] == $available_tutor_times_data[$l][5][$t]) {
-                          //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
-                          //Get the relivant data and create a card for a tutor to click on
-                        
-                          $potential_starttime = $available_tutee_times_data[$k][1];
-                          $potential_endtime = $available_tutor_times_data[$l][2];
-                          $name = $available_tutee_times_data[$k][4];
-                          $subject = $available_tutee_times_data[$k][6][$y];
-                          $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-                          $day_of_week = $days_of_week_array[$available_tutor_times_data[$l][3]-1];
-                          $card_id = $available_tutee_times_data[$k][7];?>
-                          <div id = '<?php echo $card_id; ?>' class='card mx-auto' style="width: 18rem;"> 
-                          <?php ?>
-                          <div class="card-body">
-                          <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
-                          <div>  <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
-                          <div> <?php echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";?></div>
-                          <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
-                          <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>
-                          </div>
-                          </div></a><?php
+                  } 
+                  elseif ($available_tutee_times_data[$k][1] < $available_tutor_times_data[$l][2]) {
+                    if ($available_tutee_times_data[$k][2] > $available_tutor_times_data[$l][2]){
+                      //If the selected tutor and tutee have the same subject
+                      for ($y=0; $y<sizeof($available_tutee_times_data[$k][6]); $y++){
+                        for ($t=0; $t<sizeof($available_tutor_times_data[$l][6]); $t++){
+                          if ($available_tutee_times_data[$k][5][$y] == $available_tutor_times_data[$l][5][$t]) {
+                            //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
+                            //Get the relivant data and create a card for a tutor to click on
+                          
+                            $potential_starttime = $available_tutee_times_data[$k][1];
+                            $potential_endtime = $available_tutor_times_data[$l][2];
+                            create_card($available_tutee_times_data,$available_tutor_times_data);
                           }
+                        }
                       }
-                    }
-                      } elseif($available_tutee_times_data[$k][2] < $available_tutor_times_data[$l][2]){
+                    } 
+                    elseif($available_tutee_times_data[$k][2] < $available_tutor_times_data[$l][2]){
+                      //If the selected tutor and tutee have the same subject
+                      for ($y=0; $y<sizeof($available_tutee_times_data[$k][6]); $y++){
+                        for ($t=0; $t<sizeof($available_tutor_times_data[$l][6]); $t++){
+                          if ($available_tutee_times_data[$k][5][$y] == $available_tutor_times_data[$l][5][$t]) {
+                            //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
+                            //Get the relivant data and create a card for a tutor to click on
+                            $potential_starttime = $available_tutee_times_data[$k][1];
+                            $potential_endtime = $available_tutee_times_data[$k][2];
+                            create_card($available_tutee_times_data,$available_tutor_times_data);
+                          }
+                        }
+                      }
+                    }      
+                  }
+                } 
+                else if ($available_tutee_times_data[$k][2] > $available_tutor_times_data[$l][1]) {
+                  if ($available_tutee_times_data[$k][2] > $available_tutor_times_data[$l][2]){
                     //If the selected tutor and tutee have the same subject
                     for ($y=0; $y<sizeof($available_tutee_times_data[$k][6]); $y++){
                       for ($t=0; $t<sizeof($available_tutor_times_data[$l][6]); $t++){
                         if ($available_tutee_times_data[$k][5][$y] == $available_tutor_times_data[$l][5][$t]) {
                           //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
                           //Get the relivant data and create a card for a tutor to click on
-                        
-                          $potential_starttime = $available_tutee_times_data[$k][1];
-                          $potential_endtime = $available_tutee_times_data[$k][2];
-                          $name = $available_tutee_times_data[$k][4];
-                          $subject = $available_tutee_times_data[$k][6][$y];
-                          $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-                          $day_of_week = $days_of_week_array[$available_tutor_times_data[$l][3]-1];
-                          $card_id = $available_tutee_times_data[$k][7];?>
-                          <div id = '<?php echo $card_id; ?>' class='card mx-auto' style="width: 18rem;"> 
-                          <?php ?>
-                          <div class="card-body">
-                          <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
-                          <div>  <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
-                          <div> <?php echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";?></div>
-                          <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
-                          <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>
-                          </div>
-                          </div></a><?php
-                          }
-                      }
-                    }
-                      }      
-                    }
-                 } else if ($available_tutee_times_data[$k][2] > $available_tutor_times_data[$l][1]) {
-                    if ($available_tutee_times_data[$k][2] > $available_tutor_times_data[$l][2]){
-                                                //If the selected tutor and tutee have the same subject
-                    for ($y=0; $y<sizeof($available_tutee_times_data[$k][6]); $y++){
-                      for ($t=0; $t<sizeof($available_tutor_times_data[$l][6]); $t++){
-                        if ($available_tutee_times_data[$k][5][$y] == $available_tutor_times_data[$l][5][$t]) {
-                          //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
-                          //Get the relivant data and create a card for a tutor to click on
                           $potential_starttime = $available_tutor_times_data[$l][1];
                           $potential_endtime = $available_tutor_times_data[$l][2];
-                          $name = $available_tutee_times_data[$k][4];
-                          $subject = $available_tutee_times_data[$k][6][$y];
-                          $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-                          $day_of_week = $days_of_week_array[$available_tutor_times_data[$l][3]-1];
-                          $card_id = $available_tutee_times_data[$k][7];?>
-                          <div id = '<?php echo $card_id; ?>' class='card mx-auto' style="width: 18rem;"> 
-                          <?php ?>
-                          <div class="card-body">
-                          <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
-                          <div>  <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
-                          <div> <?php echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";?></div>
-                          <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
-                          <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>
-                          </div>
-                          </div></a><?php
-                          }
+                          create_card($available_tutee_times_data,$available_tutor_times_data);
+                        }
                       }
                     }
-                    } else{
-                                                //If the selected tutor and tutee have the same subject
+                  } 
+                  else{
+                    //If the selected tutor and tutee have the same subject
                     for ($y=0; $y<sizeof($available_tutee_times_data[$k][6]); $y++){
                       for ($t=0; $t<sizeof($available_tutor_times_data[$l][6]); $t++){
                         if ($available_tutee_times_data[$k][5][$y] == $available_tutor_times_data[$l][5][$t]) {
@@ -165,31 +134,17 @@ include("sys_page/functions.php");
                           //Get the relivant data and create a card for a tutor to click on
                           $potential_starttime = $available_tutor_times_data[$l][1];
                           $potential_endtime = $available_tutee_times_data[$k][2];
-                          $name = $available_tutee_times_data[$k][4];
-                          $subject = $available_tutee_times_data[$k][6][$y];
-                          $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-                          $day_of_week = $days_of_week_array[$available_tutor_times_data[$l][3]-1];
-                          $card_id = $available_tutee_times_data[$k][7];?>
-                          <div id = '<?php echo $card_id; ?>' class='card mx-auto' style="width: 18rem;"> 
-                          <?php ?>
-                          <div class="card-body">
-                          <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
-                          <div>  <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
-                          <div> <?php echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";?></div>
-                          <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
-                          <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>
-                          </div>
-                          </div></a><?php
-                          }
+                          create_card($available_tutee_times_data,$available_tutor_times_data);
+                        }
                       }
                     }
-                    }
-                 }
-               }
+                  }
+                }
               }
             }
           }
-          }
+        }
+      }
         
       
       ?>

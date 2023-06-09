@@ -7,26 +7,49 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 }
 
 //If id is not send send back to session matching page
-if(!isset($_GET['id'])) { header("Location: session_matching.php");}
+//if(!isset($_GET['id'])) { header("Location: session_matching.php");}
 
-
-//Get the data about the time slot using the id that was passed through the $_GET
-include("sys_page/db_connect.php");
-
-$id_in_table = $_GET['id'];
-
-$select_sql = "SELECT * FROM `6969_student_times` WHERE `id`=$id_in_table";
-$select_result = $conn->query($select_sql); //Query database
-if ($select_result->num_rows > 0) { //If the number of rows are not zero
-    $row = $select_result->fetch_assoc();
+//Split the id into it constituent variables
+$raw_id = $_GET['id'];
+//Scan through and find each info block split up by -
+$array_index = 0;
+$info_array = array();
+$info_array[$array_index] = ""; //Set first array val to be empty string (others are done via an if statement)
+for ($string_index = 0; $string_index <= strlen($raw_id)-1; $string_index++)
+{
+    //If not partition char add value to string
+    if($raw_id[$string_index] != "-") {$info_array[$array_index] .= $raw_id[$string_index];}
+    //If partition char increment array index to start getting data for new val
+    else
+    {
+        $array_index += 1;
+        $info_array[$array_index] = "";
+    }
 }
 
-//Create a tutor session that is not active (is yet to be accepted)
-$tutor_id = $_SESSION['user_id'];
-$tutee_id = $row['student_id'];
-$sql = "INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `session_start`, `session_end`, `global_subject_id`, `local_subject_id`, `is_active`) VALUES ('$tutee_id','$tutor_id','0','0','[value-6]','[value-7]','[value-8]','[value-9]','0')";
-echo $sql;
+//table_id - subject_id  - tutee_id - tutor_id
+$id_in_table = $info_array[0];
+$subject_id = $info_array[1];
+$tutee_id = $info_array[2];
+$tutor_id = $info_array[3];
+$start_time = $info_array[4];
+$end_time = $info_array[5];
+$date = $info_array[6] ."-". $info_array[7] ."-". substr($info_array[8],0,2);
 
+$start_combined = $date . " " . $start_time;
+$end_combined = $date . " " . $end_time;
+include("sys_page/db_connect.php");
+
+$sql = "INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `session_start`, `session_end`, `global_subject_id`, `local_subject_id`, `is_active`) VALUES ('$tutee_id','$tutor_id','0','0','$start_combined','$end_combined','0','$subject_id','0')";
+
+if ($conn->query($sql) === TRUE)
+{
+    echo "New record created successfully";
+} 
+else
+{
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
 
 $conn->close();
 

@@ -125,30 +125,30 @@ function get_session_select_data($sql,$conn,$status)
         $session_index = 0;
         while($row = $result->fetch_assoc()) {
             
-            $session_select_data[$session_index][0] = $row['student_id']; //Tutor Session Id
+            $session_select_data[$session_index]['student_id'] = $row['student_id']; //Tutor Session Id
             $student_id = $row['student_id'];
-            $session_select_data[$session_index][1] = $row['session_start'];//Session start time
-            $session_select_data[$session_index][2] = $row['session_end'];//Session end time
-            $session_select_data[$session_index][3] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
-            $session_select_data[$session_index][4] = $row['name'];//Gets the person's name
-            $session_select_data[$session_index][7] = $row['id']; //Gets the id in the table
+            $session_select_data[$session_index]['start_time'] = $row['session_start'];//Session start time
+            $session_select_data[$session_index]['end_time'] = $row['session_end'];//Session end time
+            $session_select_data[$session_index]['dayofweek'] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
+            $session_select_data[$session_index]['user_name'] = $row['name'];//Gets the person's name
+            $session_select_data[$session_index]['table_id'] = $row['id']; //Gets the id in the table
 
             if ($status == TRUE) {
                 $sql_subject = "SELECT global_subject_id,local_subject_id FROM 6969_subjects_tutor WHERE tutor_id=$student_id";
-                $result_subject = $conn->query($sql_subject);
+                $result_subject = $conn->query($sql_subject); 
                 //querys the database to obtain the global_subject_id and local_subject_id from the tutor table//Query database
                 if ($result_subject->num_rows > 0) { //If the number of rows are not zero
                 $subject_index = 0;
                 
                 while($row_2 = $result_subject->fetch_assoc()) {
-                    if($row_2['global_subject_id'] == 0) $session_select_data[$session_index][5][$subject_index] = $row_2['local_subject_id']; //Session subject
-                    else $session_select_data[$session_index][5][$subject_index] = $row_2['global_subject_id']; //Session subject id
+                    if($row_2['global_subject_id'] == 0) $session_select_data[$session_index]['subject_id'][$subject_index] = $row_2['local_subject_id']; //Session subject
+                    else $session_select_data[$session_index]['subject_id'][$subject_index] = $row_2['global_subject_id']; //Session subject id
                     //Query the subject list to get the subjects's name
-                    $subject_id = $session_select_data[$session_index][5][$subject_index];
+                    $subject_id = $session_select_data[$session_index]['subject_id'][$subject_index];
                     $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
                     $result_subject_name = $conn->query($sql_subject_name);
                     $data2 = $result_subject_name->fetch_assoc();
-                    $session_select_data[$session_index][6][$subject_index] = $data2['name'];//Subject english name
+                    $session_select_data[$session_index]['subject_name'][$subject_index] = $data2['name'];//Subject english name
                     //Increment the session index the data is stored under
                     $subject_index += 1;
                 }}
@@ -159,14 +159,14 @@ function get_session_select_data($sql,$conn,$status)
                 if ($result_subject->num_rows > 0) { //If the number of rows are not zero
                 $subject_index =0;
                 while($row_2 = $result_subject->fetch_assoc()) {
-                    if($row_2['global_subject_id'] == 0) $session_select_data[$session_index][5][$subject_index] = $row_2['local_subject_id']; //Session subject
-                    else $session_select_data[$session_index][5][$subject_index] = $row_2['global_subject_id']; //Session subject id
+                    if($row_2['global_subject_id'] == 0) $session_select_data[$session_index]['subject_id'][$subject_index] = $row_2['local_subject_id']; //Session subject
+                    else $session_select_data[$session_index]['subject_id'][$subject_index] = $row_2['global_subject_id']; //Session subject id
                     //Query the subject list to get the subjects's name
-                    $subject_id = $session_select_data[$session_index][5][$subject_index];
+                    $subject_id = $session_select_data[$session_index]['subject_id'][$subject_index];
                     $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
                     $result_subject_name = $conn->query($sql_subject_name);
                     $data2 = $result_subject_name->fetch_assoc();
-                    $session_select_data[$session_index][6][$subject_index] = $data2['name'];//Subject english name
+                    $session_select_data[$session_index]['subject_name'][$subject_index] = $data2['name'];//Subject english name
                     //Increment the session index the data is stored under
                     $subject_index += 1;
                 }}
@@ -183,26 +183,30 @@ function get_session_select_data($sql,$conn,$status)
     }
 }
 
-function grab_events($conn)
+function grab_events($conn,$id)
 {
     //function so that when the database is updated the calender's events can be as well
 
     //Get the sessions this user is tutoring today
-    $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=3";  
+    $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$id";  
     $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
 
     //Get the sessions this user is being tutored today
-    $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=3";  
+    $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$id";  
     $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 
-    $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=3";
+    $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=$id";
     $available_session_times_data = get_available_session_data($available_session_times_sql, $conn);
     //pulls all the potential times from the database, runs through function
-
+    $potential_events = array();
+    $events = array();
     if (is_array($available_session_times_data)) {
+
+
       for($i=0; $i<sizeof($available_session_times_data); $i++){
         //looping through all of the lines of the array
+
         $name = $available_session_times_data[$i][0]; //sets the name
         $potential_start_time = $available_session_times_data[$i][1]; //sets the start time
         $potential_end_time = $available_session_times_data[$i][2]; //sets the end time
@@ -228,12 +232,14 @@ function grab_events($conn)
           //converting values for the upcomming week
         } else {
           //if it is not Sunday
+
           $value_day_actual = Strtotime("This week ".$day_of_week);
           $date_actual = date("Y-m-d",$value_day_actual);
           $potential_start_datetime = $date_actual."T".$potential_start_time;
           $potential_end_datetime = $date_actual."T".$potential_end_time;
           //converting values for the current values
         }
+
         $potential_events[] =[
           "title" => "potential session",
           "start" => $potential_start_datetime,
@@ -259,6 +265,7 @@ function grab_events($conn)
         $tutee =  $session_combined_data[$i][4]; //setting tutee name
         $tutor = $session_combined_data[$i][6]; //setting tutor name
         $subject = $session_combined_data[$i][8]; //setting subject name
+
         $events[] = [
           "title" => $tutor.' tutoring '.$tutee.' in '.$subject,
           //setting a title
@@ -272,6 +279,7 @@ function grab_events($conn)
       if (is_array($events) && is_array($potential_events)) {
         //making sure that both arrays are arrays
         $all_events = array_merge($events, $potential_events);
+
         return $all_events;
         //merging the arrays to be input into the calendar api
       }else {

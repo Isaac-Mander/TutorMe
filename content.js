@@ -202,7 +202,24 @@ if(document.getElementById("profile_edit_button"))
 //Calendar page
 if(document.getElementById("calendar"))
 {
-        
+    //Store the data from the ?xxx=xxx url
+    var parts = window.location.search.substr(1).split("&");
+    var $_GET = {};
+    for (var i = 0; i < parts.length; i++) {
+        var temp = parts[i].split("=");
+        $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+    }
+
+    //If error due to start time after end time
+    if($_GET.invalid_time == "1")
+    {
+        alert("The session start time must be before the end time.");
+    }
+    //If error due to session overlap
+    if($_GET.invalid_time == "2")
+    {
+        alert("You can not have multiple potential session slots overlapping on the same day, edit or delete the conflicting slot and try again.");
+    }
 }
 
 

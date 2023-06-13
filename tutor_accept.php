@@ -38,6 +38,8 @@ $date = $info_array[6] ."-". $info_array[7] ."-". substr($info_array[8],0,2);
 
 $start_combined = $date . " " . $start_time;
 $end_combined = $date . " " . $end_time;
+
+
 include("sys_page/db_connect.php");
 
 $sql = "INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `session_start`, `session_end`, `global_subject_id`, `local_subject_id`, `is_active`) VALUES ('$tutee_id','$tutor_id','0','0','$start_combined','$end_combined','0','$subject_id','0')";
@@ -45,12 +47,16 @@ $sql = "INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `
 if ($conn->query($sql) === TRUE)
 {
     echo "New record created successfully";
+    $alert = 1;
 } 
 else
 {
     echo "Error: " . $sql . "<br>" . $conn->error;
+    $alert = 2;
 }
 
 $conn->close();
+
+header("Location: session_matching.php?alert=" . $alert);
 
 ?>

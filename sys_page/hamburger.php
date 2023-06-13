@@ -18,23 +18,35 @@
 <?php
 //If the user is logged in show logout button rather than login button
 session_start(); ?>
-<div class="card"></div>
-<ul class="list-group list-group-flush">
-<li class="list-group-item"><?php
+
+<div class="list-group list-group-flush">
+<div class="list-group-item"><?php
 if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in
 {
-    echo "<p><a href='../login_form.php'>Login</a></p>"; //Show login button
+    echo "<p><a href='../login_form.php' class='list-group-item list-group-item-action'>Login</a></p>"; //Show login button
+    ?>
+    <a class="list-group-item disabled list-group-item-action">Menu</a>
+    <a class="list-group-item disabled list-group-item-action">Student Home</a>
+    <a class="list-group-item disabled list-group-item-action">Profile</a>
+    <a class="list-group-item disabled list-group-item-action">Tutor Others</a>
+    <a class="list-group-item disabled list-group-item-action">Set your free slots</a>
+    <a class="list-group-item disabled list-group-item-action">Tutorials</a>
+    <a class="list-group-item disabled list-group-item-action">Past Sessions</a>
+    <a class="list-group-item disabled list-group-item-action">Admin Dashboard</a><?php
 }
-else {echo "<p><a href='logout.php'>Logout</a></p>";}?></li>
-<li class="list-group-item"><a href="../sys_page/hamburger.php">Menu</a> </li>
-<li class="list-group-item"><a href="../user_home.php">Student Home</a> </li>
-<li class="list-group-item"><a href="../user_profile.php">Profile</a> </li>
-<li class="list-group-item"><a href="../session_matching.php">Tutor Others</a> </li>
-<li class="list-group-item"><a href="../calendar_1.php">Set your free slots</a> </li>
-<li class="list-group-item"><a href="../tutorial.php">Tutorials</a> </li>
-<li class="list-group-item"><a href="../past_sessions.php">Past Sessions</a> </li>
-<li class="list-group-item"><a href="../admin_view.php">Admin Dashboard</a> </li>
-</ul>
+else {echo "<p><a href='logout.php' class='list-group-item list-group-item-action'>Logout</a></p>"; ?>
+    <a class="list-group-item list-group-item-action" href="../sys_page/hamburger.php">Menu</a> 
+    <a class="list-group-item list-group-item-action" href="../user_home.php">Student Home</a> 
+    <a class="list-group-item list-group-item-action" href="../user_profile.php">Profile</a> 
+    <a class="list-group-item list-group-item-action" href="../session_matching.php">Tutor Others</a> 
+    <a class="list-group-item list-group-item-action" href="../calendar_1.php">Set your free slots</a> 
+    <a class="list-group-item list-group-item-action" href="../tutorial.php">Tutorials</a> 
+    <a class="list-group-item list-group-item-action" href="../past_sessions.php">Past Sessions</a> 
+    <a class="list-group-item list-group-item-action" href="../admin_view.php">Admin Dashboard</a> 
+<?php
+
+}?></div>
+</div>
     <h2><p><object data="testing" type=""></object></p></h2>
 </body>
 </html>

@@ -124,7 +124,7 @@ $tz = new DateTimeZone('NZ');
             <legend class="col-form-label col-sm-2 pt-0">Day of week</legend>
             <div class="col-sm-10">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="day_of_weeks" id="day_of_week1" value=1>
+                <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week1" value=1>
                 <label class="form-check-label" for="gridRadios1">
                   Monday
                 </label>

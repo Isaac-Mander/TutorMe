@@ -306,7 +306,7 @@ if(document.getElementById("notification_bell"))
 
 
                             tutor_name.innerHTML = notif_data[i]['tutor_name'];
-                            subject_name.innerHTML = notif_data[i]['subject'];
+                            subject_name.innerHTML = notif_data[i]['subject_name'];
                             time_start.innerHTML = notif_data[i]['session_start'];
                             time_end.innerHTML = notif_data[i]['session_end'];
                             

@@ -254,8 +254,7 @@ if(document.getElementById("notification_bell"))
         }
     }
 
-    //Set the notifications to update every few seconds
-    const notification_check_loop = setInterval(function() {
+    notif_function = function() {
         const xhttp = new XMLHttpRequest();
             xhttp.open("GET", "sys_page/notification_check.php");
             xhttp.send();
@@ -315,12 +314,16 @@ if(document.getElementById("notification_bell"))
                     }
 
                 }};
-    },5000)
+    }
+
+    //Set the notifications to update every few seconds
+    const notification_check_loop = setInterval(notif_function(),5000)
 }
 
 //If the session matching page is present
 if(document.getElementById("session_matching"))
 {
+    
     //Check if any alerts are present
     //Store the data from the ?xxx=xxx url
     var parts = window.location.search.substr(1).split("&");
@@ -365,7 +368,9 @@ if(document.getElementById("session_matching"))
     // table_id - subject_id  - tutee_id - tutor_id - start_time - end_time
 
     //Find all the elements with card as name
+    
     pot_sesssion_cards = document.getElementsByName("card");
+    
     for(var i = 0; i < pot_sesssion_cards.length; i++){
         pot_sesssion_cards[i].onclick = function() {
             modal_session_match.style.display = "block";

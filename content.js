@@ -286,7 +286,7 @@ if(document.getElementById("notification_bell"))
                             session_card.appendChild(time_start);
                             var time_end = document.createElement("p");
                             session_card.appendChild(time_end);
-
+                        
                             //Set up links for buttons
                             var accept_link = document.createElement("a");
                             session_card.appendChild(accept_link);
@@ -295,7 +295,7 @@ if(document.getElementById("notification_bell"))
                             
                             accept_link.href = "a_or_r_session.php?page=" + window.location.href + "&action=1&id=" + notif_data[i]['id'];
                             reject_link.href = "a_or_r_session.php?page=" + window.location.href + "&action=2&id=" + notif_data[i]['id'];
-
+                        
                             //Create ui buttons
                             var accept_button = document.createElement("button");
                             accept_link.appendChild(accept_button);
@@ -303,8 +303,8 @@ if(document.getElementById("notification_bell"))
                             var reject_button = document.createElement("button");
                             reject_link.appendChild(reject_button);
                             reject_button.innerHTML = "Reject session";
-
-
+                        
+                        
                             tutor_name.innerHTML = notif_data[i]['tutor_name'];
                             subject_name.innerHTML = notif_data[i]['subject_name'];
                             time_start.innerHTML = notif_data[i]['session_start'];
@@ -378,6 +378,9 @@ if(document.getElementById("session_matching"))
             modal_session_match.children[0].children[1].innerHTML = this.children[0].children[3].innerHTML;
             modal_session_match.children[0].children[2].innerHTML = this.children[0].children[4].innerHTML;
             
+
+            id_part_1 = this.id;
+
             //Add the next 10 dates to the dropdown menu
             //Get current date and time
             dropdown_date = document.getElementById("date");
@@ -392,8 +395,11 @@ if(document.getElementById("session_matching"))
                 //Create new option based on current date
                 let option = document.createElement("option");
                 option.innerHTML = d2;
-                option.id = d2.toISOString().slice(0, 19).replace('T', ' ');
+                option.id = d2.getFullYear() + "-" + (d2.getMonth()+1) + "-" + d2.getDate() + " " + (d2.getHours()+1) + ":" + (d2.getMinutes()+1) + ":" + (d2.getSeconds()+1) + ":" + "000000";
                 dropdown_date.appendChild(option);
+                option.onclick = function() {
+                    modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + this.id;         
+                }
             }
             var options = dropdown_date.options;
             var id      = options[options.selectedIndex].id;
@@ -415,8 +421,7 @@ if(document.getElementById("session_matching"))
 
 
             //Set the id of the session card as a value to send if submit is pressed
-            modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + this.id + "-" + id;
-            console.log(this.id + "-" + id)
+            modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + id;
         }
     }
 }

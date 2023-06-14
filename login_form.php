@@ -25,7 +25,7 @@ if(isset($_GET['error']))
     <p class="error_msg"><?php echo $error_msg; ?></p>
 
 <div id="login">
-        <h3 class="text-center text pt-5">Dexter Dark's login: dexter203 password</h3>
+        <h3 class="text-center text pt-5"></h3>
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">

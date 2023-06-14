@@ -45,12 +45,14 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
       $available_session_tutor_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=$user_id;";
       $status = TRUE;
       $available_tutor_times_data = get_session_select_data($available_session_tutor_times_sql, $conn, $status);
-
+      
       
       $available_session_tutee_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=$user_id;";
       $status = FALSE;
       $available_tutee_times_data = get_session_select_data($available_session_tutee_times_sql, $conn, $status);
       /*check for subject matches*/
+
+
       if(is_array($available_tutee_times_data)){
         if(is_array($available_tutor_times_data)){
           for($k=0; $k<sizeof($available_tutee_times_data); $k++){

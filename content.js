@@ -321,6 +321,18 @@ if(document.getElementById("notification_bell"))
 //If the session matching page is present
 if(document.getElementById("session_matching"))
 {
+    //Check if any alerts are present
+    //Store the data from the ?xxx=xxx url
+    var parts = window.location.search.substr(1).split("&");
+    var $_GET = {};
+    for (var i = 0; i < parts.length; i++) {
+        var temp = parts[i].split("=");
+        $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+    }
+    
+    if($_GET.alert == '1') {alert("The request was sent to the tutee");}
+    if($_GET.alert == '2') {alert("Something went wrong, try again later");}
+
     // Get the modal
     var modal_session_match = document.getElementById("session_accept_popup");
 
@@ -399,6 +411,7 @@ if(document.getElementById("session_matching"))
 
             //Set the id of the session card as a value to send if submit is pressed
             modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + this.id + "-" + id;
+            console.log(this.id + "-" + id)
         }
     }
 }

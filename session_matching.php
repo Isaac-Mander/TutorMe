@@ -39,7 +39,7 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
   <?php ?>
   <div class="card-body">
   <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
-  <div> <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
+  <div>  <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
   <div> <?php echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";?></div>
   <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
   <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>

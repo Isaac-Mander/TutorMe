@@ -24,7 +24,17 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
   $subject = $available_tutee_times_data[$k]['subject_name'][$y];
   $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
   $day_of_week = $days_of_week_array[$available_tutor_times_data[$l]['dayofweek']-1];
-  $card_id = $available_tutee_times_data[$k]['table_id'] . "-" . $available_tutee_times_data[$k]['subject_id'][$y] . "-" . $available_tutee_times_data[$k]['student_id'] . "-" . $user_id . "-" . $available_tutee_times_data[$k]['start_time'] . "-". $available_tutee_times_data[$k]['end_time'];?>
+  
+  //Check if the subject is a global subject
+  if(substr($available_tutee_times_data[$k]['subject_id'][$y],0,1) == "G") {
+    $is_global = true;
+    $subject_id = substr($available_tutee_times_data[$k]['subject_id'][$y],1,1);
+  }
+  else {
+    $is_global = false;
+    $subject_id = $available_tutee_times_data[$k]['subject_id'][$y];
+  }
+  $card_id = $available_tutee_times_data[$k]['table_id'] . "-" . $subject_id . "-" . $available_tutee_times_data[$k]['student_id'] . "-" . $user_id . "-" . $available_tutee_times_data[$k]['start_time'] . "-" . $available_tutee_times_data[$k]['end_time'] . "-" . $is_global;?>
   <div id = '<?php echo $card_id; ?>' class='card mx-auto' name="card" style="width: 18rem;"> 
   <?php ?>
   <div class="card-body">
@@ -74,7 +84,7 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
                             //Get the relivant data and create a card for a tutor to click on
                             $potential_starttime = $available_tutee_times_data[$k]['start_time'];
                             $potential_endtime = $available_tutee_times_data[$k]['end_time'];
-                            create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y);
+                            create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
                           }
                         }
                       }
@@ -90,7 +100,7 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
                             
                               $potential_starttime = $available_tutee_times_data[$k]['start_time'];
                               $potential_endtime = $available_tutor_times_data[$l]['end_time'];
-                              create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y);
+                              create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
                             }
                           }
                         }
@@ -104,7 +114,7 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
                               //Get the relivant data and create a card for a tutor to click on
                               $potential_starttime = $available_tutee_times_data[$k]['start_time'];
                               $potential_endtime = $available_tutee_times_data[$k]['end_time'];
-                              create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y);
+                              create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
                             }
                           }
                         }

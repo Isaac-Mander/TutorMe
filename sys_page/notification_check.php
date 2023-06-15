@@ -39,9 +39,21 @@ if ($result->num_rows > 0) {
         $potential_session_array[$index]['session_end'] = $row['session_end'];
         $potential_session_array[$index]['is_active'] = $row['is_active'];
 
-        //Use the correct subject
-        if($row['global_subject_id'] == 0) {$potential_session_array[$index]['subject'] = $row['local_subject_id'];}
-        else {$potential_session_array[$index]['subject'] = $row['global_subject_id'];}
+         //Resolve subject name
+         //Check which database to use
+        if($row['global_subject_id'] == 0) {
+            $subject_id = $row['local_subject_id'];
+            $name_sql = "SELECT `name` FROM `6969_subjects` WHERE `id`= '$subject_id'";
+        }
+        else {
+            $subject_id = $row['global_subject_id'];
+            $name_sql = "SELECT `name` FROM `subjects` WHERE `id`= '$subject_id'";
+        }
+        //Get the subject name
+        $name_results = $conn->query($name_sql);
+        $name_data = $name_results->fetch_assoc();
+
+        $potential_session_array[$index]['subject_name'] = $name_data['name'];
         $index += 1;
     }
 

@@ -24,12 +24,22 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
   $subject = $available_tutee_times_data[$k]['subject_name'][$y];
   $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
   $day_of_week = $days_of_week_array[$available_tutor_times_data[$l]['dayofweek']-1];
-  $card_id = $available_tutee_times_data[$k]['table_id'] . "-" . $available_tutee_times_data[$k]['subject_id'][$y] . "-" . $available_tutee_times_data[$k]['student_id'] . "-" . $user_id . "-" . $available_tutee_times_data[$k]['start_time'] . "-". $available_tutee_times_data[$k]['end_time'];?>
+  
+  //Check if the subject is a global subject
+  if(substr($available_tutee_times_data[$k]['subject_id'][$y],0,1) == "G") {
+    $is_global = true;
+    $subject_id = substr($available_tutee_times_data[$k]['subject_id'][$y],1,1);
+  }
+  else {
+    $is_global = false;
+    $subject_id = $available_tutee_times_data[$k]['subject_id'][$y];
+  }
+  $card_id = $available_tutee_times_data[$k]['table_id'] . "-" . $subject_id . "-" . $available_tutee_times_data[$k]['student_id'] . "-" . $user_id . "-" . $available_tutee_times_data[$k]['start_time'] . "-" . $available_tutee_times_data[$k]['end_time'] . "-" . $is_global;?>
   <div id = '<?php echo $card_id; ?>' class='card mx-auto' name="card" style="width: 18rem;"> 
   <?php ?>
   <div class="card-body">
   <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
-  <div> <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
+  <div>  <?php echo "<p id='potential_starttime'>" . $potential_starttime . "</p>";?></div>
   <div> <?php echo "<p id='potential_endtime'>" . $potential_endtime . "</p>";?></div>
   <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
   <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>
@@ -45,55 +55,27 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
       $available_session_tutor_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id=$user_id;";
       $status = TRUE;
       $available_tutor_times_data = get_session_select_data($available_session_tutor_times_sql, $conn, $status);
-
+      
       
       $available_session_tutee_times_sql = "SELECT 6969_student_times.id, 6969_student_times.student_id, 6969_student_times.session_start, 6969_student_times.session_end, 6969_student_times.day_of_week, 6969_students.name FROM 6969_student_times INNER JOIN 6969_students ON 6969_student_times.student_id=6969_students.id WHERE 6969_student_times.student_id!=$user_id;";
       $status = FALSE;
       $available_tutee_times_data = get_session_select_data($available_session_tutee_times_sql, $conn, $status);
       /*check for subject matches*/
 
-        for($k=0; $k<sizeof($available_tutee_times_data); $k++){
 
-          for($l=0; $l<sizeof($available_tutor_times_data); $l++){
-            if(isset($available_tutee_times_data[$k]['subject_id'])){
-              if(isset($available_tutor_times_data[$l]['subject_id'])){
-            //If the selected tutor and tutee have the same subject
-              //If the selected tutor and tutee potential time has the same day of the week
-              if($available_tutee_times_data[$k]['dayofweek'] == $available_tutor_times_data[$l]['dayofweek']){
-                //If the selected tutee has a potential start time which is above or equal to the tutor start time
-                if ($available_tutee_times_data[$k]['start_time']>= $available_tutor_times_data[$l]['start_time']){
-                  //If the selected tutee has a potential end time which is below or equal to the tutor end time
-                  if($available_tutee_times_data[$k]['end_time']<= $available_tutor_times_data[$l]['end_time']){
-                    //If the selected tutor and tutee have the same subject
-                    for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
-                      for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
-                        if ($available_tutee_times_data[$k]['subject_id'][$y] == $available_tutor_times_data[$l]['subject_id'][$t]) {
-                          //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
-                          //Get the relivant data and create a card for a tutor to click on
-                          $potential_starttime = $available_tutee_times_data[$k]['start_time'];
-                          $potential_endtime = $available_tutee_times_data[$k]['end_time'];
-                          create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
-                        }
-                      }
-                    }
-                  } 
-                  elseif ($available_tutee_times_data[$k]['start_time'] < $available_tutor_times_data[$l]['end_time']) {
-                    if ($available_tutee_times_data[$k]['end_time'] > $available_tutor_times_data[$l]['end_time']){
-                      //If the selected tutor and tutee have the same subject
-                      for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
-                        for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
-                          if ($available_tutee_times_data[$k]['subject_id'][$y] == $available_tutor_times_data[$l]['subject_id'][$t]) {
-                            //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
-                            //Get the relivant data and create a card for a tutor to click on
-                          
-                            $potential_starttime = $available_tutee_times_data[$k]['start_time'];
-                            $potential_endtime = $available_tutor_times_data[$l]['end_time'];
-                            create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
-                          }
-                        }
-                      }
-                    } 
-                    elseif($available_tutee_times_data[$k]['end_time'] < $available_tutor_times_data[$l]['end_time']){
+      if(is_array($available_tutee_times_data)){
+        if(is_array($available_tutor_times_data)){
+          for($k=0; $k<sizeof($available_tutee_times_data); $k++){
+            for($l=0; $l<sizeof($available_tutor_times_data); $l++){
+              if(isset($available_tutee_times_data[$k]['subject_id'])){
+                if(isset($available_tutor_times_data[$l]['subject_id'])){
+              //If the selected tutor and tutee have the same subject
+                //If the selected tutor and tutee potential time has the same day of the week
+                if($available_tutee_times_data[$k]['dayofweek'] == $available_tutor_times_data[$l]['dayofweek']){
+                  //If the selected tutee has a potential start time which is above or equal to the tutor start time
+                  if ($available_tutee_times_data[$k]['start_time']>= $available_tutor_times_data[$l]['start_time']){
+                    //If the selected tutee has a potential end time which is below or equal to the tutor end time
+                    if($available_tutee_times_data[$k]['end_time']<= $available_tutor_times_data[$l]['end_time']){
                       //If the selected tutor and tutee have the same subject
                       for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
                         for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
@@ -106,34 +88,65 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
                           }
                         }
                       }
-                    }      
-                  }
-                } 
-                else if ($available_tutee_times_data[$k]['end_time'] > $available_tutor_times_data[$l]['start_time']) {
-                  if ($available_tutee_times_data[$k]['end_time'] > $available_tutor_times_data[$l]['end_time']){
-                    //If the selected tutor and tutee have the same subject
-                    for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
-                      for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
-                        if ($available_tutee_times_data[$k]['subject_id'][$y] == $available_tutor_times_data[$l]['subject_id'][$t]) {
-                          //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
-                          //Get the relivant data and create a card for a tutor to click on
-                          $potential_starttime = $available_tutor_times_data[$l]['start_time'];
-                          $potential_endtime = $available_tutor_times_data[$l]['end_time'];
-                          create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
+                    } 
+                    elseif ($available_tutee_times_data[$k]['start_time'] < $available_tutor_times_data[$l]['end_time']) {
+                      if ($available_tutee_times_data[$k]['end_time'] > $available_tutor_times_data[$l]['end_time']){
+                        //If the selected tutor and tutee have the same subject
+                        for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
+                          for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
+                            if ($available_tutee_times_data[$k]['subject_id'][$y] == $available_tutor_times_data[$l]['subject_id'][$t]) {
+                              //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
+                              //Get the relivant data and create a card for a tutor to click on
+                            
+                              $potential_starttime = $available_tutee_times_data[$k]['start_time'];
+                              $potential_endtime = $available_tutor_times_data[$l]['end_time'];
+                              create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
+                            }
+                          }
                         }
-                      }
+                      } 
+                      elseif($available_tutee_times_data[$k]['end_time'] < $available_tutor_times_data[$l]['end_time']){
+                        //If the selected tutor and tutee have the same subject
+                        for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
+                          for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
+                            if ($available_tutee_times_data[$k]['subject_id'][$y] == $available_tutor_times_data[$l]['subject_id'][$t]) {
+                              //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
+                              //Get the relivant data and create a card for a tutor to click on
+                              $potential_starttime = $available_tutee_times_data[$k]['start_time'];
+                              $potential_endtime = $available_tutee_times_data[$k]['end_time'];
+                              create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
+                            }
+                          }
+                        }
+                      }      
                     }
                   } 
-                  else{
-                    //If the selected tutor and tutee have the same subject
-                    for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
-                      for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
-                        if ($available_tutee_times_data[$k]['subject_id'][$y] == $available_tutor_times_data[$l]['subject_id'][$t]) {
-                          //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
-                          //Get the relivant data and create a card for a tutor to click on
-                          $potential_starttime = $available_tutor_times_data[$l]['start_time'];
-                          $potential_endtime = $available_tutee_times_data[$k]['end_time'];
-                          create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
+                  else if ($available_tutee_times_data[$k]['end_time'] > $available_tutor_times_data[$l]['start_time']) {
+                    if ($available_tutee_times_data[$k]['end_time'] > $available_tutor_times_data[$l]['end_time']){
+                      //If the selected tutor and tutee have the same subject
+                      for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
+                        for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
+                          if ($available_tutee_times_data[$k]['subject_id'][$y] == $available_tutor_times_data[$l]['subject_id'][$t]) {
+                            //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
+                            //Get the relivant data and create a card for a tutor to click on
+                            $potential_starttime = $available_tutor_times_data[$l]['start_time'];
+                            $potential_endtime = $available_tutor_times_data[$l]['end_time'];
+                            create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
+                          }
+                        }
+                      }
+                    } 
+                    else{
+                      //If the selected tutor and tutee have the same subject
+                      for ($y=0; $y<sizeof($available_tutee_times_data[$k]['subject_name']); $y++){
+                        for ($t=0; $t<sizeof($available_tutor_times_data[$l]['subject_name']); $t++){
+                          if ($available_tutee_times_data[$k]['subject_id'][$y] == $available_tutor_times_data[$l]['subject_id'][$t]) {
+                            //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
+                            //Get the relivant data and create a card for a tutor to click on
+                            $potential_starttime = $available_tutor_times_data[$l]['start_time'];
+                            $potential_endtime = $available_tutee_times_data[$k]['end_time'];
+                            create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
+                          }
                         }
                       }
                     }
@@ -143,8 +156,79 @@ function create_card($available_tutee_times_data,$available_tutor_times_data,$k,
             }
           }
         }
+
+        }else{
+          echo"我坐在椅子上 看日出复活
+          我坐在夕阳里 看城市的衰弱
+          我摘下一片叶子 让它代替我
+          观察离开后的变化
+          曾经狂奔舞蹈贪婪的说话
+          随着冷的湿的心腐化
+          带不走的丢不掉的让大雨侵蚀吧
+          让他推向我在边界奋不顾身挣扎
+          如果有一个怀抱勇敢不计代价
+          别让我飞 将我温柔豢养
+          　　
+          我坐在椅子上 看日出复活
+          我坐在夕阳里 看城市的衰弱
+          我摘下一片叶子 让它代替我
+          观察离开后的变化
+          曾经狂奔舞蹈 贪婪的说话
+          随着冷的湿的心腐化
+          带不走的留不下的我全都交付他
+          让他捧着我在手掌自由自在挥洒
+          如果有一个世界浑浊的不像话
+          原谅我飞 曾经眷恋太阳
+          　　
+          带不走的丢不掉的让大雨侵蚀吧
+          让他推向我在边界奋不顾身挣扎
+          如果有一个世界浑浊的不像话
+          我会疯狂的爱上
+          带不走的留不下的我全都交付他
+          让他捧着我在手掌自由自在挥洒
+          如果有一个怀抱勇敢不计代价
+          别让我飞 将我温柔豢养
+          原谅我飞 曾经眷恋太阳"."<br>"."Absolute banger, also you have no potential sessions set"."</br>";
+        }
+      }else{
+        echo"徐徐回望 曾屬於彼此的晚上
+        紅紅仍是你 贈我的心中艷陽
+        如流傻淚 祈望可體恤兼見諒
+        明晨離別你 路也許孤單得漫長
+        一瞬間 太多東西要講
+        可惜即將在各一方
+        只好深深把這刻盡凝望
+        來日縱使千千闋歌 飄於遠方我路上
+        來日縱使千千晚星 亮過今晚月亮
+        都比不起這宵美麗
+        亦絕不可使我更欣賞
+        Ah 因你今晚共我唱
+        臨行臨別 才頓感哀傷的漂亮
+        原來全是你 令我的思憶漫長
+        何年何月 才又可今宵一樣
+        停留凝望裡 讓眼睛講彼此立場
+        當某天 雨點輕敲你窗
+        當風聲吹亂你構想
+        可否抽空想這張舊模樣
+        來日縱使千千闋歌 飄於遠方我路上
+        來日縱使千千晚星 亮過今晚月亮
+        都比不起這宵美麗
+        亦絕不可使我更欣賞
+        Ah 因你今晚共我唱
+        Ah 怎都比不起這宵美麗
+        亦絕不可使我更欣賞
+        因今宵的我可共你唱
+        來日縱使千千闋歌 飄於遠方我路上
+        來日縱使千千晚星 亮過今晚月亮
+        都比不起這宵美麗
+        亦絕不可使我更欣賞
+        Ah 因你今晚共我唱
+        來日縱使千千闋歌 飄於遠方我路上
+        來日縱使千千晚星 亮過今晚月亮
+        都比不起這宵美麗
+        都洗不清今晚我所想
+        因不知哪天再共你唱"."<br>"."Absolute banger, also there are no other users with a potential session set"."</br>";
       }
-        
       
       ?>
 <!doctype html>

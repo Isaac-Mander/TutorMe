@@ -188,7 +188,6 @@ if(document.getElementById("profile_edit_button"))
                     window.location = "http://localhost/dashboard/TutorMe";
                 }
                 if (this.readyState == 4 && this.status == 200) {
-                    console.log(this.responseText);
                     //Create the new subjects if needed
                     window.location.reload();
                 }};
@@ -273,7 +272,6 @@ if(document.getElementById("notification_bell"))
                             notif_content.removeChild(notif_content.firstChild);
                             }
                         for(var i = 0; i < notif_data.length; i++){
-                            console.log(notif_data[i]);
                             //Create the relevant session requests
                             var session_card = document.createElement("div");
                             session_card.className = "session_card";
@@ -422,6 +420,48 @@ if(document.getElementById("session_matching"))
 
             //Set the id of the session card as a value to send if submit is pressed
             modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + id;
+        }
+    }
+}
+
+//If the sessions page is present
+if(document.getElementById("session_page_marker"))
+{
+    var contact_detail_content = document.getElementById("contact_detail_content");
+
+    var contact_detail_btn = document.getElementById("button");
+    // Get the modal
+    var contact_detail_modal = document.getElementById("contact_detail_popup");
+
+    // Get the <span> element that closes the modal
+    var contact_detail_span = document.getElementsByClassName("contact_detail_close")[0];
+
+    
+
+    // When the user clicks the button, open the modal 
+    contact_detail_btn.onclick = function() {
+        contact_detail_modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    contact_detail_span.onclick = function() {
+        contact_detail_modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == contact_detail_modal) {
+            contact_detail_modal.style.display = "none";
+        }
+    }
+
+    sesssion_cards = [];
+    //Find all the elements with card as name
+    sesssion_cards = document.getElementsByName("card");
+    for(var i = 0; i < sesssion_cards.length; i++){
+        sesssion_cards[i].onclick = function() {
+            contact_detail_modal.style.display = "block";
+            
         }
     }
 }

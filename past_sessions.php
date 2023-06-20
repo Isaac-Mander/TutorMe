@@ -56,6 +56,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $minutes = substr($session_combined_data[$i][2],14,2);
         $session_time = mktime($hour,$minutes,0,$month,$day,$year);
         if ($time > $session_time){
+              $check = 1;
               //looping through all of the lines of the array
               $day = substr($session_combined_data[$i][1],0,10); //setting the day value
               $starttime = substr($session_combined_data[$i][1],11,8); //setting the start time

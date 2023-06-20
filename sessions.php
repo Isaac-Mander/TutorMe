@@ -14,6 +14,7 @@ $user_id = $_SESSION['user_id'];
 include("sys_page/header.html");
 include("sys_page/db_connect.php");
 include("sys_page/functions.php");
+
 $check = 0;
 //Get the sessions this user is tutoring today
 $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";  
@@ -52,7 +53,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
                 <p class="card-text"><?php echo $day."  Start time: ".$starttime ."  End time: ".$endtime  ?></p></div></div>  <?php
-
+                $check=1;
               }
         }     ?> </div>  <?php
         ?> 
@@ -75,10 +76,13 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
             $subject = $session_combined_data[$i][8]; //setting subject name
       ?>   <div class="col" > <div id="session_card" class='card'><?php
       echo ($tutor." tutoring ".$tutee."<br>"."Subject: ".$subject."<br>".$day."<br>"."Start time: ".$starttime . "<br>"."End time: ".$endtime);?> </div> </div>  <?php
-      
+      $check=2;
       }
     }
     ?> </div></div><?php
+}
+if ($check == 0){
+  echo"there are no sessions, pleasing organise a session.";
 }
 ?>
 <!doctype html>
@@ -87,6 +91,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
+    <link rel="stylesheet" href="sys_page/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>

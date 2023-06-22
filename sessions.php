@@ -76,7 +76,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
-            <h3 class="col text-center py-1 m-0">Weekly</h3>
+            <h3 class="col text-center py-1 m-0">Confirmed</h3>
             <div class="col red_box extra_rounded_tr"></div>
         </div>
         <div class="row row-cols-1 row-cols-md-3 gx-5"><?php
@@ -90,8 +90,13 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
             $tutor = $session_combined_data[$i][6]; //setting tutor name
             $subject = $session_combined_data[$i][8]; //setting subject name
       ?>   <div class="col" > <div name="card" id="session_card" class='card'><?php
-      echo ($tutor." tutoring ".$tutee."<br>"."Subject: ".$subject."<br>".$day."<br>"."Start time: ".$starttime . "<br>"."End time: ".$endtime);?> </div> </div>  <?php
-      
+      echo "<div class=row>" . "<p class=col>Tutor: </p><p class=col id=tutor>".$tutor."</p>" . "</div>";
+      echo "<div class=row>" . "<p class=col>Tutee: </p><p class=col id=tutee>".$tutee."</p>" . "</div>";
+      echo "<div class=row>" . "<p class=col>Subject: </p><p class=col id=subject>".$subject."</p>" . "</div>";
+      echo "<div class=row>" . "<p class=col>Date : </p><p class=col id=day>".$day."</p>" . "</div>";
+      echo "<div class=row>" . "<p class=col>Start time: </p><p class=col id=starttime>".$starttime."</p>" . "</div>";
+      echo "<div class=row>" . "<p class=col>End time: </p><p class=col id=endtime>".$endtime."</p>" . "</div>";
+      ?> </div> </div>  <?php
       }
     }
     ?> </div></div><?php
@@ -102,13 +107,18 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
     <div class="contact_detail_popup_content">
       <span class="contact_detail_close">&times;</span>
       <div id="contact_detail_content">
-        <img class="rounded-circle img-fluid w-25" src="sys_img/dev_icon.jpg" alt="">
-        <p>And</p>
-        <img class="rounded-circle img-fluid w-25" src="sys_img/dev_icon.jpg" alt="">
+        <div class="row">
+          <div class="col"></div>
+        <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
+        <p class="col text-center">And</p>
+        <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
+        </div>
         
         <h3>General info</h3>
-        <p>Other user name</p>
+        <p>Tutor name</p>
+        <p>Tutee name</p>
         <p>Subject Name</p>
+        <p>Date</p>
         <p>Start time</p>
         <p>End time</p>
 

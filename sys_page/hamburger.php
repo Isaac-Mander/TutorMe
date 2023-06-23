@@ -25,7 +25,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 {
     echo "<p><a href='../login_form.php' class='list-group-item list-group-item-action'>Login</a></p>"; //Show login button
     ?>
-    <a class="list-group-item disabled list-group-item-action">Menu</a>
+    <a class="list-group-item disabled list-group-item-action">Sessions</a>
     <a class="list-group-item disabled list-group-item-action">Student Home</a>
     <a class="list-group-item disabled list-group-item-action">Profile</a>
     <a class="list-group-item disabled list-group-item-action">Tutor Others</a>
@@ -35,7 +35,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     <a class="list-group-item disabled list-group-item-action">Admin Dashboard</a><?php
 }
 else {echo "<p><a href='logout.php' class='list-group-item list-group-item-action'>Logout</a></p>"; ?>
-    <a class="list-group-item list-group-item-action" href="../sys_page/hamburger.php">Menu</a> 
+    <a class="list-group-item list-group-item-action" href="../sessions.php">Sessions</a> 
     <a class="list-group-item list-group-item-action" href="../user_home.php">Student Home</a> 
     <a class="list-group-item list-group-item-action" href="../user_profile.php">Profile</a> 
     <a class="list-group-item list-group-item-action" href="../session_matching.php">Tutor Others</a> 

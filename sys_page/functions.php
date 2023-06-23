@@ -43,6 +43,7 @@ function get_session_data($sql,$conn)
             $tutor_session_data[$session_index][8] = $data2['name'];//Subject english name
             
             //Increment the session index the data is stored under
+            $tutor_session_data[$session_index][9] = $row['is_active'];
             $session_index += 1;
         }
         return $tutor_session_data;
@@ -67,6 +68,7 @@ function get_available_session_data($sql,$conn)
             $tutor_session_data[$session_index][2] = $row['session_end']; //Session end time
             $tutor_session_data[$session_index][3] = $row['day_of_week'];//The day of the week Monday-Sunday in a 1-7 format
             $tutor_session_data[$session_index][4] = $row['id']; //Id in table
+            
             //Increment the session index the data is stored under
             $session_index += 1;
         }

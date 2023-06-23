@@ -129,10 +129,36 @@ if ($check == 0){
 
         <h3>Contact info</h3>
         <p>Email/Phone number</p>
+        <p><button class="btn  btn-primary" onclick="copy_text('copy_email_text')" id="button" type="button">Copy Draft Email</button></p>
+        <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
       </div>
     </div>
   </div>
-
+  <div id="copy_email_text" style="display:none;">    
+    <p class="card">
+冷暖哪可休
+回头多少个秋
+寻遍了却偏失去
+未盼却在手
+我得到没有
+没法解释得失错漏
+刚刚听到望到便更改
+不知哪里追究
+</p></div>
+  <script>
+    function copy_text(id)
+    {
+    var r = document.createRange();
+    r.selectNode(document.getElementById(id));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    // Copy the text inside the text field
+    // Alert the copied text
+    alert("Copied the text: " + r);
+    }
+    </script>
   
     <div id="session_page_marker"></div>
     <script src="content.js"></script>

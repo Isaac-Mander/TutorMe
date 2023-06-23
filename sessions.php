@@ -15,6 +15,8 @@ include("sys_page/db_connect.php");
 include("sys_page/functions.php");
 
 
+$check = 0;
+
 //Get the sessions this user is tutoring today
 $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";  
 $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
@@ -68,7 +70,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
                 <p class="card-text"><?php echo $day."  Start time: ".$starttime ."  End time: ".$endtime  ?></p></div></div>  <?php
-
+                $check=1;
               }
         }     ?> </div>  <?php
         ?> 
@@ -97,12 +99,15 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
       echo "<div class=row>" . "<p class=col>Start time: </p><p class=col id=starttime>".$starttime."</p>" . "</div>";
       echo "<div class=row>" . "<p class=col>End time: </p><p class=col id=endtime>".$endtime."</p>" . "</div>";
       ?> </div> </div>  <?php
+      $check=2;
       }
     }
     ?> </div></div><?php
 }
+if ($check == 0){
+  echo"there are no sessions, pleasing organise a session.";
+}
 ?>
-
   <div id="contact_detail_popup" class="contact_detail_popup">
     <div class="contact_detail_popup_content">
       <span class="contact_detail_close">&times;</span>
@@ -131,6 +136,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
   
     <div id="session_page_marker"></div>
     <script src="content.js"></script>
+    <link rel="stylesheet" href="sys_page/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   </body>
 </html>

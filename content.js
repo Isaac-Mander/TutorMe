@@ -461,7 +461,7 @@ if(document.getElementById("session_page_marker"))
     console.log(sesssion_cards);
     for(var i = 0; i < sesssion_cards.length; i++){
         sesssion_cards[i].onclick = function() {
-
+            console.log(this.children);
             //Get data from card p tags
             var tutor = this.children[0].children[1].innerHTML;
             var tutee = this.children[1].children[1].innerHTML;
@@ -470,6 +470,13 @@ if(document.getElementById("session_page_marker"))
             var starttime = this.children[4].children[1].innerHTML;
             var endtime = this.children[5].children[1].innerHTML;
 
+
+            var tutor_email = this.children[6].innerHTML;
+            var tutor_phone = this.children[7].innerHTML;
+            var tutee_email = this.children[8].innerHTML;
+            var tutee_phone = this.children[9].innerHTML;
+
+            
         
 
 
@@ -490,8 +497,17 @@ if(document.getElementById("session_page_marker"))
             //Set End time
             contact_detail_content.children[7].innerHTML = "<b>Latest end time:</b> "+endtime;
 
+
+            
             //Set Contact Details
-            contact_detail_content.children[9].innerHTML = 6;
+
+            //Tutor Contact
+            contact_detail_content.children[9].innerHTML = "<b>Tutor Email:</b> "+tutor_email;
+            contact_detail_content.children[10].innerHTML = "<b>Tutor Phone Num:</b> "+tutor_phone;
+            
+            //Tutor Contact
+            contact_detail_content.children[11].innerHTML = "<b>Tutee Email:</b> "+tutee_email;
+            contact_detail_content.children[12].innerHTML = "<b>Tutee Phone Num:</b> "+tutee_phone;
         }
     }
 }

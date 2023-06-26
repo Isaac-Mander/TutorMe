@@ -12,7 +12,6 @@ function get_session_data($sql,$conn)
         $tutor_session_data = []; //Output data of each row into an array of session ids
         $session_index = 0;
         while($row = $result->fetch_assoc()) {
-            
             $tutor_session_data[$session_index][0] = $row['id']; //Tutor Session Id
             $tutor_session_data[$session_index][1] = $row['session_start']; //Session start time
             $tutor_session_data[$session_index][2] = $row['session_end']; //Session end time
@@ -20,17 +19,29 @@ function get_session_data($sql,$conn)
             $tutee_id = $tutor_session_data[$session_index][3]; //Set variable to session tutee id for sql query
             $tutor_session_data[$session_index][5] = $row['tutor_id']; //Session tutor id
             $tutor_id = $tutor_session_data[$session_index][5]; //Set variable to session tutor id for sql query
-            //Query the student list to get the tutee's name
-            $sql_tutee_name = "SELECT name FROM 6969_students WHERE id=$tutee_id";
+            //Query the student list to get the tutee's name + contact_details
+            $sql_tutee_name = "SELECT name, email, phone FROM 6969_students WHERE id=$tutee_id";
             $result_tutee = $conn->query($sql_tutee_name);
             $data = $result_tutee->fetch_assoc();
             $tutor_session_data[$session_index][4] = $data['name'];//Tutee name
+            //Get contact details of tutee
+            if($data['email'] == NULL) {$email = "Not set by user";}
+            else {$email = $data['email'];}
+            if($data['phone'] == NULL) {$phone = "Not set by user";}
+            else {$phone = $data['phone'];}
+            $tutor_session_data[$session_index][10] = array($email,$phone);
 
-            //Query the student list to get the tutor's name
-            $sql_tutor_name = "SELECT name FROM 6969_students WHERE id=$tutor_id";
+            //Query the student list to get the tutor's name + contact_details
+            $sql_tutor_name = "SELECT name, email, phone FROM 6969_students WHERE id=$tutor_id";
             $result_tutor = $conn->query($sql_tutor_name);
             $data = $result_tutor->fetch_assoc();
             $tutor_session_data[$session_index][6] = $data['name'];//Tutor name
+            //Get contact details of tutor
+            if($data['email'] == NULL) {$email = "Not set by user";}
+            else {$email = $data['email'];}
+            if($data['phone'] == NULL) {$phone = "Not set by user";}
+            else {$phone = $data['phone'];}
+            $tutor_session_data[$session_index][11] = array($email,$phone);
 
             //Each tutor session can only have a single subject. This program will filter out any id that is zero
             if($row['global_subject_id'] == 0) $tutor_session_data[$session_index][7] = $row['local_subject_id']; //Session subject
@@ -41,9 +52,13 @@ function get_session_data($sql,$conn)
             $result_subject = $conn->query($sql_subject_name);
             $data2 = $result_subject->fetch_assoc();
             $tutor_session_data[$session_index][8] = $data2['name'];//Subject english name
+      
             
             //Increment the session index the data is stored under
             $tutor_session_data[$session_index][9] = $row['is_active'];
+
+
+
             $session_index += 1;
         }
         return $tutor_session_data;

@@ -37,11 +37,11 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
   </head>
   <body>
   <button id="button">Click here</button>
-
   <?php
 
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
     $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
+    ?><pre><?php print_r($session_today_tutee_data);?></pre><?php
   } else {
     // Handle the case where one or both variables is not an array
     // For example:
@@ -96,6 +96,10 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
       echo "<div class=row>" . "<p class=col>Date : </p><p class=col id=day>".$day."</p>" . "</div>";
       echo "<div class=row>" . "<p class=col>Start time: </p><p class=col id=starttime>".$starttime."</p>" . "</div>";
       echo "<div class=row>" . "<p class=col>End time: </p><p class=col id=endtime>".$endtime."</p>" . "</div>";
+      echo "<div class=hide_on_start>".$session_combined_data[$i][11][0]."</div>";
+      echo "<div class=hide_on_start>".$session_combined_data[$i][11][1]."</div>";
+      echo "<div class=hide_on_start>".$session_combined_data[$i][10][0]."</div>";
+      echo "<div class=hide_on_start>".$session_combined_data[$i][10][1]."</div>";
       ?> </div> </div>  <?php
       }
     }
@@ -123,6 +127,9 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         <p>End time</p>
 
         <h3>Contact info</h3>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
         <p>Email/Phone number</p>
       </div>
     </div>

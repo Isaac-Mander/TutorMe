@@ -385,18 +385,23 @@ if(document.getElementById("session_matching"))
             while (dropdown_date.hasChildNodes()) {
                 dropdown_date.removeChild(dropdown_date.firstChild);
               }
-            start_day = weekday.findIndex((element) => element > this.children[0].children[4].innerHTML) + 1;
-            for (let i = 1; i < 11; i++)
+            start_day = weekday.indexOf(this.children[0].children[4].textContent.substr(1, this.children[0].children[4].textContent.length-1));
+
+            for (let i = 0; i < 11; i++)
             {
-                var d2 = new Date();
-                d2 = new Date(d2.setDate(d2.getDate() + 7*i + start_day - d2.getDay()));
-                //Create new option based on current date
-                let option = document.createElement("option");
-                option.innerHTML = d2;
-                option.id = d2.getFullYear() + "-" + (d2.getMonth()+1) + "-" + d2.getDate() + " " + (d2.getHours()+1) + ":" + (d2.getMinutes()+1) + ":" + (d2.getSeconds()+1) + ":" + "000000";
-                dropdown_date.appendChild(option);
-                option.onclick = function() {
-                    modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + this.id;         
+                var current_date = new Date();
+                potential_date = new Date(current_date.setDate(current_date.getDate() + 7*i + start_day - current_date.getDay()));
+                var current_date = new Date();
+                if(current_date < potential_date) //If time is not in the past create element for option
+                {
+                    //Create new option based on current date
+                    let option = document.createElement("option");
+                    option.innerHTML = potential_date;
+                    option.id = potential_date.getFullYear() + "-" + (potential_date.getMonth()+1) + "-" + potential_date.getDate() + " " + (potential_date.getHours()+1) + ":" + (potential_date.getMinutes()+1) + ":" + (potential_date.getSeconds()+1) + ":" + "000000";
+                    dropdown_date.appendChild(option);
+                    option.onclick = function() {
+                        modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + this.id;         
+                    }
                 }
             }
             var options = dropdown_date.options;

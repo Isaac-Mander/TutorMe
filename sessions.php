@@ -38,8 +38,6 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
-  <button id="button">Click here</button>
-
   <?php
 
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
@@ -98,6 +96,10 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
       echo "<div class=row>" . "<p class=col>Date : </p><p class=col id=day>".$day."</p>" . "</div>";
       echo "<div class=row>" . "<p class=col>Start time: </p><p class=col id=starttime>".$starttime."</p>" . "</div>";
       echo "<div class=row>" . "<p class=col>End time: </p><p class=col id=endtime>".$endtime."</p>" . "</div>";
+      echo "<div class=hide_on_start>".$session_combined_data[$i][11][0]."</div>";
+      echo "<div class=hide_on_start>".$session_combined_data[$i][11][1]."</div>";
+      echo "<div class=hide_on_start>".$session_combined_data[$i][10][0]."</div>";
+      echo "<div class=hide_on_start>".$session_combined_data[$i][10][1]."</div>";
       ?> </div> </div>  <?php
       $check=2;
       }
@@ -128,6 +130,9 @@ if ($check == 0){
         <p>End time</p>
 
         <h3>Contact info</h3>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
         <p>Email/Phone number</p>
       </div>
     </div>

@@ -434,19 +434,13 @@ if(document.getElementById("session_page_marker"))
 {
     var contact_detail_content = document.getElementById("contact_detail_content");
 
-    var contact_detail_btn = document.getElementById("button");
     // Get the modal
     var contact_detail_modal = document.getElementById("contact_detail_popup");
 
     // Get the <span> element that closes the modal
     var contact_detail_span = document.getElementsByClassName("contact_detail_close")[0];
 
-    
 
-    // When the user clicks the button, open the modal 
-    contact_detail_btn.onclick = function() {
-        contact_detail_modal.style.display = "block";
-    }
 
     // When the user clicks on <span> (x), close the modal
     contact_detail_span.onclick = function() {

@@ -43,7 +43,6 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
     $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
-    ?><pre><?php print_r($session_today_tutee_data);?></pre><?php
   } else {
     // Handle the case where one or both variables is not an array
     // For example:

@@ -77,6 +77,7 @@ $tz = new DateTimeZone('NZ');
       //only having the initial view
       initialView: 'timeGridWeek',
       initialDate:  '<?php echo $date?>',
+      allDaySlot: false,
       navLinks: true, // can click day/week names to navigate views
       dayMaxEvents: true, // allow "more" link when too many events
       events: <?php echo $JsonEvents ?> //uploading all of the events

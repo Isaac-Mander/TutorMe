@@ -38,6 +38,9 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
+
+  <button id="button">Click here</button>
+
   <?php
 
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
@@ -131,14 +134,22 @@ if ($check == 0){
 
         <h3>Contact info</h3>
         <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
+        <p>  <button onclick="copyToClip(document.getElementById('foo').innerHTML)">
+              Email template
+              </button></p>
+        <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
+        <div id=foo style="display:none">
+        Dear (Insert Name),
+
+        I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
+        (Additional information) 
+
+        Sincerely (Your Name)
+        </div>
+
       </div>
     </div>
   </div>
-
-  
     <div id="session_page_marker"></div>
     <script src="content.js"></script>
     <link rel="stylesheet" href="sys_page/styles.css">

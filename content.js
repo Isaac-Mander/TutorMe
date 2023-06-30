@@ -385,18 +385,23 @@ if(document.getElementById("session_matching"))
             while (dropdown_date.hasChildNodes()) {
                 dropdown_date.removeChild(dropdown_date.firstChild);
               }
-            start_day = weekday.findIndex((element) => element > this.children[0].children[4].innerHTML) + 1;
-            for (let i = 1; i < 11; i++)
+            start_day = weekday.indexOf(this.children[0].children[4].textContent.substr(1, this.children[0].children[4].textContent.length-1));
+
+            for (let i = 0; i < 11; i++)
             {
-                var d2 = new Date();
-                d2 = new Date(d2.setDate(d2.getDate() + 7*i + start_day - d2.getDay()));
-                //Create new option based on current date
-                let option = document.createElement("option");
-                option.innerHTML = d2;
-                option.id = d2.getFullYear() + "-" + (d2.getMonth()+1) + "-" + d2.getDate() + " " + (d2.getHours()+1) + ":" + (d2.getMinutes()+1) + ":" + (d2.getSeconds()+1) + ":" + "000000";
-                dropdown_date.appendChild(option);
-                option.onclick = function() {
-                    modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + this.id;         
+                var current_date = new Date();
+                potential_date = new Date(current_date.setDate(current_date.getDate() + 7*i + start_day - current_date.getDay()));
+                var current_date = new Date();
+                if(current_date < potential_date) //If time is not in the past create element for option
+                {
+                    //Create new option based on current date
+                    let option = document.createElement("option");
+                    option.innerHTML = potential_date;
+                    option.id = potential_date.getFullYear() + "-" + (potential_date.getMonth()+1) + "-" + potential_date.getDate() + " " + (potential_date.getHours()+1) + ":" + (potential_date.getMinutes()+1) + ":" + (potential_date.getSeconds()+1) + ":" + "000000";
+                    dropdown_date.appendChild(option);
+                    option.onclick = function() {
+                        modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + this.id;         
+                    }
                 }
             }
             var options = dropdown_date.options;
@@ -429,19 +434,13 @@ if(document.getElementById("session_page_marker"))
 {
     var contact_detail_content = document.getElementById("contact_detail_content");
 
-    var contact_detail_btn = document.getElementById("button");
     // Get the modal
     var contact_detail_modal = document.getElementById("contact_detail_popup");
 
     // Get the <span> element that closes the modal
     var contact_detail_span = document.getElementsByClassName("contact_detail_close")[0];
 
-    
 
-    // When the user clicks the button, open the modal 
-    contact_detail_btn.onclick = function() {
-        contact_detail_modal.style.display = "block";
-    }
 
     // When the user clicks on <span> (x), close the modal
     contact_detail_span.onclick = function() {
@@ -461,7 +460,7 @@ if(document.getElementById("session_page_marker"))
     console.log(sesssion_cards);
     for(var i = 0; i < sesssion_cards.length; i++){
         sesssion_cards[i].onclick = function() {
-
+            console.log(this.children);
             //Get data from card p tags
             var tutor = this.children[0].children[1].innerHTML;
             var tutee = this.children[1].children[1].innerHTML;
@@ -470,6 +469,13 @@ if(document.getElementById("session_page_marker"))
             var starttime = this.children[4].children[1].innerHTML;
             var endtime = this.children[5].children[1].innerHTML;
 
+
+            var tutor_email = this.children[6].innerHTML;
+            var tutor_phone = this.children[7].innerHTML;
+            var tutee_email = this.children[8].innerHTML;
+            var tutee_phone = this.children[9].innerHTML;
+
+            
         
 
 
@@ -490,8 +496,17 @@ if(document.getElementById("session_page_marker"))
             //Set End time
             contact_detail_content.children[7].innerHTML = "<b>Latest end time:</b> "+endtime;
 
+
+            
             //Set Contact Details
-            contact_detail_content.children[9].innerHTML = 6;
+
+            //Tutor Contact
+            contact_detail_content.children[9].innerHTML = "<b>Tutor Email:</b> "+tutor_email;
+            contact_detail_content.children[10].innerHTML = "<b>Tutor Phone Num:</b> "+tutor_phone;
+            
+            //Tutor Contact
+            contact_detail_content.children[11].innerHTML = "<b>Tutee Email:</b> "+tutee_email;
+            contact_detail_content.children[12].innerHTML = "<b>Tutee Phone Num:</b> "+tutee_phone;
         }
     }
 }

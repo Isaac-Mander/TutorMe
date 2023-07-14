@@ -132,11 +132,16 @@ else //Get the info about the session
         </div>
 
         <div>
-            <p>Do you want this to be a recurring session?</p>
-            <input type='submit' name='button' value='Same time'>
-            <input type='submit' name='button' value='Different time'>
-            <input type='submit' name='button' value='No'>
+            <p>Do you want this to be a recurring session? <strong> (This feature is coming soon)<strong> </p>
+            <select name='productivity' id='productivity'>
+                <option value='0'>No</option>"
+                // <option value='1'>Weekly</option>
+                // <option value='2'>Fortnightly</option>
+                // <option value='3'>Monthly</option>
+                ."
+            </select>
         </div>
+        <input type='submit' value='Submit Feedback'>
         </form>
         ";
     }?>

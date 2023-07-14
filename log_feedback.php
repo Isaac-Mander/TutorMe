@@ -20,7 +20,7 @@ if(isset($_POST['button']) && isset($_POST['experience']) && isset($_POST['produ
 
     if ($conn->query($sql) === TRUE) 
     {
-        //If the query was a succsess redirect the user back to the sessions.php page
+        //If the query was a succsess check if a session should be set to recuring
         echo "New record created successfully in feedback table";
         header("Location: sessions.php");
     } else 

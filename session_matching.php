@@ -9,7 +9,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 //Get relevant info from session
 $user_id = $_SESSION['user_id'];
 
-
+$sorting = $_GET['sorting'];
 
 //Import functions
 include("sys_page/header.html");
@@ -17,14 +17,17 @@ include("sys_page/db_connect.php");
 include("sys_page/functions.php");
 
 ?>
+    <form action='process.php' method='post'>
     <label for="sorting">Sort by:</label>
-
-<select name="sorting" id="sorting">
-  <option value="1">By date & time</option>
-  <option value="2">By subject</option>
-  <option value="3">A-Z</option>
-</select>
+    <select name="sorting" id="sorting">
+      <option value="1">By date & time</option>
+      <option value="2">A-Z</option>
+      <option value="3">By subject</option>
+    </select>
+    <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+    </form> 
 <?php
+
 //Set card function
 function create_card($potential_endtime,$potential_starttime,$name,$subject,$day_of_week,$card_id)
 {
@@ -69,7 +72,7 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
  ];
  return $info;
 }
-$sorting = 3;
+
 
 ?>
   <?php
@@ -225,12 +228,12 @@ $sorting = 3;
 
 
                             $session_card[$array_input_number] = [
+                              "name" => $info['name'],
                               "card_id" => $info['card_id'],
                               "subject" => $info['subject'],
                               "end_time" =>$potential_endtime,
                               "start_time" =>$potential_starttime,
                               "day_of_week" => $info['day_of_week'],
-                              "name" => $info['name'],
                               "day_of_week_num" => $info['day_of_week_num']
                             ];
                             $array_input_number = $array_input_number + 1;
@@ -252,17 +255,13 @@ $sorting = 3;
             array_multisort($days_of_week_column_card, SORT_ASC, $start_time_column_card, SORT_ASC, $session_card);
           }
           if ($sorting == 2){
-            $name_column_card = array_column($session_card, 'name');
-            print "<pre>";
-            print_r($name_column_card);
-            print "</pre>";
 
-            array_multisort($name_column_card, SORT_ASC, $session_card);
-            echo"alert 😶😑😑😐";
-            
-            print "<pre>";
-            print_r($session_card);
-            print "</pre>";
+
+            foreach ($session_card as $key => $row) {
+              $name[$key]  = $row['name'];
+              $subject[$key] = $row['subject'];
+            }
+            array_multisort($name, SORT_ASC, $subject, SORT_ASC, $session_card);
           }
           if ($sorting == 3){
             $subject_column_card = array_column($session_card, 'subject');
@@ -304,7 +303,7 @@ $sorting = 3;
           别让我飞 将我温柔豢养
           原谅我飞 曾经眷恋太阳"."<br>"."there are no sessions that share the same time & subject as you"."</br>";
         }
-        //create_card($available_tutee_times_data,$available_tutor_times_data,$k,$l,$potential_endtime,$potential_starttime,$y,$user_id);
+
         }else{
           echo"我坐在椅子上 看日出复活
           我坐在夕阳里 看城市的衰弱

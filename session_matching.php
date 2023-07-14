@@ -8,25 +8,54 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 
 //Get relevant info from session
 $user_id = $_SESSION['user_id'];
-
-$sorting = $_GET['sorting'];
+$sorting = 1;
+if (isset($_GET['sorting'])){
+  $sorting = $_GET['sorting'];
+}
 
 //Import functions
 include("sys_page/header.html");
 include("sys_page/db_connect.php");
 include("sys_page/functions.php");
 
-?>
+if ($sorting == 1){
+  ?>
     <form action='process.php' method='post'>
     <label for="sorting">Sort by:</label>
     <select name="sorting" id="sorting">
       <option value="1">By date & time</option>
-      <option value="2">A-Z</option>
+      <option value="2">By student</option>
       <option value="3">By subject</option>
     </select>
     <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
     </form> 
 <?php
+} elseif($sorting == 2){
+  ?>
+    <form action='process.php' method='post'>
+    <label for="sorting">Sort by:</label>
+    <select name="sorting" id="sorting">
+      <option value="1">By date & time</option>
+      <option value="2" selected >By student</option>
+      <option value="3">By subject</option>
+    </select>
+    <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+    </form> 
+<?php
+} elseif($sorting == 3){
+  ?>
+    <form action='process.php' method='post'>
+    <label for="sorting">Sort by:</label>
+    <select name="sorting" id="sorting">
+      <option value="1">By date & time</option>
+      <option value="2">By student</option>
+      <option value="3" selected >By subject</option>
+    </select>
+    <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+    </form> 
+<?php
+}
+
 
 //Set card function
 function create_card($potential_endtime,$potential_starttime,$name,$subject,$day_of_week,$card_id)

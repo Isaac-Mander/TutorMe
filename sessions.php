@@ -119,8 +119,7 @@ if ($check == 0){
         <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
         <p class="col text-center">And</p>
         <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
-        </div>
-        
+        </div>  
         <h3>General info</h3>
         <p>Tutor name</p>
         <p>Tutee name</p>

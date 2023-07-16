@@ -44,17 +44,18 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $tz = new DateTimeZone('NZ');
         $dt = new DateTime('now',$tz);
         $time_day = $dt->format('d'); // output: '1' - '31'
-        $time_month = $dt->format('m'); // output: '1' - '12'cc
+        $time_month = $dt->format('m'); // output: '1' - '12'
         $time_year = $dt->format('Y'); // output: '2023'
-        $time_hours = $dt->format('H'); // output: '2023'
-        $time_minutes = $dt->format('i'); // output: '2023'
-        $time = mktime($time_hours,$time_minutes,0,$time_month,$time_day,$time_year);
-        $day = substr($session_combined_data[$i][2],8,2);
-        $month = substr($session_combined_data[$i][2],5,2);
-        $year = substr($session_combined_data[$i][2],0,4);
-        $hour = substr($session_combined_data[$i][2],11,2);
-        $minutes = substr($session_combined_data[$i][2],14,2);
-        $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        $time_hours = $dt->format('H'); // output: '0-23'
+        $time_minutes = $dt->format('i'); // output: '00-59'
+        $time = mktime($time_hours,$time_minutes,0,$time_month,$time_day,$time_year);// output: time since 1970
+        $day = substr($session_combined_data[$i][2],8,2);// output: '1' - '31'
+        $month = substr($session_combined_data[$i][2],5,2);// output: '1' - '12'
+        $year = substr($session_combined_data[$i][2],0,4);// output: '2023'
+        $hour = substr($session_combined_data[$i][2],11,2);// output: '0-23'
+        $minutes = substr($session_combined_data[$i][2],14,2);// output: '00-59'
+        $session_time = mktime($hour,$minutes,0,$month,$day,$year);// output: time since 1970
+
         if ($time > $session_time){
               $check = 1;
               //looping through all of the lines of the array
@@ -66,7 +67,6 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
               $subject = $session_combined_data[$i][8]; //setting subject name
         ?>   <div class="col" > <div id="session_card" class='card'><?php
         echo ($tutor." tutoring ".$tutee."<br>"."Subject: ".$subject."<br>".$day."<br>"."Start time: ".$starttime . "<br>"."End time: ".$endtime);?> </div> </div>  <?php
-        $check=2;
         }
       }
     }

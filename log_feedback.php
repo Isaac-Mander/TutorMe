@@ -7,7 +7,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 
 
 //Check if the post variables are set
-if(isset($_POST['button']) && isset($_POST['experience']) && isset($_POST['productivity']))
+if(isset($_POST['experience']) && isset($_POST['productivity']))
 {
     //Insert the feedback into the db
     include("sys_page/db_connect.php");

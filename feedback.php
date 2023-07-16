@@ -28,49 +28,62 @@ else //Get the info about the session
             
             if($result -> num_rows <= 0) {$error = true;}//If no results are found, this session is not valid for this user, so an error should appear
 
-            //If some data was found, set it into various variables
-            else
-            {
-                $data = $result->fetch_assoc();
-                $tutee_id = $data['tutee_id'];
-                $tutor_id = array($data['tutor_id'],$data['teacher_id'],$data['ext_tutor_id']);
-                $subject_id = array($data['global_subject_id'],$data['local_subject_id']);
-                $starttime = $data['session_start'];
-                $endtime = $data['session_end'];
+            //If some data was found, check if this user has already placed feedback on this session
+            $sql_feedback_check = "SELECT * FROM `6969_feedback` WHERE `session_id`='$session_id' AND `user_id`='$user_id'";
+            if ($result_feedback_check = $conn -> query($sql_feedback_check)) {
 
-                //Check which tutor id to use (the ones with 0/null are discarded)
-                for ($x = 0; $x <= 2 ; $x++) 
+                if($result_feedback_check -> num_rows <= 0) //If no results are found, no feedback has been placed so the user can proceed
                 {
-                    if($tutor_id[$x] != 0 && $tutor_id[$x] != NULL) 
-                    {
-                        $tutor_id_resolved = array($tutor_id[$x],$x); //Write the correct id to an array [resolved id, type]
-                    }
-                }
+                    //If some data in first query was found, set it into various variables
+                    $data = $result->fetch_assoc();
+                    $tutee_id = $data['tutee_id'];
+                    $tutor_id = array($data['tutor_id'],$data['teacher_id'],$data['ext_tutor_id']);
+                    $subject_id = array($data['global_subject_id'],$data['local_subject_id']);
+                    $starttime = $data['session_start'];
+                    $endtime = $data['session_end'];
 
-                //Check which subject id to use (the ones with 0/null are discarded)
-                for ($x = 0; $x <= 1 ; $x++) 
+                    //Check which tutor id to use (the ones with 0/null are discarded)
+                    for ($x = 0; $x <= 2 ; $x++) 
+                    {
+                        if($tutor_id[$x] != 0 && $tutor_id[$x] != NULL) 
+                        {
+                            $tutor_id_resolved = array($tutor_id[$x],$x); //Write the correct id to an array [resolved id, type]
+                        }
+                    }
+
+                    //Check which subject id to use (the ones with 0/null are discarded)
+                    for ($x = 0; $x <= 1 ; $x++) 
+                    {
+                        if($subject_id[$x] != 0 && $tutor_id[$x] != NULL) 
+                        {
+                            $subject_id_resolved = array($subject_id[$x],$x); //Write the correct id to an array [resolved id, type]
+                        }
+                    }
+
+                    //Resolve ids into their respective names
+                    //Tutee name
+                    if ($result = $conn -> query("SELECT * FROM `6969_students` WHERE `id` = $tutee_id")) {$data = $result->fetch_assoc(); $tutee_name = $data['name'];}
+                    else $error = true; //If the query failed show general purpose error
+
+                    //Tutor name
+                    if ($result = $conn -> query("SELECT * FROM `6969_students` WHERE `id` = $tutor_id_resolved[0]")) {$data = $result->fetch_assoc(); $tutor_name = $data['name'];}
+                    else $error = true; //If the query failed show general purpose error
+
+                    //Subject name
+                    if($subject_id_resolved[1] == 0) {$table = "`subjects`";} //If the type is zero, the global subject table is used
+                    else {$table = "`6969_subjects`";}
+                    //Resolve name
+                    if ($result = $conn -> query("SELECT * FROM " . $table . " WHERE `id` = $subject_id_resolved[0]")) {$data = $result->fetch_assoc(); $subject_name = $data['name'];}
+                    else $error = true; //If the query failed show general purpose error
+                }
+                else //If the user has alredy placed feedback, show error msg
                 {
-                    if($subject_id[$x] != 0 && $tutor_id[$x] != NULL) 
-                    {
-                        $subject_id_resolved = array($subject_id[$x],$x); //Write the correct id to an array [resolved id, type]
-                    }
+                    echo "
+                    <p>You have alredy placed feedback on this session</p>
+                    <p>Changing feedback is not currently supported, if you want us to add it let us know in a bug report</p>
+                    ";
+                    $error = true;
                 }
-
-                //Resolve ids into their respective names
-                //Tutee name
-                if ($result = $conn -> query("SELECT * FROM `6969_students` WHERE `id` = $tutee_id")) {$data = $result->fetch_assoc(); $tutee_name = $data['name'];}
-                else $error = true; //If the query failed show general purpose error
-
-                //Tutor name
-                if ($result = $conn -> query("SELECT * FROM `6969_students` WHERE `id` = $tutor_id_resolved[0]")) {$data = $result->fetch_assoc(); $tutor_name = $data['name'];}
-                else $error = true; //If the query failed show general purpose error
-
-                //Subject name
-                if($subject_id_resolved[1] == 0) {$table = "`subjects`";} //If the type is zero, the global subject table is used
-                else {$table = "`6969_subjects`";}
-                //Resolve name
-                if ($result = $conn -> query("SELECT * FROM " . $table . " WHERE `id` = $subject_id_resolved[0]")) {$data = $result->fetch_assoc(); $subject_name = $data['name'];}
-                else $error = true; //If the query failed show general purpose error
             }
         }
         else {$error = true;} //If the query failed enable error msg

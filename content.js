@@ -512,10 +512,19 @@ if(document.getElementById("session_page_marker"))
         }
     }
 }
-
-
-
 //Feedback page ============================================================================================================
 if(document.getElementById("feedback_page_marker"))
 {
 }
+
+function copyToClip(str) {
+    function listener(e) {
+      e.clipboardData.setData("text/html", str);
+      e.clipboardData.setData("text/plain", str);
+      e.preventDefault();
+    }
+    document.addEventListener("copy", listener);
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener);
+    alert("Copied the text");
+  };

@@ -133,9 +133,10 @@ if ($check == 0){
 
         <h3>Contact info</h3>
         <p>Email/Phone number</p>
-        <p>  <button onclick="copyToClip(document.getElementById('foo').innerHTML)">
-              Email template
-              </button></p>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
+        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Email template</button></p>
         <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
         <div id=foo style="display:none">
         Dear (Insert Name),

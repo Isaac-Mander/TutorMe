@@ -184,6 +184,12 @@ if(!$no_tutor_subjects)
   }
 }
 
+
+// Get a user's average ratings ==============================================================================================================================
+$ratings_data = average_ratings();
+$average_prod = $ratings_data[0];
+$average_expe = $ratings_data[1];
+
 $subject_element_tutee_id = 0; //This id allows for a unique id to be set to each subject for js purposes 
 $subject_element_tutor_id = 0;
 $checkbox_id_increment = 0; //Checkbox id for js

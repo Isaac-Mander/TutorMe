@@ -326,4 +326,25 @@ function grab_events($conn,$id)
       return '(」゜ロ゜)」';
     }
 }
+
+//Get average ratings
+function average_ratings($conn,$user_id)
+{
+  $total_prod = 0;
+  $total_expe = 0;
+  $index = 0;
+  $sql = "SELECT * FROM `6969_feedback` WHERE `user_id`=$user_id";
+  $result = $conn->query($sql);
+  if ($result->num_rows > 0) { //If the number of rows are not zero
+    while($data = $result->fetch_assoc())
+    {
+      $index += 1;
+      $total_prod += $data['experience'];
+      $total_expe += $data['productivity'];
+    }
+  }
+  $average_prod = $total_prod/$index;
+  $average_expe = $total_expe/$index;
+  return array($average_prod,$average_expe);
+}
 ?>

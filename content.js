@@ -2,6 +2,21 @@
 //EACH PAGE WILL CONTAIN A "MARKER" DIV SO ONLY THE CODE THAT IS NEEDED WILL BE EXECUTED
 //TO ADD ANOTHER PAGE CREATE AN EMPTY DIV TAG WITH A UNIQUE ID AND CHECK IF THAT EXISTS
 
+function copyToClip(str) {
+    function listener(e) {
+      e.clipboardData.setData("text/html", str);
+      e.clipboardData.setData("text/plain", str);
+      e.preventDefault();
+    }
+    document.addEventListener("copy", listener);
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener);
+    alert("Copied the text");
+};
+
+
+
+
 //Store days of week and months for future use
 const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
@@ -498,8 +513,6 @@ if(document.getElementById("session_page_marker"))
             //Set End time
             contact_detail_content.children[7].innerHTML = "<b>Latest end time:</b> "+endtime;
 
-
-            
             //Set Contact Details
 
             //Tutor Contact
@@ -512,19 +525,3 @@ if(document.getElementById("session_page_marker"))
         }
     }
 }
-//Feedback page ============================================================================================================
-if(document.getElementById("feedback_page_marker"))
-{
-}
-
-function copyToClip(str) {
-    function listener(e) {
-      e.clipboardData.setData("text/html", str);
-      e.clipboardData.setData("text/plain", str);
-      e.preventDefault();
-    }
-    document.addEventListener("copy", listener);
-    document.execCommand("copy");
-    document.removeEventListener("copy", listener);
-    alert("Copied the text");
-  };

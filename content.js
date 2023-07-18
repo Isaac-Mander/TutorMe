@@ -1,4 +1,6 @@
-
+//THIS PAGE CONTAINS ALL THE JS USED FOR THIS SITE
+//EACH PAGE WILL CONTAIN A "MARKER" DIV SO ONLY THE CODE THAT IS NEEDED WILL BE EXECUTED
+//TO ADD ANOTHER PAGE CREATE AN EMPTY DIV TAG WITH A UNIQUE ID AND CHECK IF THAT EXISTS
 
 //Store days of week and months for future use
 const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -510,6 +512,11 @@ if(document.getElementById("session_page_marker"))
         }
     }
 }
+//Feedback page ============================================================================================================
+if(document.getElementById("feedback_page_marker"))
+{
+}
+
 function copyToClip(str) {
     function listener(e) {
       e.clipboardData.setData("text/html", str);

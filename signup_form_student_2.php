@@ -1,3 +1,4 @@
+
 <?php
 //Connect to database
 include("sys_page/db_connect.php");
@@ -29,6 +30,7 @@ if($page == 1)
     $result = $conn->query($sql); //Query database
     if ($result->num_rows > 0) { //If the number of rows are not zero means user found
         $error_msg = "That email already exists";
+
       }
       else 
       {
@@ -36,7 +38,7 @@ if($page == 1)
         $sql = "INSERT INTO `holding_logins` (`email`, `password` ,`expiry`) VALUES ('$email', '$password_hash', DATE_ADD(CURRENT_TIMESTAMP(),INTERVAL 7 DAY));";
 
         if ($conn->query($sql) === TRUE) {
-          echo "New record created successfully in holding login table";
+          //echo "New record created successfully in holding login table";
         } else {
           echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -123,11 +125,15 @@ if($error) $page += -1; //Stop progression if error with user input
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="sys_page/styles.css">
     <title>Signup</title>
 </head>
 <body>
-  <h1>Signup form</h1>
-  <p><?php echo $error_msg; ?></p>
+  
+  <p><?php echo $error_msg; //can you make this a notification <______________________________________________________________________________________________________________>?></p>
   <form method="post" action="signup_form_student_2.php">
     <input type="hidden" name="page" value=<?php echo $page + 1; ?> />
     <?php
@@ -135,11 +141,47 @@ if($error) $page += -1; //Stop progression if error with user input
     //Page 1
     if($page == 0)
     {
-      echo '    
-      <label for="email">Email</label><br>
-      <input type="text" id="email" name="email"><br>
-      <label for="password">Password</label><br>
-      <input type="text" id="password" name="password"><br>
+      echo ' 
+      <section class="h-500 h-custom" style="background-color: #8fc4b7;">
+      <div class="container py-5 h-300">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-lg-8 col-xl-6">
+            <div class="card rounded-3">
+              <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Sign up info</h3>
+    
+                <form class="px-md-2">
+    
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="text" id="email" name= "email" class="form-control" />
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="text" id="password" name= "password" class="form-control" />
+                  </div>
+    
+                  <button type="submit" class="btn btn-success btn-lg mb-1">Submit</button>
+    
+                </form>
+    
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+  <style>
+  @media (min-width: 1500px) {
+    .h-custom {
+    height: 100vh !important;
+    }
+  }
+  body {
+    overflow: hidden;
+  }
+  </style>  
       ';
     }
 
@@ -147,21 +189,78 @@ if($error) $page += -1; //Stop progression if error with user input
     if($page == 1)
     {
       echo '
-      <label for="schoolcode">School Code (If you know it)</label><br>
-      <input type="text" name="schoolcode"><br><br>
-      <label for="schooldropdown">Or select your school</label><br>
-      <select name="schooldropdown" id="schooldropdown">
-        <option value="1">DESOEAT</option>
-        <option value="2">School 2</option>
-      </select><br><br>
-      <label for="username">Pick a username (You will be using this to login so please do not use any spaces)</label><br>
-      <input type="text" name="username"><br><br>
-      <label for="name">What do you want other people to call you? (Display Name)</label><br>
-      <input type="text" name="name"><br><br>
+      <section class="h-500 h-custom" style="background-color: #8fc4b7;">
+        <div class="container py-5 h-300">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-8 col-xl-6">
+              <div class="card rounded-3">
+                <div class="card-body p-4 p-md-5">
+                  <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Sign up info</h3>
+      
+                  <form class="px-md-2">
+      
+                    <div class="form-outline mb-4">
+                      <input type="text" id="name" name= "name" class="form-control" />
+                      <label class="form-label" for="form3Example1q">Name</label>
+                    </div>
+      
+                    <div class="row">
+                      <div class="col-md-6 mb-4">
+      
+                        <div class="form-outline datepicker">
+                          <input type="text" name= "username" class="form-control" id="exampleDatepicker1" />
+                          <label for="exampleDatepicker1" class="form-label">User Name</label>
+                        </div>
+      
+                      </div>
+                    <div class="mb-4">
+                      
+                      <select name="schooldropdown" id"schooldropdown" class="select">
+                        <option value="1">School 1</option>
+                        <option value="2">School 2</option>
+                        <option value="3">School 3</option>
+                        <option value="4">School 4</option>
+                      </select>
+      
+                    </div>
+      
+                    <div class="row mb-4 pb-2 pb-md-0 mb-md-5">
+                      <div class="col-md-6">
+      
+                        <div class="form-outline">
+                          <input type="text" id="form3Example1w" name ="schoolcode" class="form-control" />
+                          <label class="form-label" for="form3Example1w">School code (if you know it)</label>
+                        </div>
+      
+                      </div>
+                    </div>
+      
+                    <button type="submit" class="btn btn-success btn-lg mb-1">Submit</button>
+      
+                  </form>
+      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </body>
+    <style>
+    @media (min-width: 1500px) {
+      .h-custom {
+      height: 100vh !important;
+      }
+    }
+    body {
+      overflow: hidden;
+    }
+    </style>
       ';
     }
     ?>
-  <br><button type="submit">Send</button>
+  <!-- <br><button type="submit">Send</button> -->
   </form>
 </body>
+
 </html>

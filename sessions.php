@@ -136,13 +136,12 @@ if ($check == 0){
         <p>Email/Phone number</p>
         <p>Email/Phone number</p>
         <p>Email/Phone number</p>
-        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Email template</button></p>
+        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
         <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
         <div id=foo style="display:none">
         Dear (Insert Name),
 
         I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
-        (Additional information) 
 
         Sincerely (Your Name)
         </div>

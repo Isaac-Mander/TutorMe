@@ -84,7 +84,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                   ";
                 }?>
                 </div>
-                </div></div>  <?php
+                </div></div><?php
                 
                 $check=1;
 
@@ -95,7 +95,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
-            <h3 class="col text-center py-1 m-0">Confirmed</h3>
+            <h3 class="col text-center py-1 m-0">Confirmed sessions (click to contact other user)</h3>
             <div class="col red_box extra_rounded_tr"></div>
         </div>
         <div class="row row-cols-1 row-cols-md-3 gx-5"><?php

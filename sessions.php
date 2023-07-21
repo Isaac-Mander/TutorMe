@@ -91,16 +91,14 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
               }
         }if ($check == 0){
           ?><div class="col"><div class="card"><h3>There are no pending sessions</h3></div></div><?php
-        }     ?> </div>  <?php
-        ?> 
-    </div></div>
+        }     ?> </div></div></div>
 
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
             <h3 class="col text-center py-1 m-0">Confirmed</h3>
             <div class="col red_box extra_rounded_tr"></div>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 gx-5"><?php
+        <div class="row row-cols-1 row-cols-md-3 gx-5 justify-content-center"><?php
     for($i=0; $i<sizeof($session_combined_data); $i++){
       if($session_combined_data[$i][9]==1){
         $day = substr($session_combined_data[$i][2],8,2);
@@ -132,7 +130,11 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $check=2;
         }
       }
-    }
+    }if ($check == 0){
+      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+    } elseif ($check ==1){
+      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+    }    ?> </div>  <?php
     ?> </div></div><?php
 }
 if ($check == 0){

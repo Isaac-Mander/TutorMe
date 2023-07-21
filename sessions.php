@@ -39,7 +39,7 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
   </head>
   <body>
 
-  <button id="button">Click here</button>
+
 
   <?php
 

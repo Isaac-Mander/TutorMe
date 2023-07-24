@@ -10,6 +10,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 $user_id = $_SESSION['user_id'];
 
 include("../sys_page/db_connect.php");
+include("../sys_page/functions.php");
 
 //Check if the user has a session to accept
 $sql = "SELECT * FROM `6969_tutor_session` WHERE `tutee_id` = $user_id AND `is_active`= 0";
@@ -38,6 +39,11 @@ if ($result->num_rows > 0) {
         $potential_session_array[$index]['session_start'] = $row['session_start'];
         $potential_session_array[$index]['session_end'] = $row['session_end'];
         $potential_session_array[$index]['is_active'] = $row['is_active'];
+
+        //Find the average ratings of the tutor
+        $tutor_ratings = average_ratings($conn, $row['tutor_id']);
+        $potential_session_array[$index]['av_prod'] = $tutor_ratings[0];
+        $potential_session_array[$index]['av_expe'] = $tutor_ratings[1];
 
          //Resolve subject name
          //Check which database to use

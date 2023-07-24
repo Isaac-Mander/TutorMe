@@ -39,7 +39,7 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
   </head>
   <body>
 
-  <button id="button">Click here</button>
+
 
   <?php
 $tz = new DateTimeZone('NZ');
@@ -82,11 +82,41 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 $tutee =  $session_combined_data[$i][4]; //setting tutee name
                 $tutor = $session_combined_data[$i][6]; //setting tutor name
                 $subject = $session_combined_data[$i][8]; //setting subject name
+                $session_id = $session_combined_data[$i][0];
+
                 ?>   <div class="col"> <div name="card" id="session_card" class='card' ><?php
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
-                <p class="card-text"><?php echo $day."  Start time: ".$starttime ."  End time: ".$endtime  ?></p></div></div>  <?php
+                <p class="card-text"><?php echo $day."  Start time: ".$starttime ."  End time: ".$endtime  ?></p>
+
+
+                <?php
+                //Find which user linked to the session is NOT the current user, so it can show the ratings of the other person
+                if($session_combined_data[$i][3] != $user_id) //If user is tutor
+                {
+                  $other_user_id = $session_combined_data[$i][3];
+                }
+                else //If user is tutee
+                {
+                  $other_user_id = $session_combined_data[$i][5];
+                }
+                ?>
+                <p class="card-text"><?php echo "Productivity Rating: " . average_ratings($conn,$other_user_id)[0];?></p>
+                <p class="card-text"><?php echo "Experience Rating: " . average_ratings($conn,$other_user_id)[0];?></p>
+                <div class="row"><?php
+                //Check if the current user is a tutee, if so add an accept button
+                if($session_combined_data[$i][3] == $user_id)
+                {
+                  echo "
+                    <div class='col'><a href='a_or_r_session.php?action=1&id=$session_id&page=sessions.php'><button id='accept' value='$session_id'>Accept</button></a></div>
+                    <div class='col'><a href='a_or_r_session.php?action=2&id=$session_id&page=sessions.php'><button id='reject' value='$session_id'>Reject</button></a></div>
+                  ";
+                }?>
+                </div>
+                </div></div><?php
+                
                 $check=1;
+
               }
               }
         }if ($check == 0){
@@ -95,7 +125,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
-            <h3 class="col text-center py-1 m-0">Confirmed</h3>
+            <h3 class="col text-center py-1 m-0">Confirmed sessions (click to contact other user)</h3>
             <div class="col red_box extra_rounded_tr"></div>
         </div>
         <div class="row row-cols-1 row-cols-md-3 gx-5 justify-content-center"><?php
@@ -161,15 +191,15 @@ if ($check == 0){
 
         <h3>Contact info</h3>
         <p>Email/Phone number</p>
-        <p>  <button onclick="copyToClip(document.getElementById('foo').innerHTML)">
-              Email template
-              </button></p>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
+        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
         <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
         <div id=foo style="display:none">
         Dear (Insert Name),
 
         I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
-        (Additional information) 
 
         Sincerely (Your Name)
         </div>

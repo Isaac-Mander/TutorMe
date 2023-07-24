@@ -133,7 +133,7 @@ function get_available_subjects($school_code)
     
 }
 function get_session_select_data($sql,$conn,$status)
-{   //(0)id, (1)potential session start times, (2)potential session end time, (3)name of the person, (4)subject_id, (5) Subject name.
+{
     //Query the database to get all the sessions THE USER IS TUTORING TODAY =============================================================================================================================
     $result = $conn->query($sql); //Query database
     if ($result->num_rows > 0) { //If the number of rows are not zero
@@ -325,5 +325,27 @@ function grab_events($conn,$id)
       // Assign an array value to $session_today_tutor_data
       return '(」゜ロ゜)」';
     }
+}
+
+//Get average ratings
+function  average_ratings($conn,$user_id)
+{
+  $total_prod = 0;
+  $total_expe = 0;
+  $index = 0;
+  $sql = "SELECT * FROM `6969_feedback` WHERE `user_id`=$user_id";
+  $result = $conn->query($sql);
+  if ($result->num_rows > 0) { //If the number of rows are not zero
+    while($data = $result->fetch_assoc())
+    {
+      $index += 1;
+      $total_prod += $data['experience'];
+      $total_expe += $data['productivity'];
+    }
+    $average_prod = $total_prod/$index;
+    $average_expe = $total_expe/$index;
+    return array($average_prod,$average_expe);
+  }
+  return array("No rating", "No rating");
 }
 ?>

@@ -76,6 +76,7 @@ function create_card($potential_endtime,$potential_starttime,$name,$subject,$day
 
 function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l,$y,$user_id)
 {
+  include("sys_page/db_connect.php");
   $name = $available_tutee_times_data[$k]['user_name'];
   $subject = $available_tutee_times_data[$k]['subject_name'][$y];
   $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
@@ -253,7 +254,7 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
                             //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
                             //Get the relivant data and create a card for a tutor to click on
                             $potential_starttime = $available_tutor_times_data[$l]['start_time'];
-                            $potential_endtime = $available_tutee_times_data[$k]['end_time']
+                            $potential_endtime = $available_tutee_times_data[$k]['end_time'];
 
                             $info = data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l,$y,$user_id);
 

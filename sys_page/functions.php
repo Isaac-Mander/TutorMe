@@ -328,7 +328,7 @@ function grab_events($conn,$id)
 }
 
 //Get average ratings
-function  ($conn,$user_id)
+function  average_ratings($conn,$user_id)
 {
   $total_prod = 0;
   $total_expe = 0;

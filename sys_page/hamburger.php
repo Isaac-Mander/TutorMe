@@ -30,8 +30,8 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     <a class="list-group-item disabled list-group-item-action">Profile</a>
     <a class="list-group-item disabled list-group-item-action">Tutor Others</a>
     <a class="list-group-item disabled list-group-item-action">Set your free slots</a>
-    <a class="list-group-item disabled list-group-item-action">Tutorials</a>
-    <a class="list-group-item disabled list-group-item-action">Admin Dashboard</a><?php
+    <!-- <a class="list-group-item disabled list-group-item-action">Tutorials</a>
+    <a class="list-group-item disabled list-group-item-action">Admin Dashboard</a>--><?php 
 }
 else {echo "<p><a href='logout.php' class='list-group-item list-group-item-action'>Logout</a></p>"; ?>
     <a class="list-group-item list-group-item-action" href="../sessions.php">Sessions</a> 
@@ -39,9 +39,8 @@ else {echo "<p><a href='logout.php' class='list-group-item list-group-item-actio
     <a class="list-group-item list-group-item-action" href="../user_profile.php">Profile</a> 
     <a class="list-group-item list-group-item-action" href="../session_matching.php">Tutor Others</a> 
     <a class="list-group-item list-group-item-action" href="../calendar_1.php">Set your free slots</a> 
-    <a class="list-group-item list-group-item-action" href="../tutorial.php">Tutorials</a> 
-    <a class="list-group-item list-group-item-action" href="../admin_view.php">Admin Dashboard</a> 
-    <a class="list-group-item list-group-item-action" href="../contact.php">contact page (to be removed)</a> <!--remove this when done with page -->
+    <!-- <a class="list-group-item list-group-item-action" href="../tutorial.php">Tutorials</a>  -->
+    <!-- <a class="list-group-item list-group-item-action" href="../admin_view.php">Admin Dashboard</a>  -->
 <?php
 
 }?></div>

@@ -39,7 +39,7 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
   </head>
   <body>
 
-  <button id="button">Click here</button>
+
 
   <?php
 $tz = new DateTimeZone('NZ');
@@ -88,7 +88,21 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
                 <p class="card-text"><?php echo $day."  Start time: ".$starttime ."  End time: ".$endtime  ?></p>
-                
+
+
+                <?php
+                //Find which user linked to the session is NOT the current user, so it can show the ratings of the other person
+                if($session_combined_data[$i][3] != $user_id) //If user is tutor
+                {
+                  $other_user_id = $session_combined_data[$i][3];
+                }
+                else //If user is tutee
+                {
+                  $other_user_id = $session_combined_data[$i][5];
+                }
+                ?>
+                <p class="card-text"><?php echo "Productivity Rating: " . average_ratings($conn,$other_user_id)[0];?></p>
+                <p class="card-text"><?php echo "Experience Rating: " . average_ratings($conn,$other_user_id)[0];?></p>
                 <div class="row"><?php
                 //Check if the current user is a tutee, if so add an accept button
                 if($session_combined_data[$i][3] == $user_id)

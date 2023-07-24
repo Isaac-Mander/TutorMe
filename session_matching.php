@@ -80,6 +80,8 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
   $subject = $available_tutee_times_data[$k]['subject_name'][$y];
   $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
   $day_of_week = $days_of_week_array[$available_tutor_times_data[$l]['dayofweek']-1];
+
+  $ratings_data = average_ratings($conn,$available_tutee_times_data[$k]['student_id']); 
   
   //Check if the subject is a global subject
   if(substr($available_tutee_times_data[$k]['subject_id'][$y],0,1) == "G") {
@@ -251,7 +253,7 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
                             //If the last list of if statements are true, there is a potentional session that can be formed between the current tutee and tutor
                             //Get the relivant data and create a card for a tutor to click on
                             $potential_starttime = $available_tutor_times_data[$l]['start_time'];
-                            $potential_endtime = $available_tutee_times_data[$k]['end_time'];
+                            $potential_endtime = $available_tutee_times_data[$k]['end_time']
 
                             $info = data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l,$y,$user_id);
 

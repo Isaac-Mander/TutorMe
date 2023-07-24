@@ -42,6 +42,14 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 
 
   <?php
+$tz = new DateTimeZone('NZ');
+$dt = new DateTime('now',$tz);
+$time_day = $dt->format('d'); // output: '1' - '31'
+$time_month = $dt->format('m'); // output: '1' - '12'cc
+$time_year = $dt->format('Y'); // output: '2023'
+$time_hours = $dt->format('H'); // output: '2023'
+$time_minutes = $dt->format('i'); // output: '2023'
+$time = mktime($time_hours,$time_minutes,0,$time_month,$time_day,$time_year);
 
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
     $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
@@ -55,11 +63,18 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 <h3 class="col text-center py-3 m-0">Pending</h3>
                 <div class="col red_box extra_rounded_tr"></div>
             </div>
-            <div class="row row-cols-1 row-cols-md-3 gx-5"><?php
+            <div class="row row-cols-1 row-cols-md-3 gx-5 justify-content-center"><?php
             //Show the sessions today this user is tutoring
             for($i=0; $i<sizeof($session_combined_data); $i++)
             {
               if($session_combined_data[$i][9]==0){
+                $day = substr($session_combined_data[$i][2],8,2);
+                $month = substr($session_combined_data[$i][2],5,2);
+                $year = substr($session_combined_data[$i][2],0,4);
+                $hour = substr($session_combined_data[$i][2],11,2);
+                $minutes = substr($session_combined_data[$i][2],14,2);
+                $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+                if ($time < $session_time) {
                 //looping through all of the lines of the array
                 $day = substr($session_combined_data[$i][1],0,10); //setting the day value
                 $starttime = substr($session_combined_data[$i][1],11,8); //setting the start time
@@ -103,40 +118,53 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 $check=1;
 
               }
-        }     ?> </div>  <?php
-        ?> 
-    </div></div>
+              }
+        }if ($check == 0){
+          ?><div class="col"><div class="card"><h3>There are no pending sessions</h3></div></div><?php
+        }     ?> </div></div></div>
 
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
             <h3 class="col text-center py-1 m-0">Confirmed sessions (click to contact other user)</h3>
             <div class="col red_box extra_rounded_tr"></div>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 gx-5"><?php
+        <div class="row row-cols-1 row-cols-md-3 gx-5 justify-content-center"><?php
     for($i=0; $i<sizeof($session_combined_data); $i++){
       if($session_combined_data[$i][9]==1){
-              //looping through all of the lines of the array
-            $day = substr($session_combined_data[$i][1],0,10); //setting the day value
-            $starttime = substr($session_combined_data[$i][1],11,8); //setting the start time
-            $endtime = substr($session_combined_data[$i][2],11,8); //setting the end time
-            $tutee =  $session_combined_data[$i][4]; //setting tutee name
-            $tutor = $session_combined_data[$i][6]; //setting tutor name
-            $subject = $session_combined_data[$i][8]; //setting subject name
-      ?>   <div class="col" > <div name="card" id="session_card" class='card'><?php
-      echo "<div class=row>" . "<p class=col>Tutor: </p><p class=col id=tutor>".$tutor."</p>" . "</div>";
-      echo "<div class=row>" . "<p class=col>Tutee: </p><p class=col id=tutee>".$tutee."</p>" . "</div>";
-      echo "<div class=row>" . "<p class=col>Subject: </p><p class=col id=subject>".$subject."</p>" . "</div>";
-      echo "<div class=row>" . "<p class=col>Date : </p><p class=col id=day>".$day."</p>" . "</div>";
-      echo "<div class=row>" . "<p class=col>Start time: </p><p class=col id=starttime>".$starttime."</p>" . "</div>";
-      echo "<div class=row>" . "<p class=col>End time: </p><p class=col id=endtime>".$endtime."</p>" . "</div>";
-      echo "<div class=hide_on_start>".$session_combined_data[$i][11][0]."</div>";
-      echo "<div class=hide_on_start>".$session_combined_data[$i][11][1]."</div>";
-      echo "<div class=hide_on_start>".$session_combined_data[$i][10][0]."</div>";
-      echo "<div class=hide_on_start>".$session_combined_data[$i][10][1]."</div>";
-      ?> </div> </div>  <?php
-      $check=2;
+        $day = substr($session_combined_data[$i][2],8,2);
+        $month = substr($session_combined_data[$i][2],5,2);
+        $year = substr($session_combined_data[$i][2],0,4);
+        $hour = substr($session_combined_data[$i][2],11,2);
+        $minutes = substr($session_combined_data[$i][2],14,2);
+        $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        if ($time < $session_time){
+                          //looping through all of the lines of the array
+              $day = substr($session_combined_data[$i][1],0,10); //setting the day value
+              $starttime = substr($session_combined_data[$i][1],11,8); //setting the start time
+              $endtime = substr($session_combined_data[$i][2],11,8); //setting the end time
+              $tutee =  $session_combined_data[$i][4]; //setting tutee name
+              $tutor = $session_combined_data[$i][6]; //setting tutor name
+              $subject = $session_combined_data[$i][8]; //setting subject name
+        ?>   <div class="col" > <div name="card" id="session_card" class='card'><?php
+        echo "<div class=row>" . "<p class=col>Tutor: </p><p class=col id=tutor>".$tutor."</p>" . "</div>";
+        echo "<div class=row>" . "<p class=col>Tutee: </p><p class=col id=tutee>".$tutee."</p>" . "</div>";
+        echo "<div class=row>" . "<p class=col>Subject: </p><p class=col id=subject>".$subject."</p>" . "</div>";
+        echo "<div class=row>" . "<p class=col>Date : </p><p class=col id=day>".$day."</p>" . "</div>";
+        echo "<div class=row>" . "<p class=col>Start time: </p><p class=col id=starttime>".$starttime."</p>" . "</div>";
+        echo "<div class=row>" . "<p class=col>End time: </p><p class=col id=endtime>".$endtime."</p>" . "</div>";
+        echo "<div class=hide_on_start>".$session_combined_data[$i][11][0]."</div>";
+        echo "<div class=hide_on_start>".$session_combined_data[$i][11][1]."</div>";
+        echo "<div class=hide_on_start>".$session_combined_data[$i][10][0]."</div>";
+        echo "<div class=hide_on_start>".$session_combined_data[$i][10][1]."</div>";
+        ?> </div> </div>  <?php
+        $check=2;
+        }
       }
-    }
+    }if ($check == 0){
+      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+    } elseif ($check ==1){
+      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+    }    ?> </div>  <?php
     ?> </div></div><?php
 }
 if ($check == 0){
@@ -166,13 +194,12 @@ if ($check == 0){
         <p>Email/Phone number</p>
         <p>Email/Phone number</p>
         <p>Email/Phone number</p>
-        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Email template</button></p>
+        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
         <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
         <div id=foo style="display:none">
         Dear (Insert Name),
 
         I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
-        (Additional information) 
 
         Sincerely (Your Name)
         </div>
@@ -212,14 +239,6 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         <div class="row row-cols-1 row-cols-md-3 gx-5"><?php
     for($i=0; $i<sizeof($session_combined_data); $i++){
       if($session_combined_data[$i][9]==1){
-        $tz = new DateTimeZone('NZ');
-        $dt = new DateTime('now',$tz);
-        $time_day = $dt->format('d'); // output: '1' - '31'
-        $time_month = $dt->format('m'); // output: '1' - '12'cc
-        $time_year = $dt->format('Y'); // output: '2023'
-        $time_hours = $dt->format('H'); // output: '2023'
-        $time_minutes = $dt->format('i'); // output: '2023'
-        $time = mktime($time_hours,$time_minutes,0,$time_month,$time_day,$time_year);
         $day = substr($session_combined_data[$i][2],8,2);
         $month = substr($session_combined_data[$i][2],5,2);
         $year = substr($session_combined_data[$i][2],0,4);

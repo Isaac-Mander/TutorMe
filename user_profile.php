@@ -186,7 +186,7 @@ if(!$no_tutor_subjects)
 
 
 // Get a user's average ratings ==============================================================================================================================
-$ratings_data = average_ratings();
+$ratings_data = average_ratings($conn,$user_id);
 $average_prod = $ratings_data[0];
 $average_expe = $ratings_data[1];
 
@@ -323,6 +323,8 @@ $checkbox_id_increment = 0; //Checkbox id for js
         <ul class="list-group list-group-flush">
           <li class="list-group-item"> <p id="profile_desc_text"><?php echo $desc; ?></p></li>
           <li class="list-group-item text-white bg-primary">          <h3>Statistics</h3></li>
+          <li class="list-group-item">          <p>Average Productivity: <?php echo $average_prod; ?>⭐</p></li>
+          <li class="list-group-item">          <p>Average Experience: <?php echo $average_expe; ?>⭐</p></li>
           <li class="list-group-item">          <p>Hours spent tutoring: <?php echo $hours_tutored; ?></p></li>
           <li class="list-group-item">          <p>Sessions tutored: <?php echo $sessions_tutored; ?></p></li>
         </ul>

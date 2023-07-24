@@ -301,6 +301,10 @@ if(document.getElementById("notification_bell"))
                             session_card.appendChild(time_start);
                             var time_end = document.createElement("p");
                             session_card.appendChild(time_end);
+                            var av_prod = document.createElement("p");
+                            session_card.appendChild(av_prod);
+                            var av_expe = document.createElement("p");
+                            session_card.appendChild(av_expe);
                         
                             //Set up links for buttons
                             var accept_link = document.createElement("a");
@@ -324,6 +328,10 @@ if(document.getElementById("notification_bell"))
                             subject_name.innerHTML = notif_data[i]['subject_name'];
                             time_start.innerHTML = notif_data[i]['session_start'];
                             time_end.innerHTML = notif_data[i]['session_end'];
+                            av_prod.innerHTML = "Productivity Rating: " + notif_data[i]['av_prod'];
+                            av_expe.innerHTML = "Experience Rating: " + notif_data[i]['av_expe'];
+                            
+                            
                             
                         }
                     }

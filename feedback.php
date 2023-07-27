@@ -4,6 +4,9 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 {
     header("Location: login_form.php"); //Send to the shadow realm (login screen)
 }
+include("sys_page/header.html");
+include("sys_page/db_connect.php");
+include("sys_page/functions.php");
 
 //Check if the session variable is set
 $error = false;
@@ -97,6 +100,9 @@ else //Get the info about the session
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  
+  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Give some feedback</title>
@@ -114,52 +120,81 @@ else //Get the info about the session
         //Set the session id as a session variable as it is used in the log feedback page
         $_SESSION['session_id'] = $session_id;
         echo "
-        <div>
-            <p>Tutor: " . $tutor_name . "</p>
-            <p>Tutee: " . $tutee_name . "</p>
-            <p>Subject: " . $subject_name . "</p>
-            <p>Start time: " . $starttime . "</p>
-            <p>End time " . $endtime . "</p>
+        
+        <section class= 'h-3000 h-custom' style='background-color:#8fc4b7;'>
+        <div class='container py-5 h-500'>
+          <div class='row d-flex justify-content-center align-items-center h-100'>
+            <div class='col-lg-8 col-xl-6'>
+              <div class='card rounded-3'>
+                <div class='card-body p-4 p-md-5'>
+                  <h3 class='border border-1 rounded border-success mb-4 pb-2 pb-md-0 mb-md-5 px-md-2'>Feedback</h3>
+                  <div class='mb-4 border-top border-1 '>
+                    <p>Tutor: " . $tutor_name . "</p>
+                    <p>Tutee: " . $tutee_name . "</p>
+                    <p>Subject: " . $subject_name . "</p>
+                    <p>Start time: " . $starttime . "</p>
+                    <p>End time " . $endtime . "</p>
+                </div>
+      
+                  <form class='px-md-2' method='POST' action='log_feedback.php'>
+                    <div class='mb-4 border-top border-1 '>
+                    <p>How was the experience?</p>
+                    <select name='experience' id='experience' class='select'>
+                        <option value='5'>Incredible</option>
+                        <option value='4'>Great</option>
+                        <option value='3'>Average</option>
+                        <option value='2'>Poor</option>
+                        <option value='1'>Terrible</option>
+                    </select>
+      
+                    </div>
+                    <div class='mb-4 border-top border-1 '>
+                    <p>How productive was it?</p>
+                    <select name='productivity' id='productivity' class='select'>
+                        <option value='5'>Incredible</option>
+                        <option value='4'>Great</option>
+                        <option value='3'>Average</option>
+                        <option value='2'>Poor</option>
+                        <option value='1'>Terrible</option>
+                    </select>
+            
+                    </div>
+                    <div class='mb-4 border-top border-1 '>
+                    <p>Do you want this to be a recurring session? <strong> (This feature is coming soon)<strong> </p>
+                    <select name='button' id='button' class='select'>
+                        <option value='0'>No</option>"
+                        // <option value='1'>Weekly</option>
+                        // <option value='2'>Fortnightly</option>
+                        // <option value='3'>Monthly</option>
+                        ."
+                    </select>
+      
+                    </div>
+      
+      
+                    <button type='submit' value='Submit Feedback'class='btn btn-success btn-lg mb-1'>Submit Feedback</button>
+      
+                  </form>
+      
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <form method='POST' action='log_feedback.php'>
-        <div>
-            <p>How was the experience?</p>
-            <select name='experience' id='experience'>
-                <option value='5'>Incredible</option>
-                <option value='4'>Great</option>
-                <option value='3'>Average</option>
-                <option value='2'>Poor</option>
-                <option value='1'>Terrible</option>
-            </select>
-        </div>
-
-        <div>
-            <p>How productive was it?</p>
-            <select name='productivity' id='productivity'>
-                <option value='5'>Incredible</option>
-                <option value='4'>Great</option>
-                <option value='3'>Average</option>
-                <option value='2'>Poor</option>
-                <option value='1'>Terrible</option>
-            </select>
-        </div>
-
-        <div>
-            <p>Do you want this to be a recurring session? <strong> (This feature is coming soon)<strong> </p>
-            <select name='button' id='button'>
-                <option value='0'>No</option>"
-                // <option value='1'>Weekly</option>
-                // <option value='2'>Fortnightly</option>
-                // <option value='3'>Monthly</option>
-                ."
-            </select>
-        </div>
-        <input type='submit' value='Submit Feedback'>
-        </form>
+      </section>
+    </body>
+    <style>
+    @media (min-width: 1500px) {
+      .h-custom {
+      height: 300vh !important;
+      }
+    }
+    </style>
         ";
     }?>
 
 
 <div id="feedback_page_marker"></div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </html>

@@ -5,7 +5,14 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 {
     header("Location: login_form.php"); //Send to the shadow realm (login screen)
 }
-
+$tz = new DateTimeZone('NZ');
+$dt = new DateTime('now',$tz);
+$time_day = $dt->format('d'); // output: '1' - '31'
+$time_month = $dt->format('m'); // output: '1' - '12'cc
+$time_year = $dt->format('Y'); // output: '2023'
+$time_hours = $dt->format('H'); // output: '2023'
+$time_minutes = $dt->format('i'); // output: '2023'
+$time = mktime($time_hours,$time_minutes,0,$time_month,$time_day,$time_year);
 //Get userid from session token
 $user_id = $_SESSION['user_id'];
 
@@ -21,6 +28,14 @@ $potential_session_array = [];
 if ($result->num_rows > 0) { 
     $index = 0;
     while($row = $result->fetch_assoc()) {
+        $day = substr($row['session_start'],8,2);
+        $month = substr($row['session_start'],5,2);
+        $year = substr($row['session_start'],0,4);
+        $hour = substr($row['session_start'],11,2);
+        $minutes = substr($row['session_start'],14,2);
+        $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        if ($time < $session_time) {
+        $check = 1;
         $potential_session_array[$index]['id'] = $row['id'];
         $potential_session_array[$index]['tutee_id'] = $user_id;
 
@@ -55,7 +70,7 @@ if ($result->num_rows > 0) {
 
         $potential_session_array[$index]['subject_name'] = $name_data['name'];
         $index += 1;
-    }
+    }}
 
 
     //Get the names of users/subjects
@@ -63,6 +78,8 @@ if ($result->num_rows > 0) {
     
 }
 else echo "nodata";
-
+if ($check ==1){
+    echo "nodata";
+}
 
 ?>

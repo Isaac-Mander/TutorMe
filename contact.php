@@ -50,9 +50,9 @@ Sincerely (Your Name)
         <div class="col-lg-8 col-xl-6">
           <div class="card rounded-3">
             <div class="card-body p-4 p-md-5">
-            <p>  <h3 class="border border-3 rounded border-success mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Dear (Insert Name),</h3> </p>
-<p>  <h5 class="border border-3 rounded border-success mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? If not do you have any suggestions?</h5> </p>
-<p>  <h3 class="border border-3 rounded border-success mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Sincerely (Your Name)</h3> </p>
+            <p>  <h3 class="border border-1 rounded border-success mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Dear (Insert Name),</h3> </p>
+            <p>  <h5 class="border border-1 rounded border-success mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? If not do you have any suggestions?</h5> </p>
+            <p>  <h3 class="border border-1 rounded border-success mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Sincerely (Your Name)</h3> </p>
 <button onclick="copyToClip(document.getElementById('foo').innerHTML)">
   Copy the stuff
   </button>

@@ -12,6 +12,17 @@ if(isset($_GET['action']) && isset($_GET['id']) && isset($_GET['page']))
     $page = $_GET['page'];
     $id = $_GET['id'];
     $action = $_GET['action'];
+    $user_id = $_SESSION['user_id'];
+    //Connect to db
+    include("sys_page/db_connect.php");
+
+    //Check if the requested session is owned by the user
+    $owner_check_sql = "SELECT * FROM `6969_tutor_session` WHERE id = $id AND (`tutee_id`=$user_id OR `tutor_id`=$user_id)";
+    $owner_check_result = $conn->query($owner_check_sql); //Query database
+    if ($owner_check_result->num_rows = 0) { //If a row is not returned the session requested is not valid, so redirect the user away from this page
+        header("Location: " . $page);
+    }
+
     //Accept session
     if($action == "1")
     {
@@ -22,8 +33,7 @@ if(isset($_GET['action']) && isset($_GET['id']) && isset($_GET['page']))
     {
         $sql = "DELETE FROM `6969_tutor_session` WHERE `id`=$id";
     }
-    //Connect to db
-    include("sys_page/db_connect.php");
+
     if ($conn->query($sql) === TRUE) {
         echo "Record altered successfully";
       } else {
@@ -35,7 +45,7 @@ if(isset($_GET['action']) && isset($_GET['id']) && isset($_GET['page']))
 
 else
 {
-    echo "error";
+    echo "error, get variables were not set";
 }
 
 ?>

@@ -18,12 +18,12 @@ include("sys_page/functions.php");
 $check = 0;
 
 //Get the sessions this user is tutoring today
-$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";  
+$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
 
 //Get the sessions this user is being tutored today
-$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";  
+$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 ?>
 
@@ -38,7 +38,6 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
-
   <?php
 $tz = new DateTimeZone('NZ');
 $dt = new DateTime('now',$tz);
@@ -80,11 +79,41 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 $tutee =  $session_combined_data[$i][4]; //setting tutee name
                 $tutor = $session_combined_data[$i][6]; //setting tutor name
                 $subject = $session_combined_data[$i][8]; //setting subject name
+                $session_id = $session_combined_data[$i][0];
+
                 ?>   <div class="col"> <div name="card" id="session_card" class='card' ><?php
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
-                <p class="card-text"><?php echo $day."  Start time: ".$starttime ."  End time: ".$endtime  ?></p></div></div>  <?php
+                <p class="card-text"><?php echo $day."  Start time: ".$starttime ."  End time: ".$endtime  ?></p>
+
+
+                <?php
+                //Find which user linked to the session is NOT the current user, so it can show the ratings of the other person
+                if($session_combined_data[$i][3] != $user_id) //If user is tutor
+                {
+                  $other_user_id = $session_combined_data[$i][3];
+                }
+                else //If user is tutee
+                {
+                  $other_user_id = $session_combined_data[$i][5];
+                }
+                ?>
+                <p class="card-text"><?php echo "Productivity Rating: " . average_ratings($conn,$other_user_id)[0];?></p>
+                <p class="card-text"><?php echo "Experience Rating: " . average_ratings($conn,$other_user_id)[0];?></p>
+                <div class="row"><?php
+                //Check if the current user is a tutee, if so add an accept button
+                if($session_combined_data[$i][3] == $user_id)
+                {
+                  echo "
+                    <div class='col'><a href='a_or_r_session.php?action=1&id=$session_id&page=sessions.php'><button id='accept' value='$session_id'>Accept</button></a></div>
+                    <div class='col'><a href='a_or_r_session.php?action=2&id=$session_id&page=sessions.php'><button id='reject' value='$session_id'>Reject</button></a></div>
+                  ";
+                }?>
+                </div>
+                </div></div><?php
+
                 $check=1;
+
               }
               }
         }if ($check == 0){
@@ -93,7 +122,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
-            <h3 class="col text-center py-1 m-0">Confirmed</h3>
+            <h3 class="col text-center py-1 m-0">Confirmed sessions (click to contact other user)</h3>
             <div class="col red_box extra_rounded_tr"></div>
         </div>
         <div class="row row-cols-1 row-cols-md-3 gx-5 justify-content-center"><?php
@@ -132,7 +161,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
       ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
     } elseif ($check ==1){
       ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
-    }    
+    }
     ?> </div></div><?php
 }
 
@@ -146,7 +175,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
         <p class="col text-center">And</p>
         <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
-        </div>  
+        </div>
         <h3>General info</h3>
         <p>Tutor name</p>
         <p>Tutee name</p>
@@ -157,15 +186,15 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 
         <h3>Contact info</h3>
         <p>Email/Phone number</p>
-        <p>  <button onclick="copyToClip(document.getElementById('foo').innerHTML)">
-              Email template
-              </button></p>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
+        <p>Email/Phone number</p>
+        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
         <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
         <div id=foo style="display:none">
         Dear (Insert Name),
 
         I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
-        (Additional information) 
 
         Sincerely (Your Name)
         </div>
@@ -182,12 +211,12 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 
 $check = 0;
 //Get the sessions this user is tutoring today
-$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";  
+$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
 
 //Get the sessions this user is being tutored today
-$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";  
+$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {

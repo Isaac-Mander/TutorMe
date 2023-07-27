@@ -76,10 +76,13 @@ function create_card($potential_endtime,$potential_starttime,$name,$subject,$day
 
 function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l,$y,$user_id)
 {
+  include("sys_page/db_connect.php");
   $name = $available_tutee_times_data[$k]['user_name'];
   $subject = $available_tutee_times_data[$k]['subject_name'][$y];
   $days_of_week_array = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
   $day_of_week = $days_of_week_array[$available_tutor_times_data[$l]['dayofweek']-1];
+
+  $ratings_data = average_ratings($conn,$available_tutee_times_data[$k]['student_id']); 
   
   //Check if the subject is a global subject
   if(substr($available_tutee_times_data[$k]['subject_id'][$y],0,1) == "G") {

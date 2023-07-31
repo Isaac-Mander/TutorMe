@@ -119,8 +119,7 @@ else //Get the info about the session
     {
         //Set the session id as a session variable as it is used in the log feedback page
         $_SESSION['session_id'] = $session_id;
-        echo "
-        
+        echo "        
         <section class= 'h-3000 h-custom' style='background-color:#8fc4b7;'>
         <div class='container py-5 h-500'>
           <div class='row d-flex justify-content-center align-items-center h-100'>

@@ -129,30 +129,6 @@ if(document.getElementById("profile_edit_button"))
             profile_desc_edit.value = profile_desc_text.innerHTML;
             profile_desc_text.replaceWith(profile_desc_edit);
 
-            //Set remove crosses to display: flex
-            //CROSSES ARE NOT CURRENTLY USED
-            /*var crosses_to_hide = document.getElementsByClassName("edit_cross");
-            for(var i = 0; i < crosses_to_hide.length; i++){
-                crosses_to_hide[i].style.display = "flex";
-            }*/
-
-            //Remove crosses if clicked
-            //THIS CODE IS NOT CURRENTLY USED BY ANYTHING
-            /*for(i=0;i<tutee_subject_divs.length;i++)
-            {
-                let div_element = document.getElementById(tutee_subject_divs[i])
-                div_element.onclick = function() {
-                    div_element.remove();
-                }
-            }
-            for(i=0;i<tutor_subject_divs.length;i++)
-            {
-                let div_element = document.getElementById(tutor_subject_divs[i])
-                div_element.onclick = function() {
-                    div_element.remove();
-                }
-            }*/
-
             //Make the subject edit checkboxes visible
             checkbox_study_subjects.style.display = "flex";
             checkbox_tutor_subjects.style.display = "flex";
@@ -168,14 +144,6 @@ if(document.getElementById("profile_edit_button"))
             //Get the value of the input field and set the desc text to be =
             profile_desc_text.innerHTML = profile_desc_edit.value;
             profile_desc_edit.replaceWith(profile_desc_text);
-            
-            
-            //Hide any crosses still visible using display = none
-            //THIS CODE IS NOT CURRENTLY USED BY ANYTHING
-            /*var crosses_to_hide = document.getElementsByClassName("edit_cross");
-            for(var i = 0; i < crosses_to_hide.length; i++){
-                crosses_to_hide[i].style.display = "none";
-            }*/
 
             //Make the subject edit checkboxes hidden
             checkbox_study_subjects.style.display = "none";

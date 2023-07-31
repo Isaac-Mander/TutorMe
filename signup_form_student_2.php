@@ -20,9 +20,9 @@ if($page == 1)
   if($_POST['email'] != "" && $_POST['password'] != "")
   {
     //Set session variables
-    $_SESSION['email'] = $_POST['email'];
-    $_SESSION['password'] = $_POST['password'];
-    $email = $_POST['email'];
+    $_SESSION['email'] = remove_emoji($_POST['email']);
+    $_SESSION['password'] = remove_emoji($_POST['password']);
+    $email = remove_emoji($_POST['email']);
     $password_hash = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $_SESSION['hashed_password'] = $password_hash;
     //Check if user already exists in holding database
@@ -224,10 +224,7 @@ if($error) $page += -1; //Stop progression if error with user input
                     <div class="mb-4">
                       
                       <select name="schooldropdown" id"schooldropdown" class="select">
-                        <option value="1">School 1</option>
-                        <option value="2">School 2</option>
-                        <option value="3">School 3</option>
-                        <option value="4">School 4</option>
+                        <option value="1">Stac</option>
                       </select>
       
                     </div>

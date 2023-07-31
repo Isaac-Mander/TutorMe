@@ -27,7 +27,7 @@ if(isset($_POST['experience']) && isset($_POST['productivity']))
     {
         //If something went wrong show error msg and ask user to make a bug report
         echo "Error: " . $sql . "<br>" . $conn->error;
-        echo "<p>Something went wrong, please fill out a bug report at <a href='#'>this link</a></p>";
+        echo "<p>Something went wrong, please fill out a bug report at <a href='https://forms.office.com/Pages/DesignPageV2.aspx?subpage=design&FormId=cykeNF9KHku4jCjioH-b7TtxZ5zZX8tNluxRgC8GdjVUMDZVWjJQQUJCMlhGMTVJOThLQVVBOEoxQi4u&Token=003f6a68591e489190bcbad4f2cdcaff'>this link</a></p>";
     }
 }
 else

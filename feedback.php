@@ -148,9 +148,6 @@ else //Get the info about the session
             <p>Do you want this to be a recurring session? <strong> (This feature is coming soon)<strong> </p>
             <select name='button' id='button'>
                 <option value='0'>No</option>"
-                // <option value='1'>Weekly</option>
-                // <option value='2'>Fortnightly</option>
-                // <option value='3'>Monthly</option>
                 ."
             </select>
         </div>

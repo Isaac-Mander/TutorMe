@@ -224,7 +224,7 @@ if($error) $page += -1; //Stop progression if error with user input
                     <div class="mb-4">
                       
                       <select name="schooldropdown" id"schooldropdown" class="select">
-                        <option value="1">School 1</option>
+                        <option value="1">Stac</option>
                       </select>
       
                     </div>

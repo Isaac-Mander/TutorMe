@@ -20,9 +20,9 @@ if($page == 1)
   if($_POST['email'] != "" && $_POST['password'] != "")
   {
     //Set session variables
-    $_SESSION['email'] = $_POST['email'];
-    $_SESSION['password'] = $_POST['password'];
-    $email = $_POST['email'];
+    $_SESSION['email'] = remove_emoji($_POST['email']);
+    $_SESSION['password'] = remove_emoji($_POST['password']);
+    $email = remove_emoji($_POST['email']);
     $password_hash = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $_SESSION['hashed_password'] = $password_hash;
     //Check if user already exists in holding database

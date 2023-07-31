@@ -316,7 +316,7 @@ $checkbox_id_increment = 0; //Checkbox id for js
         </div>
       </div>
     </div>
-    <button id=profile_edit_button>Edit</button>
+    <button class="btn btn-success btn-md" id=profile_edit_button>Edit</button>
     <div class="card mx-auto">
       <div class="card-header text-white bg-primary">       <h3>Description</h3>   </div>
         <div class="card-body">

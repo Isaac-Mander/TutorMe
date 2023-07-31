@@ -18,12 +18,12 @@ include("sys_page/functions.php");
 $check = 0;
 
 //Get the sessions this user is tutoring today
-$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";  
+$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
 
 //Get the sessions this user is being tutored today
-$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";  
+$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 ?>
 
@@ -38,9 +38,6 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
-
-
-
   <?php
 $tz = new DateTimeZone('NZ');
 $dt = new DateTime('now',$tz);
@@ -114,7 +111,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 }?>
                 </div>
                 </div></div><?php
-                
+
                 $check=1;
 
               }
@@ -164,12 +161,10 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
       ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
     } elseif ($check ==1){
       ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
-    }    ?> </div>  <?php
+    }
     ?> </div></div><?php
 }
-if ($check == 0){
-  echo"there are no sessions, pleasing organise a session.";
-}
+
 ?>
   <div id="contact_detail_popup" class="contact_detail_popup">
     <div class="contact_detail_popup_content">
@@ -180,7 +175,7 @@ if ($check == 0){
         <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
         <p class="col text-center">And</p>
         <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
-        </div>  
+        </div>
         <h3>General info</h3>
         <p>Tutor name</p>
         <p>Tutee name</p>
@@ -214,14 +209,14 @@ if ($check == 0){
   //THIS IS JUST THE PAST SESSION CODE COPY AND PASTED ==================================================================
   //IT IS NOT BUG TESTED NOR CHECKED APART FROM A BASIC SCAN
 
-  $check = 0;
+$check = 0;
 //Get the sessions this user is tutoring today
-$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";  
+$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 
 
 //Get the sessions this user is being tutored today
-$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";  
+$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
@@ -258,14 +253,17 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
               $session_id = $session_combined_data[$i][0];
         ?>   <a href="<?php echo 'feedback.php?session_id=' . $session_id; ?>"><div class="col" > <div id="session_card" class='card'><?php
         echo ($tutor." tutoring ".$tutee."<br>"."Subject: ".$subject."<br>".$day."<br>"."Start time: ".$starttime . "<br>"."End time: ".$endtime);?> </div> </div>  <?php
-        $check=2;
+        $check=3;
         }
       }
+    }if ($check == 0){
+      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+    } elseif ($check ==1){
+      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+    } elseif ($check ==2){
+      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
     }
     ?> </div></div></a><?php
-}
-if ($check == 0){
-  echo"there are no sessions, pleasing organise a session.";
 }
 ?>
     <div id="session_page_marker"></div>

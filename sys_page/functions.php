@@ -266,6 +266,13 @@ function grab_events($conn,$id)
           $potential_start_datetime = $date_actual."T".$potential_start_time;
           $potential_end_datetime = $date_actual."T".$potential_end_time;
           //converting values for the upcomming week
+        } elseif ($week_day == 7){
+          //if it is not Sunday
+          $value_day_actual = Strtotime("Last week ".$day_of_week);
+          $date_actual = date("Y-m-d",$value_day_actual);
+          $potential_start_datetime = $date_actual."T".$potential_start_time;
+          $potential_end_datetime = $date_actual."T".$potential_end_time;
+          //converting values for the current values
         } else {
           //if it is not Sunday
 

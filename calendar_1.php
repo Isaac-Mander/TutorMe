@@ -213,8 +213,8 @@ $tz = new DateTimeZone('NZ');
         $card_id = $available_session_times_data[$i][4];
   
         ?>    <div id=<?php echo $card_id; ?> class='card mx-auto' style="width: 35rem;"><?php
-        echo ($name."<br>".date("l jS \of F Y h:i:s A", $potential_starttime) . "<br>");
-        echo date("l jS \of F Y h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
+        echo ($name."<br>".date("l h:i:s A", $potential_starttime) . "<br>");
+        echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
         ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a>     </div>   <?php      }
     }?>
 

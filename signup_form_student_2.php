@@ -3,6 +3,9 @@
 //Connect to database
 include("sys_page/db_connect.php");
 
+//Import functions
+include("sys_page/functions.php");
+
 //Start a session
 session_start();
 
@@ -20,17 +23,16 @@ if($page == 1)
   if($_POST['email'] != "" && $_POST['password'] != "")
   {
     //Set session variables
-    $_SESSION['email'] = $_POST['email'];
-    $_SESSION['password'] = $_POST['password'];
-    $email = $_POST['email'];
+    $_SESSION['email'] = remove_emoji($_POST['email']);
+    $_SESSION['password'] = remove_emoji($_POST['password']);
+    $email = remove_emoji($_POST['email']);
     $password_hash = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $_SESSION['hashed_password'] = $password_hash;
     //Check if user already exists in holding database
     $sql = "SELECT email FROM holding_logins WHERE email='$email';";
     $result = $conn->query($sql); //Query database
     if ($result->num_rows > 0) { //If the number of rows are not zero means user found
-        $error_msg = "That email already exists";
-
+      $error_msg = "";
       }
       else 
       {
@@ -80,10 +82,18 @@ if($page == 2)
       $school_code = $row['school_code']; 
     }
   }
-  echo $school_code; //DEBUG TO BE REMOVED
-
   //If school code isn't null and a display name was given add user in school's database
   if($school_code != null && $_POST['username'] != "")
+  {
+  //Check if the username is already taken by another user
+  $username = $_POST['username'];
+  $duplicate_check_sql = "SELECT * FROM `6969_students` WHERE `username`='$username';";
+  $duplicate_check_result = $conn->query($duplicate_check_sql); //Query database
+  if($duplicate_check_result->num_rows > 0) {  //If any rows are returned, a user exists with that username
+    $error = True;
+    $error_msg = "That username is already taken, pick another one";
+  }
+  else
   {
     //Write to session tokens
     $_SESSION['username'] = $_POST['username'];
@@ -113,6 +123,7 @@ if($page == 2)
       echo "Error: " . $sql . "<br>" . $conn->error;
     }
   }
+}
 }
 if($error) $page += -1; //Stop progression if error with user input
 
@@ -201,7 +212,7 @@ if($error) $page += -1; //Stop progression if error with user input
       
                     <div class="form-outline mb-4">
                       <input type="text" id="name" name= "name" class="form-control" />
-                      <label class="form-label" for="form3Example1q">Name</label>
+                      <label class="form-label" for="form3Example1q">Display Name</label>
                     </div>
       
                     <div class="row">
@@ -216,10 +227,7 @@ if($error) $page += -1; //Stop progression if error with user input
                     <div class="mb-4">
                       
                       <select name="schooldropdown" id"schooldropdown" class="select">
-                        <option value="1">School 1</option>
-                        <option value="2">School 2</option>
-                        <option value="3">School 3</option>
-                        <option value="4">School 4</option>
+                        <option value="1">Stac</option>
                       </select>
       
                     </div>

@@ -3,6 +3,9 @@
 //Connect to database
 include("sys_page/db_connect.php");
 
+//Import functions
+include("sys_page/functions.php");
+
 //Start a session
 session_start();
 

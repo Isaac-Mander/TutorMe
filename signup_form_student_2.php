@@ -236,7 +236,7 @@ if($error) $page += -1; //Stop progression if error with user input
                       <div class="col-md-6">
       
                         <div class="form-outline">
-                          <input type="text" id="form3Example1w" name ="schoolcode" class="form-control" />
+                          <input type="text" id="form3Example1w" name ="schoolcode" class="form-control" disabled/>
                           <label class="form-label" for="form3Example1w">School code (if you know it)</label>
                         </div>
       

@@ -79,7 +79,6 @@ else
   //If no subjects are found
   $no_tutor_subjects = true;
 }
-//End of section =========================================================================================================================================================
 
 
 
@@ -204,6 +203,40 @@ $checkbox_id_increment = 0; //Checkbox id for js
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
+    <?php
+  for($b=0;$b<sizeof($all_available_subject_array);$b++)
+  { if(is_int(substr($all_available_subject_array[$b][1], -1))){
+    $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
+  }else{
+    $all_available_subject_array[$b][5] = 0;
+  }
+  }
+  $all_available_subject_level_array_column = array_column($all_available_subject_array, 5);
+  $all_available_subject_name_array_column = array_column($all_available_subject_array, 1);
+  array_multisort($all_available_subject_name_array_column, SORT_ASC, $all_available_subject_level_array_column, SORT_ASC, $all_available_subject_array);
+
+  for($b=0;$b<sizeof($subject_array_tutee);$b++)
+  { if(is_int(substr($subject_array_tutee[$b][1], -1))){
+    $subject_array_tutee[$b][5] = substr($subject_array_tutee[$b][1], -1);
+  }else{
+    $subject_array_tutee[$b][5] = 0;
+  }
+  }
+  $array_tutee_subject_level_array_column = array_column($subject_array_tutee, 5);
+  $array_tutee_subject_name_array_column = array_column($subject_array_tutee, 2);
+  array_multisort($array_tutee_subject_name_array_column, SORT_ASC, $array_tutee_subject_level_array_column, SORT_ASC, $subject_array_tutee);
+
+  for($b=0;$b<sizeof($subject_array_tutor);$b++)
+  { if(is_int(substr($subject_array_tutor[$b][1], -1))){
+    $subject_array_tutor[$b][5] = substr($subject_array_tutor[$b][1], -1);
+  }else{
+    $subject_array_tutor[$b][5] = 0;
+  }
+  }
+  $array_tutor_subject_level_array_column = array_column($subject_array_tutor, 5);
+  $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
+  array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
+  ?>
     
     <h1><p class="text-center"><?php echo $display_name."'s profile";?></p></h1>
     <div class="container text-center border border-3 border-dark extra_rounded">
@@ -215,7 +248,7 @@ $checkbox_id_increment = 0; //Checkbox id for js
 
     <div class="row" id="studying">
       <div id="tutoring_subjects_checkbox_studying" class="hide_on_start">
-         <div class="card mx-auto" style="width: 18rem;">
+         <div class="card mx-auto" style="width: 25rem;">
           <div class="card-body">
             <ul class="list-group list-group-flush">
                 <?php 
@@ -233,7 +266,7 @@ $checkbox_id_increment = 0; //Checkbox id for js
          </div>
         </div>
         <div id="studying_subject_cards">
-          <div class="card mx-auto" style="width: 18rem;">
+          <div class="card mx-auto" style="width: 25rem;">
             <div class="card-body">
               <ul class="list-group list-group-flush">
               <?php
@@ -274,7 +307,7 @@ $checkbox_id_increment = 0; //Checkbox id for js
     <div class="row" id="tutoring">
       
       <div id="tutoring_subjects_checkbox_tutoring" class="hide_on_start">
-        <div class="card mx-auto" style="width: 18rem;">
+        <div class="card mx-auto" style="width: 25rem;">
           <div class="card-body">
           <ul class="list-group list-group-flush">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
@@ -291,7 +324,7 @@ $checkbox_id_increment = 0; //Checkbox id for js
       </div>
 
       <div id="tutoring_subject_cards">
-        <div class="card mx-auto" style="width: 18rem;">
+        <div class="card mx-auto" style="width: 25rem;">
           <div class="card-body">
           <ul class="list-group list-group-flush">
                 <?php

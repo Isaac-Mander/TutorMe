@@ -231,7 +231,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
             <h3 class="col text-center py-1 m-0">Past Sessions (click to place feedback)</h3>
             <div class="col red_box extra_rounded_tr"></div>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 gx-5"><?php
+        <div class="row row-cols-1 row-cols-md-3 gx-5 justify-content-center"><?php
     for($i=0; $i<sizeof($session_combined_data); $i++){
       if($session_combined_data[$i][9]==1){
         $day = substr($session_combined_data[$i][2],8,2);
@@ -257,11 +257,11 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         }
       }
     }if ($check == 0){
-      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+      ?><div class="col"><div class="card"><h3>There have been no confirmed sessions</h3></div></div><?php
     } elseif ($check ==1){
-      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+      ?><div class="col"><div class="card"><h3>There have been no confirmed sessions</h3></div></div><?php
     } elseif ($check ==2){
-      ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
+      ?><div class="col"><div class="card"><h3>There have been no confirmed sessions</h3></div></div><?php
     }
     ?> </div></div></a><?php
 }

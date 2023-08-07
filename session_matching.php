@@ -87,7 +87,7 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
   //Check if the subject is a global subject
   if(substr($available_tutee_times_data[$k]['subject_id'][$y],0,1) == "G") {
     $is_global = true;
-    $subject_id = substr($available_tutee_times_data[$k]['subject_id'][$y],1,1);
+    $subject_id = substr($available_tutee_times_data[$k]['subject_id'][$y],1,10);
   }
   else {
     $is_global = false;
@@ -120,8 +120,7 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
       $available_tutee_times_data = get_session_select_data($available_session_tutee_times_sql, $conn, $status);
       /*check for subject matches*/
       $array_input_number = 0;
-      $session_card = array();
-
+      
       if(is_array($available_tutee_times_data)){
         if(is_array($available_tutor_times_data)){
           for($k=0; $k<sizeof($available_tutee_times_data); $k++){
@@ -303,14 +302,14 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
             create_card($session_card[$z]['end_time'],$session_card[$z]['start_time'],$session_card[$z]['name'],$session_card[$z]['subject'],$session_card[$z]['day_of_week'],$session_card[$z]['card_id']);
           }
         }else{
-          echo"there are no sessions that share the same time & subject as you"."</br>";
+          echo"There are no sessions that share the same time & subject as you"."</br>";
         }
 
         }else{
-          echo"Absolute banger, also you have no potential sessions set"."</br>";
+          echo"You have no potential sessions set"."</br>";
         }
       }else{
-        echo"Absolute banger, also there are no other users with a potential session set"."</br>";
+        echo"There are no other users with a potential session set"."</br>";
       }
       
       ?>

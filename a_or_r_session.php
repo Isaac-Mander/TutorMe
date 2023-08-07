@@ -19,7 +19,7 @@ if(isset($_GET['action']) && isset($_GET['id']) && isset($_GET['page']))
     //Check if the requested session is owned by the user
     $owner_check_sql = "SELECT * FROM `6969_tutor_session` WHERE id = $id AND (`tutee_id`=$user_id OR `tutor_id`=$user_id)";
     $owner_check_result = $conn->query($owner_check_sql); //Query database
-    if ($owner_check_result->num_rows = 0) { //If a row is not returned the session requested is not valid, so redirect the user away from this page
+    if ($owner_check_result->num_rows == 0) { //If a row is not returned the session requested is not valid, so redirect the user away from this page
         header("Location: " . $page);
     }
 

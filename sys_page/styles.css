@@ -39,6 +39,11 @@
   color: red;
 }
 
+.navbar-brand
+{
+  text-decoration: none;
+}
+
 /* JS NOTIFICATIONS =========================================================================================================== */
 /* The Modal (background) */
 .modal {
@@ -166,3 +171,5 @@
   .dark-blue-text {
     color: #0A38F5;
   }
+
+

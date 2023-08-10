@@ -2,10 +2,7 @@
 //Import functions
 include("sys_page/functions.php");
 
-$_SESSION['school_code'] = 9696; //REMOVE THIS LINE THIS IS A DEBUG LINE REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME 
-// REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME 
-// REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME  REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME REMOVE ME 
-//CHECK IF USER IS LOGGED IN
+$_SESSION['school_code'] = 9696;
 session_start();
 if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in redirect to login page
 {
@@ -23,179 +20,51 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> 
 </head>
 <body>
+
+
     <?php
     //Add the header
     include("sys_page/header.html");
-    //Connect to database
-    include("sys_page/db_connect.php");    
 
-    //Get the user info from the session cookie
-    $user_id = $_SESSION['user_id'];
-    $school_code = $_SESSION['school_code'];
-
-    //Session error code array
-    $session_error_codes = [0,0];
-
-    //Get the sessions this user is tutoring today
-    $session_today_tutor_sql = "SELECT * FROM $school_code" . "_students INNER JOIN $school_code" . "_tutor_session ON $school_code" . "_tutor_session.tutor_id=$school_code" . "_students.id
-     WHERE date($school_code" . "_tutor_session.session_start) = CURRENT_DATE() AND $school_code" . "_students.id=$user_id";  
-    $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
-    if($session_today_tutor_data == 1) {$session_error_codes[0] = 1;} //If error code = 1 set error code array to true
-
-    //Get the sessions this user is tutoring today
-    $session_today_tutee_sql = "SELECT * FROM $school_code" . "_students INNER JOIN $school_code" . "_tutor_session ON $school_code" . "_tutor_session.tutee_id=$school_code" . "_students.id
-     WHERE date($school_code" . "_tutor_session.session_start) = CURRENT_DATE() AND $school_code" . "_students.id=$user_id";  
-    $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
-    if($session_today_tutee_data == 1) {$session_error_codes[1] = 1;} //If error code = 1 set error code array to true
-
-    //Combine the today sessions data into a single array
-    //Only use the arrays with correct data
-    $no_session_today = false;
-    if($session_error_codes[0] == 1 && $session_error_codes[1] == 1) {$no_session_today = true;}
-    if($session_error_codes[0] == 1 && $session_error_codes[1] == 0) {$session_combined_data = $session_today_tutee_data;}
-    if($session_error_codes[0] == 0 && $session_error_codes[1] == 1) {$session_combined_data = $session_today_tutor_data;}
-    if($session_error_codes[0] == 0 && $session_error_codes[1] == 0) {$session_combined_data = array_merge($session_today_tutor_data,$session_today_tutee_data);}
+    //Connect to db
+    include("sys_page/db_connect.php")
+    ?>
+    <h1>Welcome to TutorMe!</h1>    
+    <p>This site is designed to help connect people who want tuoring with those who want to volenteer their knoledge to help others.</p>
     
-    //If there is any stored data sort it
-    if($no_session_today == false)
+    <?php
+    //Get user id from session var
+    $user_id = $_SESSION['user_id'];
+    //Setup array [times,tutee_subjects,tutor_subjects]
+    $setup_errors = [false,false,false];
+    //Check if anything needs to be set up in regards to this account
+    $check_times_sql = "SELECT * FROM `6969_student_times` WHERE `student_id`=$user_id;";
+    $result = $conn->query($check_times_sql); if ($result->num_rows == 0) { $setup_errors[0] = true;}
+
+    //If both subject tables return empty, the user has not set any subjects
+    $check_tutee_subjects_sql = "SELECT * FROM `6969_subjects_tutee` WHERE `tutee_id`=$user_id;";
+    $check_tutor_subjects_sql = "SELECT * FROM `6969_subjects_tutor` WHERE `tutor_id`=$user_id;";
+    $result = $conn->query($check_tutee_subjects_sql); if ($result->num_rows == 0) { $setup_errors[1] = true;}
+    $result = $conn->query($check_tutor_subjects_sql); if ($result->num_rows == 0) { $setup_errors[2] = true;}
+
+    //If any errors were detected, show the relevant error msg
+    if(($setup_errors[0] == true) OR ($setup_errors[1] == true) OR ($setup_errors[1] == true))
     {
-        usort($session_combined_data, function($a, $b) {
-            return $a[1] <=> $b[1];
-        });
+        //Echo welcome text
+        echo "<h3>You are currently logged in as, ". $_SESSION['user'].", but you haven't finished setting up your account</h3>";
+        echo "<ul>";
+        if($setup_errors[0] == true) {echo "<li>Select the times when you are available for tutoring</li>";}
+        if($setup_errors[1] == true OR $setup_errors[2] == true) {echo "<li>Select your subjects (in both recieving and giving tutoring)</li>";}
+        echo "</ul>";
+        echo "<button type='button' class='btn btn-success btn-md'>You can set these up here</button>";
+    }
+    else
+    {
+        echo "<h3>You are currently logged in as, ". $_SESSION['user']."</h3>";
     }
     ?>
-
-    
-    <div class="text-center fs-1"><p id = "index_date_time"></p></div>
-
-    <!-- Today Sessions -->
-    <div class="m-3">
-    <?php
-        //Check if there are any sessions today
-        if($no_session_today == false)
-        {
-            ?>
-            <div class="upcoming_day_sessions container text-center border border-2 border-dark extra_rounded">
-            <div class="row">
-                <h3 class="col text-center py-3 m-0">Upcoming</h3>
-                <div class="col red_box extra_rounded_tr"></div>
-            </div>
-            <?php
-            //Show the sessions today this user is tutoring
-            for($i=0; $i<sizeof($session_combined_data); $i++)
-            {
-            ?>
-            <div class="session_card d-flex row border-top">
-                <p class="py-2 m-0">
-                    <?php
-                    if($session_combined_data != 1)
-                    {
-                        //SESSION START TIME
-                        //Convert timestamp to 12h time
-                        $time_raw_start = $session_combined_data[$i][1];
-                        $time_24h_hours_start = (int)substr($time_raw_start,10,3);
-                        //If hours > 12 remove the extra time and add pm to end of number
-                        $time_ending_start = "am";
-                        if($time_24h_hours_start > 12)
-                        {
-                            $time_24h_hours_start += -12;
-                            $time_ending_start = "pm";
-                        }
-                        //Combine everything back into one string
-                        $time_12h_start = (string)$time_24h_hours_start . ":" .  substr($time_raw_start,14,2) . $time_ending_start;
-
-                        //SESSION END TIME
-                        //Convert timestamp to 12h time
-                        $time_raw_end = $session_combined_data[$i][2];
-                        $time_24h_hours_end = (int)substr($time_raw_end,10,3);
-                        //If hours > 12 remove the extra time and add pm to end of number
-                        $time_ending_end = "am";
-                        if($time_24h_hours_end > 12)
-                        {
-                            $time_24h_hours_end += -12;
-                            $time_ending_end = "pm";
-                        }
-                        //Combine everything back into one string
-                        $time_12h_end = (string)$time_24h_hours_end . ":" .  substr($time_raw_end,14,2) . $time_ending_end;
-
-                        //Check if the user is tutoring or being tutored
-                        $is_tutor = false;
-                        if($session_combined_data[$i][5] == $user_id) $is_tutor = true;
-                        //Show the session time, name of person, subject, mark of tutor/tutee
-                        if($is_tutor) 
-                        {
-                            echo $time_12h_start . " - " . $time_12h_end . " " . $session_combined_data[$i][4];
-                            echo "<br>";
-                            echo $session_combined_data[$i][8] . " -Tutor";
-                        }
-                        else 
-                        {
-                            echo $time_12h_start . " - " . $time_12h_end . " " . $session_combined_data[$i][6];
-                            echo "<br>";
-                            echo $session_combined_data[$i][8] . " -Tutee";
-                        }
-                    }
-                    ?>
-                </p>
-            </div>
-            <?php } 
-            }
-        else //IF THERE ARE NO SESSIONS TODAY
-        {
-            echo '<div class="no_sessions_today text-center">';
-            echo '<p>no sessions today</p>';
-        }
-        ?> 
-    </div></div>
-
-    <!-- Sessions for the next week -->
-    <div class="m-3">
-    <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
-        <div class="row">
-            <h3 class="col text-center py-1 m-0">Weekly</h3>
-            <div class="col red_box extra_rounded_tr"></div>
-        </div>
-     <div class="card">
-     <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-    <?php
-        $data_increment = 1;
-        for($i=0; $i<7; $i++)
-        {
-            //Get the day to query
-            $day_sql = "SELECT DAYNAME(DATE_ADD(CURRENT_DATE(), INTERVAL $data_increment DAY));";
-            $day_result = $conn->query($day_sql);
-            $day_data = $day_result->fetch_assoc();
-            
-            //Get the sessions over the next few days
-            $tutor_sql = "SELECT * FROM $school_code" . "_students INNER JOIN $school_code" . "_tutor_session ON $school_code" . "_tutor_session.tutor_id=$school_code" . "_students.id WHERE date($school_code" . "_tutor_session.session_start) = DATE_ADD(CURRENT_DATE(), INTERVAL $data_increment DAY) AND $school_code" . "_students.id=$user_id;";
-            $tutor_data = get_session_data($tutor_sql,$conn);
-            $tutee_sql = "SELECT * FROM $school_code" . "_students INNER JOIN $school_code" . "_tutor_session ON $school_code" . "_tutor_session.tutee_id=$school_code" . "_students.id WHERE date($school_code" . "_tutor_session.session_start) = DATE_ADD(CURRENT_DATE(), INTERVAL $data_increment DAY) AND $school_code" . "_students.id=$user_id;";
-            $tutee_data = get_session_data($tutee_sql,$conn);
-
-
-            echo "<div class='d-flex row border-top'><p>";
-            echo $day_data['DAYNAME(DATE_ADD(CURRENT_DATE(), INTERVAL ' . $data_increment . ' DAY))'] . ' - ';
-            
-            if($tutor_data != 1 && $tutee_data != 1) {echo sizeof($tutor_data) + sizeof($tutee_data);}
-            else
-            {
-                if($tutor_data != 1) {echo sizeof($tutor_data);}
-                else if($tutee_data != 1) {echo sizeof($tutee_data);}
-                else {echo "no";}
-            }
-            echo " events</p></div>";
-            $data_increment += 1;
-        }
-        ?>        
-
-    </li>
-  </ul>
-      
-    </div>
-    </div></div>
-
-
+    <h3>Unsure how to use TutorMe?</h3>
+    <button type="button" class="btn btn-success btn-md">We have a guide</button>
     <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> 
 </body>

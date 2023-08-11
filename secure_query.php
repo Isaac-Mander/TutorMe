@@ -24,16 +24,7 @@ else
     //If profile page, update database with new info saved by the user =============================================================================================================================
     if($url == "/dashboard/TutorMe/secure_query.php");
     {
-      //Saving the description ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      //Get description text from url $_GET
-      $new_description = $_GET['description'];
-      //Query the database to update description with this text
-      $profile_sql = "UPDATE `6969_students` SET `description`='$new_description' WHERE id=$user_id";
-      if ($conn->query($profile_sql) === TRUE) {
-          echo "0";
-        } else {
-          echo "1";
-        }
+
         
         echo "."; //Add a dividing dot for each status
         //Saving the subjects ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

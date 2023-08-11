@@ -38,7 +38,7 @@ else {echo "<p><a href='logout.php' class='list-group-item list-group-item-actio
     <a class="list-group-item list-group-item-action" href="../user_home.php">Student Home</a> 
     <a class="list-group-item list-group-item-action" href="../user_profile.php">Profile</a> 
     <a class="list-group-item list-group-item-action" href="../session_matching.php">Tutor Others</a> 
-    <a class="list-group-item list-group-item-action" href="../calendar_1.php">Set your free slots</a> 
+    <a class="list-group-item list-group-item-action" href="../info_setting.php">Set your free slots</a> 
     <!-- <a class="list-group-item list-group-item-action" href="../tutorial.php">Tutorials</a>  -->
     <!-- <a class="list-group-item list-group-item-action" href="../admin_view.php">Admin Dashboard</a>  -->
 <?php

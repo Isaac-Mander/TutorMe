@@ -65,14 +65,6 @@ if(document.getElementById("profile_edit_button"))
     //Get the edit button
     let profile_edit_button = document.getElementById("profile_edit_button");
 
-    //Get the desc text dom element
-    let profile_desc_text = document.getElementById('profile_desc_text');
-
-    //Create a input text box to replace the desc text element when in edit mode
-    let profile_desc_edit = document.createElement("input");
-    profile_desc_edit.type = "text";
-    profile_desc_edit.id = "profile_desc_edit";
-
     //Find the subjects that php generated
     tutor_subject_divs = [];
     element_id = "tutor_0";
@@ -125,9 +117,6 @@ if(document.getElementById("profile_edit_button"))
         {
             //Set button to edit mode
             profile_edit_button.innerHTML = "Save";
-            //Get the value of the desc text and set the input field to be =
-            profile_desc_edit.value = profile_desc_text.innerHTML;
-            profile_desc_text.replaceWith(profile_desc_edit);
 
             //Make the subject edit checkboxes visible
             checkbox_study_subjects.style.display = "flex";
@@ -141,9 +130,6 @@ if(document.getElementById("profile_edit_button"))
         {   
             //Set button to save mode  
             profile_edit_button.innerHTML = "Edit";
-            //Get the value of the input field and set the desc text to be =
-            profile_desc_text.innerHTML = profile_desc_edit.value;
-            profile_desc_edit.replaceWith(profile_desc_text);
 
             //Make the subject edit checkboxes hidden
             checkbox_study_subjects.style.display = "none";
@@ -164,7 +150,7 @@ if(document.getElementById("profile_edit_button"))
 
             //Update the database with the new info
             const xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "secure_query.php?description=" + profile_desc_text.innerHTML + "&subjects=" + subjects_status);
+            xhttp.open("GET", "secure_query.php?subjects=" + subjects_status);
             xhttp.send();
             //If the request failed, send user to error page
             xhttp.onreadystatechange = function() {

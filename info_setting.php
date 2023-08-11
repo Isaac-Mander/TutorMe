@@ -414,10 +414,10 @@ $tz = new DateTimeZone('NZ');
             
     <button class="btn btn-success btn-md" id=profile_edit_button>Edit</button>
     <div class="card mx-auto">
-      <div class="card-header text-white bg-primary">       <h3>Description</h3>   </div>
+      <!-- <div class="card-header text-white bg-primary">       <h3>Description</h3>   </div> -->
         <div class="card-body">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"> <p id="profile_desc_text"><?php echo $desc; ?></p></li>
+          <!-- <li class="list-group-item"> <p id="profile_desc_text"><?php echo $desc; ?></p></li> -->
           <li class="list-group-item text-white bg-primary">          <h3>Statistics</h3></li>
           <li class="list-group-item">          <p>Average Productivity: <?php echo $average_prod; ?>⭐</p></li>
           <li class="list-group-item">          <p>Average Experience: <?php echo $average_expe; ?>⭐</p></li>

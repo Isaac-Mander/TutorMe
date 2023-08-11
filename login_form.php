@@ -38,7 +38,7 @@ if(isset($_GET['error']))
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text">Password:</label><br>
-                                <input type="text" autocomplete="off" placeholder="Enter Password" name="password" id="password" class="form-control" required>
+                                <input type="password" autocomplete="off" placeholder="Enter Password" name="password" id="password" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="remember" class="text"><span>Remember me</span> <span><input id="remember-me" checked="checked" name="remember" type="checkbox"></span></label><br>

@@ -319,6 +319,7 @@ $tz = new DateTimeZone('NZ');
     <h1><p class="text-center"><?php echo $display_name."'s profile";?></p></h1>
 
     <div class="row">
+      <div class ="col" >
       <div id="tutoring_subjects_checkbox_studying" class="hide_on_start">
                 <?php 
               for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
@@ -339,33 +340,29 @@ $tz = new DateTimeZone('NZ');
                 }?>
         </div>
         <div id="studying_subject_cards">
-          <div class="card mx-auto" style="width: 25rem;">
-            <div class="card-body">
-              <ul class="list-group list-group-flush">
               <?php
             //Get number of items in subject array
             if($no_tutee_subjects == false)
             {
               for($x=0;$x<sizeof($subject_array_tutee);$x++)
               {
-                ?> <li class="list-group-item"> <?php
-                echo "<div ";
-                echo "id=tutee_" . $subject_element_tutee_id;//Give the element a unqiue id
-                echo " class='col'><p class='nowrap'>";
-                echo $subject_array_tutee[$x][2];
-                echo "</p></div>";
-                //Increment the id?></li> <?php 
-                $subject_element_tutee_id += 1;
+                  ?><div class="card mx-auto" style="width: 25rem;"><div class="card-body"><?php
+                  echo "<div ";
+                  echo "id=tutee_" . $subject_element_tutee_id;//Give the element a unqiue id
+                  echo " class='col'><p class='nowrap'>";
+                  echo $subject_array_tutee[$x][2];
+                  echo "";
+                  echo "</p></div>";
+                  //<img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''>
+                  //Increment the id ?></div></div><?php
+                  $subject_element_tutee_id += 1;
               }
             }
           ?>
-              </ul>
-            </div>
-          </div>
       </div>
     </div>
-    <div class="row" id="tutoring">
-      <h1>divider</h1>
+          
+    <div class="col" id="tutoring">
       <div id="tutoring_subjects_checkbox_tutoring" class="hide_on_start">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
           ?> <div class="card mx-auto" style="width: 25rem;"> <div class="card-body"> <?php
@@ -392,33 +389,43 @@ $tz = new DateTimeZone('NZ');
       </div>
 
       <div id="tutoring_subject_cards">
-        <div class="card mx-auto" style="width: 25rem;">
-          <div class="card-body">
-          <ul class="list-group list-group-flush">
                 <?php
               //Get number of items in subject array
               if($no_tutor_subjects == false)
               {
                 for($x=0;$x<sizeof($subject_array_tutor);$x++)
                 {
-                  ?><li class="list-group-item"><?php
+                  ?><div class="card mx-auto" style="width: 25rem;"><div class="card-body"><?php
                   echo "<div ";
                   echo "id=tutor_" . $subject_element_tutor_id;//Give the element a unqiue id
                   echo " class='col'><p class='nowrap'>";
                   echo $subject_array_tutor[$x][2];
-                  echo "</p><img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''></div>";
-                  //Increment the id ?></li><?php
+                  echo "";
+                  echo "</p></div>";
+                  //<img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''>
+                  //Increment the id ?></div></div><?php
                   $subject_element_tutor_id += 1;
                 }
               }
             ?>
-          </ul>
-          </div>
-        </div>
       </div>
     </div>
+  </div>
+            
     <button class="btn btn-success btn-md" id=profile_edit_button>Edit</button>
-
+    <div class="card mx-auto">
+      <div class="card-header text-white bg-primary">       <h3>Description</h3>   </div>
+        <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"> <p id="profile_desc_text"><?php echo $desc; ?></p></li>
+          <li class="list-group-item text-white bg-primary">          <h3>Statistics</h3></li>
+          <li class="list-group-item">          <p>Average Productivity: <?php echo $average_prod; ?>⭐</p></li>
+          <li class="list-group-item">          <p>Average Experience: <?php echo $average_expe; ?>⭐</p></li>
+          <li class="list-group-item">          <p>Hours spent tutoring: <?php echo $hours_tutored; ?></p></li>
+          <li class="list-group-item">          <p>Sessions tutored: <?php echo $sessions_tutored; ?></p></li>
+        </ul>
+        </div>
+    </div>
     <div class="card mx-auto w-75">
     <form action='calendar_2.php' method='post'>
     <div class="card-body">

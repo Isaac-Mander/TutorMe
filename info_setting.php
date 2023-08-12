@@ -320,20 +320,23 @@ $tz = new DateTimeZone('NZ');
 
     <div class="row">
       <div class ="col" >
-      <div id="tutoring_subjects_checkbox_studying" class="hide_on_start">
+        <div class="card"><h1>need help with</h1></div>
+         <div id="tutoring_subjects_checkbox_studying" class="hide_on_start">
                 <?php 
               for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-                ?> <div class="card mx-auto" style="width: 25rem;"> <div class="card-body"> <?php
+                ?><div class="card mx-auto h-300" style="width: 25rem;"> <div class="card-body"> <?php
                 $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
                 if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
                 if($all_available_subject_array[$i][3] == true) 
                 {
                   ?>
-                  <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
+                  <div class="card-title"> <?php echo $all_available_subject_array[$i][1];?></div>
                   <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>" ?> </div> <?php
                 } //Create a checked checkbox
                 else {
-                  echo "<input id=" . $checkbox_id . " type='checkbox'>" . "  ".$all_available_subject_array[$i][1];
+                  ?>
+                  <div class="card-title"> <?php echo $all_available_subject_array[$i][1];?></div>
+                  <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox'>" ?> </div> <?php
                 } //Create an empty checkbox 
                 ?></div></div><?php
                 $checkbox_id_increment += 1; //Increment the checkbox id by 1
@@ -363,9 +366,10 @@ $tz = new DateTimeZone('NZ');
     </div>
           
     <div class="col" id="tutoring">
+    <div class="card"><h1>tutoring</h1></div>
       <div id="tutoring_subjects_checkbox_tutoring" class="hide_on_start">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-          ?> <div class="card mx-auto" style="width: 25rem;"> <div class="card-body"> <?php
+          ?> <div class="card mx-auto" style="width: 25rem;"> <div class="card-body"> <div class="col"><p class="nowrap"> <?php
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][4] == true) 
@@ -373,16 +377,14 @@ $tz = new DateTimeZone('NZ');
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
               <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>" ?> </div> <?php
-              
             } //Create a checked checkbox
             else 
             {
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>" ?> </div> <?php
+              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox'>" ?> </div> <?php
               } //Create an empty checkbox 
-
-            ?></div> </div>
+            ?></p></div></div></div>
             <?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
             }?>
@@ -413,19 +415,6 @@ $tz = new DateTimeZone('NZ');
   </div>
             
     <button class="btn btn-success btn-md" id=profile_edit_button>Edit</button>
-    <div class="card mx-auto">
-      <!-- <div class="card-header text-white bg-primary">       <h3>Description</h3>   </div> -->
-        <div class="card-body">
-        <ul class="list-group list-group-flush">
-          <!-- <li class="list-group-item"> <p id="profile_desc_text"><?php echo $desc; ?></p></li> -->
-          <li class="list-group-item text-white bg-primary">          <h3>Statistics</h3></li>
-          <li class="list-group-item">          <p>Average Productivity: <?php echo $average_prod; ?>⭐</p></li>
-          <li class="list-group-item">          <p>Average Experience: <?php echo $average_expe; ?>⭐</p></li>
-          <li class="list-group-item">          <p>Hours spent tutoring: <?php echo $hours_tutored; ?></p></li>
-          <li class="list-group-item">          <p>Sessions tutored: <?php echo $sessions_tutored; ?></p></li>
-        </ul>
-        </div>
-    </div>
     <div class="card mx-auto w-75">
     <form action='calendar_2.php' method='post'>
     <div class="card-body">
@@ -535,7 +524,7 @@ $tz = new DateTimeZone('NZ');
 
         $card_id = $available_session_times_data[$i][4];
   
-        ?>    <div id=<?php echo $card_id; ?> class='card mx-auto' style="width: 35rem;"><?php
+        ?>    <div id=<?php echo $card_id; ?> class='card mx-auto' style="width: 15rem;"><?php
         echo ($name."<br>".date("l h:i:s A", $potential_starttime) . "<br>");
         echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
         ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a>     </div>   <?php      }

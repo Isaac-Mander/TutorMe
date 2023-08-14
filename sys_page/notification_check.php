@@ -26,6 +26,7 @@ $potential_session_array = [];
 
 //If no sessions are found nothing happens
 //If the number of rows are not zero get data as an array
+$check = 0;
 if ($result->num_rows > 0) { 
     $index = 0;
     while($row = $result->fetch_assoc()) {
@@ -35,48 +36,52 @@ if ($result->num_rows > 0) {
         $hour = substr($row['session_start'],11,2);
         $minutes = substr($row['session_start'],14,2);
         $session_time = mktime($hour,$minutes,0,$month,$day,$year);
-        if ($time < $session_time) {
-        $check = 1;
-        $potential_session_array[$index]['id'] = $row['id'];
-        $potential_session_array[$index]['tutee_id'] = $user_id;
+        if ($time < $session_time) 
+        {
+            $check = 1;
+            $potential_session_array[$index]['id'] = $row['id'];
+            $potential_session_array[$index]['tutee_id'] = $user_id;
 
-        $potential_session_array[$index]['tutor_id'] = $row['tutor_id'];
-
-
-        $id_to_check = $row['tutor_id'];
-        $sql_student_name = "SELECT * FROM `6969_students` WHERE `id` = $id_to_check";
-        $result_student_name = $conn->query($sql_student_name); //Query database
-        $data_student_name = $result_student_name->fetch_assoc();
-        $potential_session_array[$index]['tutor_name'] = $data_student_name['name'];
+            $potential_session_array[$index]['tutor_id'] = $row['tutor_id'];
 
 
+            $id_to_check = $row['tutor_id'];
+            $sql_student_name = "SELECT * FROM `6969_students` WHERE `id` = $id_to_check";
+            $result_student_name = $conn->query($sql_student_name); //Query database
+            $data_student_name = $result_student_name->fetch_assoc();
+            $potential_session_array[$index]['tutor_name'] = $data_student_name['name'];
 
-        $potential_session_array[$index]['session_start'] = $row['session_start'];
-        $potential_session_array[$index]['session_end'] = $row['session_end'];
-        $potential_session_array[$index]['is_active'] = $row['is_active'];
 
-        //Find the average ratings of the tutor
-        $tutor_ratings = average_ratings($conn, $row['tutor_id']);
-        $potential_session_array[$index]['av_prod'] = $tutor_ratings[0];
-        $potential_session_array[$index]['av_expe'] = $tutor_ratings[1];
 
-         //Resolve subject name
-         //Check which database to use
-        if($row['global_subject_id'] == 0) {
-            $subject_id = $row['local_subject_id'];
-            $name_sql = "SELECT `name` FROM `6969_subjects` WHERE `id`= '$subject_id'";
+            $potential_session_array[$index]['session_start'] = $row['session_start'];
+            $potential_session_array[$index]['session_end'] = $row['session_end'];
+            $potential_session_array[$index]['is_active'] = $row['is_active'];
+
+            //Find the average ratings of the tutor
+            $tutor_ratings = average_ratings($conn, $row['tutor_id']);
+            $potential_session_array[$index]['av_prod'] = $tutor_ratings[0];
+            $potential_session_array[$index]['av_expe'] = $tutor_ratings[1];
+
+            //Resolve subject name
+            //Check which database to use
+            if($row['global_subject_id'] == 0) 
+            {
+                $subject_id = $row['local_subject_id'];
+                $name_sql = "SELECT `name` FROM `6969_subjects` WHERE `id`= '$subject_id'";
+            }
+            else 
+            {
+                $subject_id = $row['global_subject_id'];
+                $name_sql = "SELECT `name` FROM `subjects` WHERE `id`= '$subject_id'";
+            }
+            //Get the subject name
+            $name_results = $conn->query($name_sql);
+            $name_data = $name_results->fetch_assoc();
+
+            $potential_session_array[$index]['subject_name'] = $name_data['name'];
+            $index += 1;
         }
-        else {
-            $subject_id = $row['global_subject_id'];
-            $name_sql = "SELECT `name` FROM `subjects` WHERE `id`= '$subject_id'";
-        }
-        //Get the subject name
-        $name_results = $conn->query($name_sql);
-        $name_data = $name_results->fetch_assoc();
-
-        $potential_session_array[$index]['subject_name'] = $name_data['name'];
-        $index += 1;
-    }}
+    }
 
 
     //Get the names of users/subjects

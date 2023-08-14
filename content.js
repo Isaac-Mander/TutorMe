@@ -439,14 +439,14 @@ if(document.getElementById("session_page_marker"))
     console.log(sesssion_cards);
     for(var i = 0; i < sesssion_cards.length; i++){
         sesssion_cards[i].onclick = function() {
-            console.log(this.children);
+            console.log("Children");
+            console.log(this.children[0].children[4].children[0].innerHTML);
             //Get data from card p tags
-            var tutor = this.children[0].children[1].innerHTML;
-            var tutee = this.children[1].children[1].innerHTML;
-            var subject = this.children[2].children[1].innerHTML;
-            var date = this.children[3].children[1].innerHTML;
-            var starttime = this.children[4].children[1].innerHTML;
-            var endtime = this.children[5].children[1].innerHTML;
+            var tutee = this.children[0].children[0].children[0].innerHTML;
+            var subject = this.children[0].children[1].children[0].innerHTML;
+            var date = this.children[0].children[2].children[0].innerHTML;
+            var starttime = this.children[0].children[3].children[0].innerHTML;
+            var endtime = this.children[0].children[4].children[0].innerHTML;
 
 
             var tutor_email = this.children[6].innerHTML;
@@ -469,7 +469,7 @@ if(document.getElementById("session_page_marker"))
             //Set Subject name
             contact_detail_content.children[4].innerHTML = "<b>Subject:</b> "+subject;
             //Set date
-            contact_detail_content.children[5].innerHTML = "<b>Date:</b> "+date
+            contact_detail_content.children[5].innerHTML = "<b>Date:</b> "+date;
             //Set Start time
             contact_detail_content.children[6].innerHTML = "<b>Earliest start time:</b> "+starttime;
             //Set End time

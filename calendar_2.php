@@ -35,7 +35,7 @@ else
 }
 
 //Send user back to frontend calendar page
-header("Location: calendar_1.php?invalid_time=" . $invalid_time);
+header("Location: info_setting.php?invalid_time=" . $invalid_time);
 ?>
 
   <head>

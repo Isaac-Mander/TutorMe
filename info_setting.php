@@ -10,10 +10,11 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 $user_id = $_SESSION['user_id'];
 $school_code = $_SESSION['school_code'];
 
-//Import functions
+//Import needed files
 include("sys_page/header.html");
 include("sys_page/db_connect.php");
 include("sys_page/functions.php");
+
 $user_id = $_SESSION['user_id'];
 $school_code = $_SESSION['school_code'];
 $sql = "SELECT * FROM " . $school_code . "_students WHERE id=" . $user_id;
@@ -22,6 +23,8 @@ if ($result->num_rows > 0) { //If the number of rows are not zero
   $data = $result->fetch_assoc();
   $display_name = $_SESSION['user'];
   $desc = $data['description'];
+  $email = $data['email'];
+  $phone = $data['phone'];
   $hours_tutored = $data['hours_tutored'];
   $sessions_tutored = $data['sessions_tutored'];
 }
@@ -316,7 +319,8 @@ $tz = new DateTimeZone('NZ');
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
   ?>
     
-    <h1><p class="text-center"><?php echo $display_name."'s profile";?></p></h1>
+    <h1 class="text-center">Setup page</h1>
+    <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
     <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     
@@ -345,7 +349,7 @@ $tz = new DateTimeZone('NZ');
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      mine.dia.monds
+                      <?php echo $email; ?>
                     </div>
                   </div>
                   <hr>
@@ -354,7 +358,7 @@ $tz = new DateTimeZone('NZ');
                       <h6 class="mb-0">Phone</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      (nyc) 9-11-2001
+                    <?php echo $phone; ?>
                     </div>
                   </div>
                   <hr>
@@ -421,9 +425,7 @@ $tz = new DateTimeZone('NZ');
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
-        <a class="close btn" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-                    </a>
+        <a class="close btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
       </div>
       <div class="modal-body">
       <div id="tutoring_subjects_checkbox_tutoring">

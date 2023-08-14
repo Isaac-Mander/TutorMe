@@ -1,6 +1,4 @@
 <?php
-
-
 //Get relevant info from session
 $user_id = $_SESSION['user_id'];
 $sorting = 1;
@@ -51,6 +49,7 @@ if ($sorting == 1){
 function create_card($potential_endtime,$potential_starttime,$name,$subject,$day_of_week,$card_id)
 {
 ?>
+  <div class="col">
   <div id = '<?php echo $card_id; ?>' class='card mx-auto' name="pot_s_card" style="width: 18rem;"> 
   <?php ?>
   <div class="card-body">
@@ -60,7 +59,7 @@ function create_card($potential_endtime,$potential_starttime,$name,$subject,$day
   <div> <?php echo "<p id='subject'>" . $subject . "</p>";?></div>
   <div> <?php echo "<p id='day_of_week'>" . $day_of_week . "</p>"; ?></div>
   </div>
-  </div></a><?php
+  </div></div><?php
 }
 
 
@@ -288,9 +287,11 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
             $subject_column_card = array_column($session_card, 'subject');
             array_multisort($subject_column_card, SORT_ASC, $session_card);
           }
+          ?><div class="row row-cols-1 row-cols-md-4" ><?php
           for ($z=0; $z<sizeof($session_card); $z++){
             create_card($session_card[$z]['end_time'],$session_card[$z]['start_time'],$session_card[$z]['name'],$session_card[$z]['subject'],$session_card[$z]['day_of_week'],$session_card[$z]['card_id']);
           }
+          ?></div><?php
         }else{
           echo"There are no sessions that share the same time & subject as you"."</br>";
         }

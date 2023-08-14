@@ -51,7 +51,7 @@ if ($sorting == 1){
 function create_card($potential_endtime,$potential_starttime,$name,$subject,$day_of_week,$card_id)
 {
 ?>
-  <div id = '<?php echo $card_id; ?>' class='card mx-auto' name="card" style="width: 18rem;"> 
+  <div id = '<?php echo $card_id; ?>' class='card mx-auto' name="pot_s_card" style="width: 18rem;"> 
   <?php ?>
   <div class="card-body">
   <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>

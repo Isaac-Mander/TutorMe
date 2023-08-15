@@ -105,8 +105,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 if($session_combined_data[$i][3] == $user_id)
                 {
                   echo "
-                    <div class='col'><a href='a_or_r_session.php?action=1&id=$session_id&page=sessions.php'><button id='accept' value='$session_id'>Accept</button></a></div>
-                    <div class='col'><a href='a_or_r_session.php?action=2&id=$session_id&page=sessions.php'><button id='reject' value='$session_id'>Reject</button></a></div>
+                    <div class='col'><a href='a_or_r_session.php?action=1&id=$session_id&page=action.php'><button id='accept' value='$session_id'>Accept</button></a></div>
+                    <div class='col'><a href='a_or_r_session.php?action=2&id=$session_id&page=action.php'><button id='reject' value='$session_id'>Reject</button></a></div>
                   ";
                 }?>
                 </div>

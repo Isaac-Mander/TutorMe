@@ -105,68 +105,7 @@ if(document.getElementById("profile_edit_button"))
 
     //Get the subject card container div
     studying_subject_card_div = document.getElementById("studying_subject_cards");
-    tutoring_subject_card_div = document.getElementById("tutoring_subject_cards");
-
-
-    //If it is clicked toggle edit mode
-    profile_edit_button.onclick = function() {
-        profile_edit_mode = !profile_edit_mode;
-
-        //If edit mode is on ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        if(profile_edit_mode)
-        {
-            //Set button to edit mode
-            profile_edit_button.innerHTML = "Save";
-
-            //Make the subject edit checkboxes visible
-            checkbox_study_subjects.style.display = "flex";
-            checkbox_tutor_subjects.style.display = "flex";
-            
-            //Hide subject cards when edit mode is on
-            studying_subject_card_div.style.display = "none";
-            tutoring_subject_card_div.style.display = "none";
-        }
-        else //Edit mode is off ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        {   
-            //Set button to save mode  
-            profile_edit_button.innerHTML = "Edit";
-
-            //Make the subject edit checkboxes hidden
-            checkbox_study_subjects.style.display = "none";
-            checkbox_tutor_subjects.style.display = "none";
-
-            //Make subject cards visible when edit mode is turned off
-            studying_subject_card_div.style.display = "flex";
-            tutoring_subject_card_div.style.display = "flex";
-
-            //Check what subjects are checked, so we know what to save
-            let subjects_status = "";
-            for(i=0;i<checkbox_subject_divs.length-1;i++)
-            {
-                if(document.getElementById(checkbox_subject_divs[i]).checked) {subjects_status += "1";}
-                else {subjects_status += "0";}
-            }
-            
-
-            //Update the database with the new info
-            const xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "secure_query.php?subjects=" + subjects_status);
-            xhttp.send();
-            //If the request failed, send user to error page
-            xhttp.onreadystatechange = function() {
-                if (this.readyState != 4 && this.status != 200) {
-                    alert("Something went wrong, you are being redirected back to safety");
-                    window.location = "http://localhost/dashboard/TutorMe";
-                }
-                if (this.readyState == 4 && this.status == 200) {
-                    //Create the new subjects if needed
-                    window.location.reload();
-                }};
-            
-        }
-        //End of section ===========================================================================================================================================
-     };
-     
+    tutoring_subject_card_div = document.getElementById("tutoring_subject_cards");     
 }
 //Calendar page
 if(document.getElementById("calendar"))
@@ -312,6 +251,8 @@ if(document.getElementById("session_matching"))
     
     if($_GET.alert == '1') {alert("The request was sent to the tutee");}
     if($_GET.alert == '2') {alert("Something went wrong, try again later");}
+    if($_GET.alert == '3') {alert("The session accepted successfully, click it below to contact the tutor");}
+    if($_GET.alert == '4') {alert("The session rejected successfully");}
 
     // Get the modal
     var modal_session_match = document.getElementById("session_accept_popup");

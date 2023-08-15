@@ -64,6 +64,6 @@ else
 
 $conn->close();
 
-header("Location: session_matching.php?alert=" . $alert);
+header("Location: action.php?alert=" . $alert);
 
 ?>

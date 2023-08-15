@@ -711,7 +711,7 @@ button:hover {
         $card_id = $available_session_times_data[$i][4];
   
         ?> <div class="col">   <div id=<?php echo $card_id; ?> class='card mx-auto border border-grey p-3' style="width: 15rem;"><?php
-        echo ($name."<br>".date("l h:i:s A", $potential_starttime) . "<br>");
+        echo (date("l h:i:s A", $potential_starttime) . "<br>");
         echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
         ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a></div></div>  <?php }?> </div>  <?php } ?>
 

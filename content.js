@@ -287,7 +287,7 @@ if(document.getElementById("session_matching"))
 
     //Find all the elements with card as name
     
-    pot_sesssion_cards = document.getElementsByName("card");
+    pot_sesssion_cards = document.getElementsByName("pot_s_card");
     
     for(var i = 0; i < pot_sesssion_cards.length; i++){
         pot_sesssion_cards[i].onclick = function() {

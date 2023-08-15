@@ -10,10 +10,11 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 $user_id = $_SESSION['user_id'];
 $school_code = $_SESSION['school_code'];
 
-//Import functions
+//Import needed files
 include("sys_page/header.html");
 include("sys_page/db_connect.php");
 include("sys_page/functions.php");
+
 $user_id = $_SESSION['user_id'];
 $school_code = $_SESSION['school_code'];
 $sql = "SELECT * FROM " . $school_code . "_students WHERE id=" . $user_id;
@@ -22,6 +23,8 @@ if ($result->num_rows > 0) { //If the number of rows are not zero
   $data = $result->fetch_assoc();
   $display_name = $_SESSION['user'];
   $desc = $data['description'];
+  $email = $data['email'];
+  $phone = $data['phone'];
   $hours_tutored = $data['hours_tutored'];
   $sessions_tutored = $data['sessions_tutored'];
 }
@@ -316,116 +319,296 @@ $tz = new DateTimeZone('NZ');
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
   ?>
     
-    <h1><p class="text-center"><?php echo $display_name."'s profile";?></p></h1>
+    <h1 class="text-center">Setup page</h1>
+    <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
+    <script src="content.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    
 
-    <div class="row">
-      <div class ="col" >
-      <div id="tutoring_subjects_checkbox_studying" class="hide_on_start">
-                <?php 
-              for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-                ?> <div class="card mx-auto" style="width: 25rem;"> <div class="card-body"> <?php
-                $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
-                if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
-                if($all_available_subject_array[$i][3] == true) 
-                {
-                  ?>
-                  <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-                  <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>" ?> </div> <?php
-                } //Create a checked checkbox
-                else {
-                  echo "<input id=" . $checkbox_id . " type='checkbox'>" . "  ".$all_available_subject_array[$i][1];
-                } //Create an empty checkbox 
-                ?></div></div><?php
-                $checkbox_id_increment += 1; //Increment the checkbox id by 1
-                }?>
-        </div>
-        <div id="studying_subject_cards">
-              <?php
-            //Get number of items in subject array
-            if($no_tutee_subjects == false)
-            {
-              for($x=0;$x<sizeof($subject_array_tutee);$x++)
-              {
-                  ?><div class="card mx-auto" style="width: 25rem;"><div class="card-body"><?php
-                  echo "<div ";
-                  echo "id=tutee_" . $subject_element_tutee_id;//Give the element a unqiue id
-                  echo " class='col'><p class='nowrap'>";
-                  echo $subject_array_tutee[$x][2];
-                  echo "";
-                  echo "</p></div>";
-                  //<img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''>
-                  //Increment the id ?></div></div><?php
-                  $subject_element_tutee_id += 1;
-              }
-            }
-          ?>
-      </div>
+<div class="container">
+    <div class="main-body">
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                    <img src="sys_img\legacy_icon.jpg" alt="Admin" class="rounded-circle" width="150">
+                    <div class="mt-3">
+                      <h4><?php echo $display_name ?></h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <?php echo $email; ?>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Phone</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                    <?php echo $phone; ?>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Tutoring subjects:</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                    <?php
+                      //Get number of items in subject array
+                      if($no_tutor_subjects == false)
+                      {
+                        for($x=0;$x<sizeof($subject_array_tutor);$x++)
+                        {
+                          ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
+                          <?php echo "id=tutor_" . $subject_element_tutor_id."  ";//Give the element a unqiue id"; ?>
+                          data-toggle="modal" data-target="#remove_subject"><?php
+                          echo $subject_array_tutor[$x][2];
+                          //Increment the id ?></button><?php
+                          $subject_element_tutor_id += 1;
+                        }
+                      }
+                    ?>
+                    <a class="btn btn-info btn-md" data-toggle="modal" data-target="#add_subject_tutor">Add subjects</a>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Need help with:</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                    <?php
+                      //Get number of items in subject array
+                      if($no_tutee_subjects == false)
+                      {
+                        for($x=0;$x<sizeof($subject_array_tutee);$x++)
+                        {
+                          ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
+                          <?php echo "id=tutor_" . $subject_element_tutee_id."  ";//Give the element a unqiue id"; ?>
+                          data-toggle="modal" data-target="#remove_subject"><?php
+                          echo $subject_array_tutee[$x][2];
+                          //Increment the id ?></button><?php
+                          $subject_element_tutee_id += 1;
+                        }
+                      }
+                    ?>
+                    <a class="btn btn-info btn-md" data-toggle="modal" data-target="#add_subject_tutee">Add subjects</a>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-success btn-md" id=profile_edit_button>Edit</a>
+                    </div>
+                  </div>
+                </div>
+              </div>       
+              </div>
     </div>
-          
-    <div class="col" id="tutoring">
-      <div id="tutoring_subjects_checkbox_tutoring" class="hide_on_start">
+
+  <div class="modal fade" id="add_subject_tutor" tabindex="-1" role="dialog" aria-labelledby="add_subject_tutor" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
+        <a class="close btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+      </div>
+      <div class="modal-body">
+      <div id="tutoring_subjects_checkbox_tutoring">
+        <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-          ?> <div class="card mx-auto" style="width: 25rem;"> <div class="card-body"> <?php
+          ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][4] == true) 
-            {
+            {              
+              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>" ?> </div> <?php
-              
+              <div class="card-footer border border-danger border-5"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>   already selected" ?> </div> <?php
             } //Create a checked checkbox
             else 
             {
+              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>" ?> </div> <?php
+              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox'>" ?> </div> <?php
               } //Create an empty checkbox 
-
-            ?></div> </div>
+            ?></div></div></div>
             <?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
             }?>
-      </div>
+      </div></div>
 
-      <div id="tutoring_subject_cards">
-                <?php
-              //Get number of items in subject array
-              if($no_tutor_subjects == false)
-              {
-                for($x=0;$x<sizeof($subject_array_tutor);$x++)
-                {
-                  ?><div class="card mx-auto" style="width: 25rem;"><div class="card-body"><?php
-                  echo "<div ";
-                  echo "id=tutor_" . $subject_element_tutor_id;//Give the element a unqiue id
-                  echo " class='col'><p class='nowrap'>";
-                  echo $subject_array_tutor[$x][2];
-                  echo "";
-                  echo "</p></div>";
-                  //<img class='hide_on_start edit_cross' src='sys_img/icons8-x-100.png' alt=''>
-                  //Increment the id ?></div></div><?php
-                  $subject_element_tutor_id += 1;
-                }
-              }
-            ?>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <a class="btn btn-primary">Add subjects</a>
       </div>
     </div>
   </div>
-            
-    <button class="btn btn-success btn-md" id=profile_edit_button>Edit</button>
-    <div class="card mx-auto">
-      <!-- <div class="card-header text-white bg-primary">       <h3>Description</h3>   </div> -->
-        <div class="card-body">
-        <ul class="list-group list-group-flush">
-          <!-- <li class="list-group-item"> <p id="profile_desc_text"><?php echo $desc; ?></p></li> -->
-          <li class="list-group-item text-white bg-primary">          <h3>Statistics</h3></li>
-          <li class="list-group-item">          <p>Average Productivity: <?php echo $average_prod; ?>⭐</p></li>
-          <li class="list-group-item">          <p>Average Experience: <?php echo $average_expe; ?>⭐</p></li>
-          <li class="list-group-item">          <p>Hours spent tutoring: <?php echo $hours_tutored; ?></p></li>
-          <li class="list-group-item">          <p>Sessions tutored: <?php echo $sessions_tutored; ?></p></li>
-        </ul>
+</div>
+
+<div class="modal fade" id="add_subject_tutee" tabindex="-1" role="dialog" aria-labelledby="add_subject_tutee" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
+        <a class="close btn" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+                    </a>
+      </div>
+      <div class="modal-body">
+
+      <div id="tutoring_subjects_checkbox_studying">
+      <div class="row  row-cols-1 row-cols-md-3">
+            <?php 
+          for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
+            ?><div class="col"><div class="card mx-auto border border-warning" style="width: auto;"><div class="card-body"> <?php
+            $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
+            if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
+            if($all_available_subject_array[$i][3] == true) 
+            {
+              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              ?>
+              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
+              <div class="card-footer border border-danger border-5"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>   already selected" ?></div> <?php
+            } //Create a checked checkbox
+            else {
+              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              ?>
+              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
+              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox'>" ?> </div> <?php
+             } //Create an empty checkbox 
+            ?></div></div></div><?php
+            $checkbox_id_increment += 1; //Increment the checkbox id by 1
+            }?>
         </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <a class="btn btn-primary">Add subjects</a>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="modal fade" id="remove_subject" tabindex="-1" role="dialog" aria-labelledby="remove_subject" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Remove Subject</h5>
+        <a type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-body">
+        <h3>Are you sure you want to remove this subject?</h3>
+      </div>
+      <div class="modal-footer">
+        <a type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a>
+        <a type="button" class="btn btn-danger" href="">Remove subject</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
+<style>
+  body{
+    margin-top:20px;
+    color: #1a202c;
+    text-align: left; 
+}
+.main-body {
+    padding: 15px;
+}
+.card {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
+
+.gutters-sm {
+    margin-right: -8px;
+    margin-left: -8px;
+}
+button:hover {
+  background-color: #FF2400 !important;
+  transition: 0.5s;
+}
+
+.gutters-sm>.col, .gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+.mb-3, .my-3 {
+    margin-bottom: 1rem!important;
+}
+
+.bg-gray-300 {
+    background-color: #e2e8f0;
+}
+.h-100 {
+    height: 100%!important;
+}
+.shadow-none {
+    box-shadow: none!important;
+}
+</style>
+<style>
+
+  body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+</style>
+  </head>
+  <body>
     <div class="card mx-auto w-75">
     <form action='calendar_2.php' method='post'>
     <div class="card-body">
@@ -502,17 +685,11 @@ $tz = new DateTimeZone('NZ');
     <?php
     if (is_array($available_session_times_data)) {
       //if is array
+      ?><div class="row row-cols-1 row-cols-md-5">   <?php
+      $day =  $time_year . "-" . $time_month . "-" . $time_day;
       for($i=0; $i<sizeof($available_session_times_data); $i++){
-        //running through all of the array
-        $tz = new DateTimeZone('NZ');
-        $dt = new DateTime('now',$tz);
-        $time_day = $dt->format('d'); // output: '1' - '31'
-        $time_month = $dt->format('m'); // output: '1' - '12'cc
-        $time_year = $dt->format('Y'); // output: '2023'
-        $day =  $time_year . "-" . $time_month . "-" . $time_day;
         $name = $available_session_times_data[$i][0]; //setting name
         $day_of_week = $available_session_times_data[$i][3]; //setting day of the week
-
         $potential_start_time_session = $available_session_times_data[$i][1]; //setting potential start time
         $potential_end_time_session = $available_session_times_data[$i][2]; //setting potential end time
         $potential_starttime_rough = strtotime($day.$potential_start_time_session); //getting a time value
@@ -531,15 +708,12 @@ $tz = new DateTimeZone('NZ');
           $potential_starttime = $potential_starttime_rough + ($time_diff * 86400); //acounts for the difference
           $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
         }
-
-
         $card_id = $available_session_times_data[$i][4];
   
-        ?>    <div id=<?php echo $card_id; ?> class='card mx-auto' style="width: 35rem;"><?php
+        ?> <div class="col">   <div id=<?php echo $card_id; ?> class='card mx-auto border border-grey p-3' style="width: 15rem;"><?php
         echo ($name."<br>".date("l h:i:s A", $potential_starttime) . "<br>");
         echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
-        ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a>     </div>   <?php      }
-    }?>
+        ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a></div></div>  <?php }?> </div>  <?php } ?>
 
 
     <div id='calendar'></div>

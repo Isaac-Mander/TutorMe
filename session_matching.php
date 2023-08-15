@@ -1,10 +1,5 @@
 <?php
-//Check if the user to logged in
-session_start();
-if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in redirect to login page
-{
-    header("Location: login_form.php"); //Send to the shadow realm (login screen)
-}
+
 
 //Get relevant info from session
 $user_id = $_SESSION['user_id'];
@@ -12,11 +7,6 @@ $sorting = 1;
 if (isset($_GET['sorting'])){
   $sorting = $_GET['sorting'];
 }
-
-//Import functions
-include("sys_page/header.html");
-include("sys_page/db_connect.php");
-include("sys_page/functions.php");
 
 if ($sorting == 1){
   ?>
@@ -61,7 +51,7 @@ if ($sorting == 1){
 function create_card($potential_endtime,$potential_starttime,$name,$subject,$day_of_week,$card_id)
 {
 ?>
-  <div id = '<?php echo $card_id; ?>' class='card mx-auto' name="card" style="width: 18rem;"> 
+  <div id = '<?php echo $card_id; ?>' class='card mx-auto' name="pot_s_card" style="width: 18rem;"> 
   <?php ?>
   <div class="card-body">
   <div class="card-title" > <?php echo "<p id='name'>" . $name . "</p>";?> </div>
@@ -341,7 +331,7 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
     </div>
 
     <div id="session_matching"></div>
-    <script src="content.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   </body>
 </html>

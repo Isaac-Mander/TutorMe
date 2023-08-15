@@ -276,11 +276,9 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
           }
           if ($sorting == 2){
 
+            $name  = array_column($session_card, 'name');
+            $subject =  array_column($session_card, 'subject');
 
-            foreach ($session_card as $key => $row) {
-              $name[$key]  = $row['name'];
-              $subject[$key] = $row['subject'];
-            }
             array_multisort($name, SORT_ASC, $subject, SORT_ASC, $session_card);
           }
           if ($sorting == 3){
@@ -315,7 +313,7 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
   </head>
   <body>
 
-    <div id="session_accept_popup" class="modal_session_match">
+<!--    <div id="session_accept_popup" class="modal_session_match">
       <div class="modal-content_session_match">
         <p id="popup_name">Name</p>
         <p id="popup_subject_name">Subject Name</p>
@@ -329,8 +327,37 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
         <button id="session_match_close">Close</button>
         <span class="close_session_match">&times;</span>
       </div>
-    </div>
+    </div> -->
 
+<div class="modal fade" id="session_accept_popup" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select Subject</h5>
+        <a type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-content_session_match">
+      <div class="modal-body">
+        <p id="popup_name">Name</p>
+        <p id="popup_subject_name">Subject Name</p>
+        <p id="popup_day">Day of week</p>
+        <p id="popup_session_length">Session length (hours)</p>
+
+        <label for="date">Choose a date:</label>
+          <select name="date" id="date">
+          </select>
+        </div>
+      <div class="modal-footer">
+        <a href=""><button>Accept</button></a>
+          <button id="session_match_close">Close</button>
+          <span class="close_session_match">&times;</span>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
     <div id="session_matching"></div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>

@@ -71,7 +71,9 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 ?>   <div class="col"> <div name="card" id="session_card" class='card' ><?php
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
-                <p class="card-text"><?php echo $day."  Start time: ".$starttime ."  End time: ".$endtime  ?></p>
+                <p class="card-text"><?php echo $day?></p>
+                <p class="card-text"><?php echo "Earliest start time: ".$starttime ?></p>
+                <p class="card-text"><?php echo "Latest end time: ".$endtime  ?></p>
 
 
                 <?php
@@ -92,9 +94,14 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 if($session_combined_data[$i][3] == $user_id)
                 {
                   echo "
-                    <div class='col'><a href='a_or_r_session.php?action=1&id=$session_id&page=sessions.php'><button id='accept' value='$session_id'>Accept</button></a></div>
-                    <div class='col'><a href='a_or_r_session.php?action=2&id=$session_id&page=sessions.php'><button id='reject' value='$session_id'>Reject</button></a></div>
+                    <div class='col'><a href='a_or_r_session.php?action=1&id=$session_id&page=action.php'><button id='accept' value='$session_id'>Accept</button></a></div>
+                    <div class='col'><a href='a_or_r_session.php?action=2&id=$session_id&page=action.php'><button id='reject' value='$session_id'>Reject</button></a></div>
                   ";
+                }
+                else //If the session is not awaiting the users input, show that to the user
+                {
+                  echo "
+                  <strong><div class='col'>This session is awaiting a response from the tutee</div></strong>";
                 }?>
                 </div>
                 </div></div><?php
@@ -134,8 +141,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         echo "<div class=row>" . "<p class=col>Tutee: </p><p class=col id=tutee>".$tutee."</p>" . "</div>";
         echo "<div class=row>" . "<p class=col>Subject: </p><p class=col id=subject>".$subject."</p>" . "</div>";
         echo "<div class=row>" . "<p class=col>Date : </p><p class=col id=day>".$day."</p>" . "</div>";
-        echo "<div class=row>" . "<p class=col>Start time: </p><p class=col id=starttime>".$starttime."</p>" . "</div>";
-        echo "<div class=row>" . "<p class=col>End time: </p><p class=col id=endtime>".$endtime."</p>" . "</div>";
+        echo "<div class=row>" . "<p class=col>Earliest start time: </p><p class=col id=starttime>".$starttime."</p>" . "</div>";
+        echo "<div class=row>" . "<p class=col>Latest end time: </p><p class=col id=endtime>".$endtime."</p>" . "</div>";
         echo "<div class=hide_on_start>".$session_combined_data[$i][11][0]."</div>";
         echo "<div class=hide_on_start>".$session_combined_data[$i][11][1]."</div>";
         echo "<div class=hide_on_start>".$session_combined_data[$i][10][0]."</div>";

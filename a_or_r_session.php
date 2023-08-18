@@ -20,27 +20,30 @@ if(isset($_GET['action']) && isset($_GET['id']) && isset($_GET['page']))
     $owner_check_sql = "SELECT * FROM `6969_tutor_session` WHERE id = $id AND (`tutee_id`=$user_id OR `tutor_id`=$user_id)";
     $owner_check_result = $conn->query($owner_check_sql); //Query database
     if ($owner_check_result->num_rows == 0) { //If a row is not returned the session requested is not valid, so redirect the user away from this page
-        header("Location: " . $page);
+        header("Location: " . $page . "?alert=2");
     }
 
     //Accept session
     if($action == "1")
     {
         $sql = "UPDATE `6969_tutor_session` SET `is_active`='1' WHERE `id`=$id";
+        $alert_state = "3";
     }
     //Reject session
     else if($action == "2")
     {
         $sql = "DELETE FROM `6969_tutor_session` WHERE `id`=$id";
+        $alert_state = "4";
     }
 
     if ($conn->query($sql) === TRUE) {
         echo "Record altered successfully";
       } else {
         echo "Error altering record: " . $conn->error;
+        $alert_state = "2";
       }
     $conn->close();
-    header("Location: " . $page);
+    header("Location: " . $page . "?alert=$alert_state");
 }
 
 else

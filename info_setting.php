@@ -79,7 +79,8 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
 else
 {
   //If no subjects are found
-  $no_tutor_subjects = true;
+  $no_tutor_subjects = TRUE;
+  $subject_array_tutor = array();
 }
 
 
@@ -133,7 +134,8 @@ if ($subject_tutee_result->num_rows > 0) { //If the number of rows are not zero
 else
 {
   //If no subjects are found
-  $no_tutee_subjects = true;
+  $no_tutee_subjects = TRUE;
+  $subject_array_tutee = array();
 }
 //End of section =========================================================================================================================================================
 
@@ -184,7 +186,13 @@ if(!$no_tutor_subjects)
     }
   }
 }
-
+for($b=0;$b<sizeof($all_available_subject_array);$b++){
+  if (is_numeric(substr($all_available_subject_array[$b][1],-1,1))){
+    $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1],-1,1);
+  }else{
+    $all_available_subject_array[$b][5] = 0;
+  }
+}
 
 // Get a user's average ratings ==============================================================================================================================
 $ratings_data = average_ratings($conn,$user_id);
@@ -318,7 +326,7 @@ $tz = new DateTimeZone('NZ');
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
   ?>
-    
+
     <h1 class="text-center">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
     <script src="content.js"></script>
@@ -427,7 +435,7 @@ $tz = new DateTimeZone('NZ');
         <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
         <a class="close btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
       </div>
-      <div class="modal-body">
+      <div class="modal-body"> 
       <div id="tutoring_subjects_checkbox_tutoring">
         <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
@@ -711,7 +719,7 @@ button:hover {
         $card_id = $available_session_times_data[$i][4];
   
         ?> <div class="col">   <div id=<?php echo $card_id; ?> class='card mx-auto border border-grey p-3' style="width: 15rem;"><?php
-        echo ($name."<br>".date("l h:i:s A", $potential_starttime) . "<br>");
+        echo (date("l h:i:s A", $potential_starttime) . "<br>");
         echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
         ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a></div></div>  <?php }?> </div>  <?php } ?>
 

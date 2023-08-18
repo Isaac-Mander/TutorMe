@@ -23,8 +23,9 @@ echo "<br>";
 echo "<br>";
 echo "<br>";
 ?>
-<p><strong>Please note this will only show possible sessions with people who have the same subject and have an overlapping free time</strong></p>
-<p>Not enough choices? Try increasing the times you are free <a href="info_setting.php">here</a></p>
+<h1 class="text-center">Tutor someone</h1>
+<div class="flex-row d-flex justify-content-centre"><div class="card mx-auto justify-content-center p-5"><p class="border-bottom"><strong>Please note this will only show possible sessions with people who have the same subject and have an overlapping free time</strong></p></div></div></div>
+<p class="text-center">Not enough choices? Try increasing the times you are free <a href="info_setting.php">here</a></p>
 <?php
 //Import session matching component
 include("session_matching.php");

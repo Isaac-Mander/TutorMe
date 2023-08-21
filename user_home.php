@@ -30,7 +30,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     include("sys_page/db_connect.php")
     ?>
     <h1 class="text-center">Welcome to TutorMe!</h1>    
-    <p class="text-center">This site is designed to help connect people who want tuoring with those who want to volenteer their knoledge to help others.</p>
+    <p class="text-center pb-5">This site is designed to help connect people who want tuoring with those who want to volenteer their knoledge to help others.</p>
     
     <?php
     //Get user id from session var
@@ -50,6 +50,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     //If any errors were detected, show the relevant error msg
     if(($setup_errors[0] == true) OR ($setup_errors[1] == true) OR ($setup_errors[1] == true))
     {
+        echo "<div class='flex-row d-flex justify-content-centre pb-5'><div class='card mx-auto p-2'>";
         //Echo welcome text
         echo "<h3>You are currently logged in as, ". $_SESSION['user'].", but you haven't finished setting up your account</h3>";
         echo "<ul>";
@@ -57,14 +58,19 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
         if($setup_errors[1] == true OR $setup_errors[2] == true) {echo "<li>Select your subjects (in both recieving and giving tutoring)</li>";}
         echo "</ul>";
         echo "<button type='button' class='btn btn-success btn-md'>You can set these up here</button>";
+        echo "</div></div>";
     }
     else
     {
+        echo "<div class='flex-row d-flex justify-content-centre pb-5'><div class='card mx-auto p-5'>";
         echo "<h3>You are currently logged in as, ". $_SESSION['user']."</h3>";
+        echo "</div></div>";
     }
     ?>
+    <div class='flex-row d-flex justify-content-centre'><div class='p-2 mx-auto border-bottom'>
     <h3>Unsure how to use TutorMe?</h3>
-    <button type="button" class="btn btn-success btn-md">We have a guide</button>
+    <a type="button" href="guide.php" class="btn btn-success btn-md ">We have a guide</a>
+    </div></div>
     <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> 
 </body>

@@ -291,14 +291,14 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
           }
           ?></div><?php
         }else{
-          echo"There are no sessions that share the same time & subject as you"."</br>";
+          echo"<p class='text-center border-bottom' >There are no sessions that share the same time & subject as you</p>"."</br>";
         }
 
         }else{
-          echo"<p class='text-center' >You have no potential sessions set</p>"."</br>";
+          echo"<p class='text-center border-bottom' >You have no potential sessions set</p>"."</br>";
         }
       }else{
-        echo"There are no other users with a potential session set"."</br>";
+        echo"<p class='text-center border-bottom' >There are no other users with a potential session set</p>"."</br>";
       }
       
       ?>

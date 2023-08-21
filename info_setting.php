@@ -293,12 +293,15 @@ $tz = new DateTimeZone('NZ');
   </head>
   <body>
   <?php
+  print "<pre>";
+  print_r($all_available_subject_array);
+  print "</pre>";
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
-  { if(is_int(substr($all_available_subject_array[$b][1], -1))){
-    $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
-  }else{
-    $all_available_subject_array[$b][5] = 0;
-  }
+    { if(is_numeric(substr($all_available_subject_array[$b][1], -1))){
+      $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
+    }else{
+      $all_available_subject_array[$b][5] = 0;
+    }
   }
   $all_available_subject_level_array_column = array_column($all_available_subject_array, 5);
   $all_available_subject_name_array_column = array_column($all_available_subject_array, 1);
@@ -326,7 +329,7 @@ $tz = new DateTimeZone('NZ');
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
   ?>
-
+<link rel="stylesheet" href="sys_page/styles.css">
     <h1 class="text-center">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
     <script src="content.js"></script>

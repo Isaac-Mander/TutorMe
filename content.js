@@ -59,12 +59,9 @@ if(document.getElementById("index_date_time"))
 }
 
 //If the profile page is the current page ===========================================================================================================
-profile_edit_mode = false;
-if(document.getElementById("profile_edit_button"))
+if(document.getElementById("profile"))
 {
-    //Get the edit button
-    let profile_edit_button = document.getElementById("profile_edit_button");
-
+    
     //Find the subjects that php generated
     tutor_subject_divs = [];
     element_id = "tutor_0";
@@ -85,14 +82,24 @@ if(document.getElementById("profile_edit_button"))
         i += 1;
     }
 
-    //Find the checkboxes that php generated
-    checkbox_subject_divs = [];
-    element_id = "checkbox_0";
+    //Find the checkboxes that php generated 
+    checkbox_subject_divs_tutee = [];
+    element_id = "checkbox_tutee_0";
     i = 0;
     while(document.getElementById(element_id))
     {
-        element_id = "checkbox_" + i;
-        checkbox_subject_divs[i] = element_id;
+        element_id = "checkbox_tutee_" + i;
+        checkbox_subject_divs_tutee[i] = element_id;
+        i += 1;
+    }
+
+    checkbox_subject_divs_tutor = [];
+    element_id = "checkbox_tutor_0";
+    i = 0;
+    while(document.getElementById(element_id))
+    {
+        element_id = "checkbox_tutor_" + i;
+        checkbox_subject_divs_tutor[i] = element_id;
         i += 1;
     }
     //These loops add on extra id that is invalid, so this function will remove them
@@ -105,7 +112,56 @@ if(document.getElementById("profile_edit_button"))
 
     //Get the subject card container div
     studying_subject_card_div = document.getElementById("studying_subject_cards");
-    tutoring_subject_card_div = document.getElementById("tutoring_subject_cards");     
+    tutoring_subject_card_div = document.getElementById("tutoring_subject_cards");
+
+    //If the save tutor subjects button is clicked, get every subject that is checked
+    tutor_save_subjects_btn = document.getElementById('tutor_save_subjects_btn');
+    tutee_save_subjects_btn = document.getElementById('tutee_save_subjects_btn');
+    tutee_save_subjects_btn.onclick = function() {
+        //Loop through the checkbox divs and check if they are checked
+        let checkbox_values = ""; //Create empty array for storing the data
+        for (var i = 0; i < (checkbox_subject_divs_tutee.length - 1); i++)
+        {
+            checkbox_values +=  + document.getElementById(checkbox_subject_divs_tutee[i]).checked; //Add the checkbox values into a single string (the + converts the true and false to 1 or 0)
+        }
+        checkbox_values += "0"; //Add a to the end to mark the string as tutee subjects rather than tutor subjects
+        
+        //Send the data to a subject adding page
+        
+        const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "subject_update.php?subjects=" + checkbox_values);
+            xhttp.send();
+            //Use data sent back to create a new notification card
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    window.location.reload();
+                }
+            }
+    }
+
+    tutor_save_subjects_btn.onclick = function() {
+        //Loop through the checkbox divs and check if they are checked
+        let checkbox_values = ""; //Create empty array for storing the data
+        for (var i = 0; i < (checkbox_subject_divs_tutor.length - 1); i++)
+        {
+            checkbox_values +=  + document.getElementById(checkbox_subject_divs_tutor[i]).checked; //Add the checkbox values into a single string (the + converts the true and false to 1 or 0)
+        }
+        checkbox_values += "1"; //Add a to the end to mark the string as tutee subjects rather than tutor subjects
+        
+        //Send the data to a subject adding page
+        
+        const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "subject_update.php?subjects=" + checkbox_values);
+            xhttp.send();
+            //Use data sent back to create a new notification card
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    window.location.reload();
+                }
+            }
+    }
 }
 //Calendar page
 if(document.getElementById("calendar"))

@@ -293,13 +293,16 @@ $tz = new DateTimeZone('NZ');
   </head>
   <body>
   <?php
-
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
-    { if(is_numeric(substr($all_available_subject_array[$b][1], -1))){
-      $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
-    }else{
-      $all_available_subject_array[$b][5] = 0;
-    }
+  { 
+    $all_available_subject_array[$b][1000] = $b;
+    if(is_int(substr($all_available_subject_array[$b][1], -1))){
+    $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
+  }
+  else
+  {
+    $all_available_subject_array[$b][5] = 0;
+  }
   }
   $all_available_subject_level_array_column = array_column($all_available_subject_array, 5);
   $all_available_subject_name_array_column = array_column($all_available_subject_array, 1);
@@ -326,12 +329,12 @@ $tz = new DateTimeZone('NZ');
   $array_tutor_subject_level_array_column = array_column($subject_array_tutor, 5);
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
+
   ?>
 <link rel="stylesheet" href="sys_page/styles.css">
     <h1 class="text-center">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
-    <script src="content.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  
     
 
 <div class="container">
@@ -341,7 +344,7 @@ $tz = new DateTimeZone('NZ');
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="sys_img\legacy_icon.jpg" alt="Admin" class="rounded-circle" width="150">
+                    <img src="sys_img\dev_icon.jpg" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
                       <h4><?php echo $display_name ?></h4>
                     </div>
@@ -383,7 +386,7 @@ $tz = new DateTimeZone('NZ');
                         for($x=0;$x<sizeof($subject_array_tutor);$x++)
                         {
                           ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
-                          <?php echo "id=tutor_" . $subject_element_tutor_id."  ";//Give the element a unqiue id"; ?>
+                          <?php echo "id=tutor_" . $subject_array_tutor[$x][2]."  ";//Give the element a unqiue id"; ?>
                           data-toggle="modal" data-target="#remove_subject"><?php
                           echo $subject_array_tutor[$x][2];
                           //Increment the id ?></button><?php
@@ -407,7 +410,7 @@ $tz = new DateTimeZone('NZ');
                         for($x=0;$x<sizeof($subject_array_tutee);$x++)
                         {
                           ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
-                          <?php echo "id=tutor_" . $subject_element_tutee_id."  ";//Give the element a unqiue id"; ?>
+                          <?php echo "id=tutee_" . $subject_array_tutee[$x][2]."  ";//Give the element a unqiue id"; ?>
                           data-toggle="modal" data-target="#remove_subject"><?php
                           echo $subject_array_tutee[$x][2];
                           //Increment the id ?></button><?php
@@ -428,7 +431,6 @@ $tz = new DateTimeZone('NZ');
               </div>       
               </div>
     </div>
-
   <div class="modal fade" id="add_subject_tutor" tabindex="-1" role="dialog" aria-labelledby="add_subject_tutor" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -448,14 +450,14 @@ $tz = new DateTimeZone('NZ');
               echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer border border-danger border-5"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>   already selected" ?> </div> <?php
+              <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?> </div> <?php
             } //Create a checked checkbox
             else 
             {
               echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox'>" ?> </div> <?php
+              <div class="card-footer"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
               } //Create an empty checkbox 
             ?></div></div></div>
             <?php
@@ -466,7 +468,7 @@ $tz = new DateTimeZone('NZ');
       </div>
       <div class="modal-footer">
         <a class="btn btn-secondary" data-dismiss="modal">Close</a>
-        <a class="btn btn-primary">Add subjects</a>
+        <a id='tutor_save_subjects_btn' class="btn btn-primary">Add subjects</a>
       </div>
     </div>
   </div>
@@ -495,13 +497,13 @@ $tz = new DateTimeZone('NZ');
               echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer border border-danger border-5"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>   already selected" ?></div> <?php
+              <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutee_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?></div> <?php
             } //Create a checked checkbox
             else {
               echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox'>" ?> </div> <?php
+              <div class="card-footer"> <?php echo "<input id=checkbox_tutee_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
              } //Create an empty checkbox 
             ?></div></div></div><?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
@@ -512,7 +514,7 @@ $tz = new DateTimeZone('NZ');
       </div>
       <div class="modal-footer">
         <a class="btn btn-secondary" data-dismiss="modal">Close</a>
-        <a class="btn btn-primary">Add subjects</a>
+        <a id='tutee_save_subjects_btn' class="btn btn-primary">Add subjects</a>
       </div>
     </div>
   </div>
@@ -726,6 +728,7 @@ button:hover {
 
 
     <div id='calendar'></div>
+    <div id='profile'></div>
     <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     

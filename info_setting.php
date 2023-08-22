@@ -380,8 +380,7 @@ $tz = new DateTimeZone('NZ');
                         for($x=0;$x<sizeof($subject_array_tutor);$x++)
                         {
                           ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
-                          <?php echo "id=tutor_" . $subject_array_tutor[$x][2]."  ";//Give the element a unqiue id"; ?>
-                          data-toggle="modal" data-target="#remove_subject"><?php
+                          <?php echo " id='" . $subject_array_tutor[$x][2]."' ";//Give the element a unqiue id"; ?> data-toggle="modal" data-target="#remove_subject"><?php
                           echo $subject_array_tutor[$x][2];
                           //Increment the id ?></button><?php
                           $subject_element_tutor_id += 1;
@@ -404,8 +403,7 @@ $tz = new DateTimeZone('NZ');
                         for($x=0;$x<sizeof($subject_array_tutee);$x++)
                         {
                           ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
-                          <?php echo "id=tutee_" . $subject_array_tutee[$x][2]."  ";//Give the element a unqiue id"; ?>
-                          data-toggle="modal" data-target="#remove_subject"><?php
+                          <?php echo " id='" . $subject_array_tutee[$x][2]."' ";//Give the element a unqiue id"; ?> data-toggle="modal" data-target="#remove_subject"><?php
                           echo $subject_array_tutee[$x][2];
                           //Increment the id ?></button><?php
                           $subject_element_tutee_id += 1;
@@ -440,7 +438,7 @@ $tz = new DateTimeZone('NZ');
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][4] == true) 
-            {              
+            {
               echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>

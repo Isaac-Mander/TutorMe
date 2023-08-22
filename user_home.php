@@ -30,7 +30,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     include("sys_page/db_connect.php")
     ?>
     <h1 class="text-center">Welcome to TutorMe!</h1>    
-    <p class="text-center pb-5">This site is designed to help connect people who want tuoring with those who want to volenteer their knoledge to help others.</p>
+    <p class="text-center pb-5">This site is designed to help connect people who want tutoring with those who want to volunteer their knoledge to help others.</p>
     
     <?php
     //Get user id from session var

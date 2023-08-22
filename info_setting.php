@@ -293,9 +293,7 @@ $tz = new DateTimeZone('NZ');
   </head>
   <body>
   <?php
-  print "<pre>";
-  print_r($all_available_subject_array);
-  print "</pre>";
+
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
     { if(is_numeric(substr($all_available_subject_array[$b][1], -1))){
       $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);

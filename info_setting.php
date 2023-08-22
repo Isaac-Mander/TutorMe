@@ -293,10 +293,13 @@ $tz = new DateTimeZone('NZ');
   </head>
   <body>
   <?php
+
+  $sorting = 1;
+
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
   { 
     $all_available_subject_array[$b][1000] = $b;
-    if(is_int(substr($all_available_subject_array[$b][1], -1))){
+    if(is_numeric(substr($all_available_subject_array[$b][1], -1))){
     $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
   }
   else
@@ -329,8 +332,9 @@ $tz = new DateTimeZone('NZ');
   $array_tutor_subject_level_array_column = array_column($subject_array_tutor, 5);
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
-
   ?>
+
+
     <h1 class="text-center">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
   
@@ -439,32 +443,56 @@ $tz = new DateTimeZone('NZ');
       </div>
       <div class="modal-body"> 
       <div id="tutoring_subjects_checkbox_tutoring">
-        <div class="row row-cols-1 row-cols-md-3">
+      <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-          ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+            if($sorting == 0){
+              ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+            }elseif($sorting == 1){
+              if ($all_available_subject_array[$i][5] == 1){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($sorting == 2){
+              if ($all_available_subject_array[$i][5] == 2){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($sorting == 3){
+              if ($all_available_subject_array[$i][5] == 3){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($sorting == 4){
+              if ($all_available_subject_array[$i][5] == 0){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }
+            }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][4] == true) 
             {              
               echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
-              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
+              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div></div>
               <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?> </div> <?php
             } //Create a checked checkbox
             else 
             {
               echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
-              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
+              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div></div>
               <div class="card-footer"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
               } //Create an empty checkbox 
-            ?></div></div></div>
+            ?></div></div>
             <?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
             }?>
-      </div></div>
-
-      </div>
+      </div></div></div>
       <div class="modal-footer">
         <a class="btn btn-secondary" data-dismiss="modal">Close</a>
         <a id='tutor_save_subjects_btn' class="btn btn-primary">Add subjects</a>
@@ -483,9 +511,8 @@ $tz = new DateTimeZone('NZ');
                     </a>
       </div>
       <div class="modal-body">
-
       <div id="tutoring_subjects_checkbox_studying">
-      <div class="row  row-cols-1 row-cols-md-3">
+      <div class="row row-cols-1 row-cols-md-3">
             <?php 
           for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
             ?><div class="col"><div class="card mx-auto border border-warning" style="width: auto;"><div class="card-body"> <?php
@@ -509,8 +536,7 @@ $tz = new DateTimeZone('NZ');
             }?>
         </div>
         </div>
-
-      </div>
+        </div>
       <div class="modal-footer">
         <a class="btn btn-secondary" data-dismiss="modal">Close</a>
         <a id='tutee_save_subjects_btn' class="btn btn-primary">Add subjects</a>

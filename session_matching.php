@@ -291,14 +291,14 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
           }
           ?></div><?php
         }else{
-          echo"There are no sessions that share the same time & subject as you"."</br>";
+          echo"<p class='text-center border-bottom' >There are no sessions that share the same time & subject as you</p>"."</br>";
         }
 
         }else{
-          echo"You have no potential sessions set"."</br>";
+          echo"<p class='text-center border-bottom' >You have no potential sessions set</p>"."</br>";
         }
       }else{
-        echo"There are no other users with a potential session set"."</br>";
+        echo"<p class='text-center border-bottom' >There are no other users with a potential session set</p>"."</br>";
       }
       
       ?>
@@ -313,7 +313,7 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
   </head>
   <body>
 
-<!--    <div id="session_accept_popup" class="modal_session_match">
+<div id="session_accept_popup" class="modal_session_match">
       <div class="modal-content_session_match">
         <p id="popup_name">Name</p>
         <p id="popup_subject_name">Subject Name</p>
@@ -327,9 +327,9 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
         <button id="session_match_close">Close</button>
         <span class="close_session_match">&times;</span>
       </div>
-    </div> -->
-
-<div class="modal fade" id="session_accept_popup" tabindex="-1" role="dialog">
+    </div>
+    
+<!-- <div class="modal fade " id="session_popup" tabindex="-1" role="dialog" aria-labelledby="session_accept_popup" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -338,8 +338,9 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
           <span aria-hidden="true">&times;</span>
         </a>
       </div>
+      <div id="session_accept_popup">
       <div class="modal-content_session_match">
-      <div class="modal-body">
+       <div class="modal-body"> 
         <p id="popup_name">Name</p>
         <p id="popup_subject_name">Subject Name</p>
         <p id="popup_day">Day of week</p>
@@ -349,15 +350,16 @@ function data_sort($available_tutee_times_data,$available_tutor_times_data,$k,$l
           <select name="date" id="date">
           </select>
         </div>
-      <div class="modal-footer">
+     <div class="modal-footer">
         <a href=""><button>Accept</button></a>
           <button id="session_match_close">Close</button>
           <span class="close_session_match">&times;</span>
       </div>
       </div>
     </div>
+    </div>
   </div>
-</div>
+</div>  -->
     <div id="session_matching"></div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>

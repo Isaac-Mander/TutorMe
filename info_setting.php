@@ -444,14 +444,14 @@ $tz = new DateTimeZone('NZ');
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][4] == true) 
             {
-              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
               <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?> </div> <?php
             } //Create a checked checkbox
             else 
             {
-              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
               <div class="card-footer"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
@@ -491,13 +491,13 @@ $tz = new DateTimeZone('NZ');
             if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][3] == true) 
             {
-              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
               <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutee_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?></div> <?php
             } //Create a checked checkbox
             else {
-              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
               <div class="card-footer"> <?php echo "<input id=checkbox_tutee_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php

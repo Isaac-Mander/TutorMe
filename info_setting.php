@@ -331,7 +331,6 @@ $tz = new DateTimeZone('NZ');
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
 
   ?>
-<link rel="stylesheet" href="sys_page/styles.css">
     <h1 class="text-center">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
   

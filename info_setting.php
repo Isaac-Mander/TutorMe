@@ -293,8 +293,14 @@ $tz = new DateTimeZone('NZ');
   </head>
   <body>
   <?php
-
-  $sorting = 1;
+  $level = 0;
+  $level_tutee =0;
+    if (isset($_GET['level'])){
+      $level = $_GET['level'];
+    }
+    if (isset($_GET['level_tutee'])){
+      $level_tutee = $_GET['level_tutee'];
+    }
 
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
   { 
@@ -438,34 +444,81 @@ $tz = new DateTimeZone('NZ');
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
+        <h5 class="modal-title">Select subjects</h5>
+        <form action="info_setting.php" method="get">
+            <label for="Level">Select level:</label>
+            <select name="level" id="level">
+<?php if ($level == 0){
+                 ?>
+                <option value="0" selected>Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif ($level == 1){
+                 ?>
+                <option value="0">Any level</option>
+                <option value="1" selected>Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 2){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2" selected>Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 3){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3" selected>Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 4){
+?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4" selected>Non-NCEA</option>
+
+<?php } ?>
+            </select>
+            <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+        </form>
         <a class="close btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
       </div>
       <div class="modal-body"> 
       <div id="tutoring_subjects_checkbox_tutoring">
       <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-            if($sorting == 0){
+            if($level == 0){
               ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
-            }elseif($sorting == 1){
+            }elseif($level == 1){
               if ($all_available_subject_array[$i][5] == 1){
                 ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
               }
-            }elseif($sorting == 2){
+            }elseif($level == 2){
               if ($all_available_subject_array[$i][5] == 2){
                 ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
               }
-            }elseif($sorting == 3){
+            }elseif($level == 3){
               if ($all_available_subject_array[$i][5] == 3){
                 ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
               }
-            }elseif($sorting == 4){
+            }elseif($level == 4){
               if ($all_available_subject_array[$i][5] == 0){
                 ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
               }else{
@@ -506,6 +559,53 @@ $tz = new DateTimeZone('NZ');
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
+        <form action="info_setting.php" method="get">
+            <label for="Level_tutee">Select level:</label>
+            <select name="level_tutee" id="level_tutee">
+<?php if ($level_tutee == 0){
+                 ?>
+                <option value="0" selected>Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif ($level_tutee == 1){
+                 ?>
+                <option value="0">Any level</option>
+                <option value="1" selected>Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 2){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2" selected>Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 3){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3" selected>Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 4){
+?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4" selected>Non-NCEA</option>
+
+<?php } ?>
+            </select>
+            <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+        </form>
         <a class="close btn" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
                     </a>
@@ -515,7 +615,33 @@ $tz = new DateTimeZone('NZ');
       <div class="row row-cols-1 row-cols-md-3">
             <?php 
           for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-            ?><div class="col"><div class="card mx-auto border border-warning" style="width: auto;"><div class="card-body"> <?php
+                 if($level_tutee == 0){
+              ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+            }elseif($level_tutee == 1){
+              if ($all_available_subject_array[$i][5] == 1){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 2){
+              if ($all_available_subject_array[$i][5] == 2){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 3){
+              if ($all_available_subject_array[$i][5] == 3){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 4){
+              if ($all_available_subject_array[$i][5] == 0){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][3] == true) 

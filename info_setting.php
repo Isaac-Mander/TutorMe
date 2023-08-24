@@ -293,10 +293,19 @@ $tz = new DateTimeZone('NZ');
   </head>
   <body>
   <?php
+  $level = 0;
+  $level_tutee =0;
+    if (isset($_GET['level'])){
+      $level = $_GET['level'];
+    }
+    if (isset($_GET['level_tutee'])){
+      $level_tutee = $_GET['level_tutee'];
+    }
+
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
   { 
     $all_available_subject_array[$b][1000] = $b;
-    if(is_int(substr($all_available_subject_array[$b][1], -1))){
+    if(is_numeric(substr($all_available_subject_array[$b][1], -1))){
     $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
   }
   else
@@ -329,8 +338,8 @@ $tz = new DateTimeZone('NZ');
   $array_tutor_subject_level_array_column = array_column($subject_array_tutor, 5);
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
-
   ?>
+
     <h1 class="text-center">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
   
@@ -432,37 +441,108 @@ $tz = new DateTimeZone('NZ');
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
+        <h5 class="modal-title">Select subjects</h5>
+        <form action="info_setting.php" method="get">
+            <label for="Level">Select level:</label>
+            <select name="level" id="level">
+<?php if ($level == 0){
+                 ?>
+                <option value="0" selected>Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif ($level == 1){
+                 ?>
+                <option value="0">Any level</option>
+                <option value="1" selected>Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 2){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2" selected>Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 3){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3" selected>Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 4){
+?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4" selected>Non-NCEA</option>
+
+<?php } ?>
+            </select>
+            <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+        </form>
         <a class="close btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
       </div>
       <div class="modal-body"> 
       <div id="tutoring_subjects_checkbox_tutoring">
-        <div class="row row-cols-1 row-cols-md-3">
+      <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-          ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+            if($level == 0){
+              ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+            }elseif($level == 1){
+              if ($all_available_subject_array[$i][5] == 1){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level == 2){
+              if ($all_available_subject_array[$i][5] == 2){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level == 3){
+              if ($all_available_subject_array[$i][5] == 3){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level == 4){
+              if ($all_available_subject_array[$i][5] == 0){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              }
+            }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][4] == true) 
             {
               //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
-              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
+              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div></div>
               <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?> </div> <?php
             } //Create a checked checkbox
             else 
             {
               //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
-              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
+              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div></div>
               <div class="card-footer"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
               } //Create an empty checkbox 
-            ?></div></div></div>
+            ?></div></div>
             <?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
             }?>
-      </div></div>
-
-      </div>
+      </div></div></div>
       <div class="modal-footer">
         <a class="btn btn-secondary" data-dismiss="modal">Close</a>
         <a id='tutor_save_subjects_btn' class="btn btn-primary">Add subjects</a>
@@ -476,17 +556,89 @@ $tz = new DateTimeZone('NZ');
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
+        <form action="info_setting.php" method="get">
+            <label for="Level_tutee">Select level:</label>
+            <select name="level_tutee" id="level_tutee">
+<?php if ($level_tutee == 0){
+                 ?>
+                <option value="0" selected>Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif ($level_tutee == 1){
+                 ?>
+                <option value="0">Any level</option>
+                <option value="1" selected>Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 2){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2" selected>Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 3){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3" selected>Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 4){
+?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4" selected>Non-NCEA</option>
+
+<?php } ?>
+            </select>
+            <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+        </form>
         <a class="close btn" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
                     </a>
       </div>
       <div class="modal-body">
-
       <div id="tutoring_subjects_checkbox_studying">
-      <div class="row  row-cols-1 row-cols-md-3">
+      <div class="row row-cols-1 row-cols-md-3">
             <?php 
           for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-            ?><div class="col"><div class="card mx-auto border border-warning" style="width: auto;"><div class="card-body"> <?php
+                 if($level_tutee == 0){
+              ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+            }elseif($level_tutee == 1){
+              if ($all_available_subject_array[$i][5] == 1){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 2){
+              if ($all_available_subject_array[$i][5] == 2){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 3){
+              if ($all_available_subject_array[$i][5] == 3){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 4){
+              if ($all_available_subject_array[$i][5] == 0){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][3] == true) 
@@ -507,8 +659,7 @@ $tz = new DateTimeZone('NZ');
             }?>
         </div>
         </div>
-
-      </div>
+        </div>
       <div class="modal-footer">
         <a class="btn btn-secondary" data-dismiss="modal">Close</a>
         <a id='tutee_save_subjects_btn' class="btn btn-primary">Add subjects</a>

@@ -772,14 +772,14 @@ button:hover {
     <form action='calendar_2.php' method='post'>
     <div class="card-body">
     <div class="form-group row">
-        <label for="start_time" class="col-sm-2 col-form-label"><b>Start time</b></label>
+        <label for="start_time" class="col-sm-2 col-form-label"><b>Earliest Start time</b></label>
         <div class="col-sm-10">
         <input type="time" class="form-control" id="start_time" placeholder="Start time" name="start_time" required><br>
         </div>
         </div>
 
         <div class="form-group row">
-        <label for="end_time" class="col-sm-2 col-form-label"><b>End time</b></label>
+        <label for="end_time" class="col-sm-2 col-form-label"><b>Latest End time</b></label>
         <div class="col-sm-10">
         <input type="time" class="form-control" id="end_time" placeholder="End time" name="end_time" required><br>
         </div>

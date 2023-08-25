@@ -39,8 +39,9 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
     $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
   } else {
     // Handle the case where one or both variables is not an array
-    // For example:
-    $session_combined_data = array();};
+    if(is_array($session_today_tutor_data)) {$session_combined_data = $session_today_tutor_data;}
+    if(is_array($session_today_tutee_data)) {$session_combined_data = $session_today_tutee_data;}
+  };
   if (is_array($session_combined_data)) { ?>
     <div class="upcoming_day_sessions container text-center border border-2 border-dark extra_rounded">
             <div class="row">

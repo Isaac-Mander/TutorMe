@@ -38,6 +38,8 @@ $time = mktime($time_hours,$time_minutes,0,$time_month,$time_day,$time_year);
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
     $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
   } else {
+    //Create an empty array for all session data
+    $session_combined_data = array();
     // Handle the case where one or both variables is not an array
     if(is_array($session_today_tutor_data)) {$session_combined_data = $session_today_tutor_data;}
     if(is_array($session_today_tutee_data)) {$session_combined_data = $session_today_tutee_data;}

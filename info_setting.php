@@ -79,7 +79,8 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
 else
 {
   //If no subjects are found
-  $no_tutor_subjects = true;
+  $no_tutor_subjects = TRUE;
+  $subject_array_tutor = array();
 }
 
 
@@ -133,7 +134,8 @@ if ($subject_tutee_result->num_rows > 0) { //If the number of rows are not zero
 else
 {
   //If no subjects are found
-  $no_tutee_subjects = true;
+  $no_tutee_subjects = TRUE;
+  $subject_array_tutee = array();
 }
 //End of section =========================================================================================================================================================
 
@@ -184,7 +186,13 @@ if(!$no_tutor_subjects)
     }
   }
 }
-
+for($b=0;$b<sizeof($all_available_subject_array);$b++){
+  if (is_numeric(substr($all_available_subject_array[$b][1],-1,1))){
+    $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1],-1,1);
+  }else{
+    $all_available_subject_array[$b][5] = 0;
+  }
+}
 
 // Get a user's average ratings ==============================================================================================================================
 $ratings_data = average_ratings($conn,$user_id);
@@ -284,11 +292,27 @@ $tz = new DateTimeZone('NZ');
 </style>
   </head>
   <body>
+    
+  <link rel="stylesheet" href="sys_page/styles.css">
   <?php
+
+  $level = 0;
+  $level_tutee =0;
+    if (isset($_GET['level'])){
+      $level = $_GET['level'];
+    }
+    if (isset($_GET['level_tutee'])){
+      $level_tutee = $_GET['level_tutee'];
+    }
+
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
-  { if(is_int(substr($all_available_subject_array[$b][1], -1))){
+  { 
+    $all_available_subject_array[$b][1000] = $b;
+    if(is_numeric(substr($all_available_subject_array[$b][1], -1))){
     $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
-  }else{
+  }
+  else
+  {
     $all_available_subject_array[$b][5] = 0;
   }
   }
@@ -297,8 +321,8 @@ $tz = new DateTimeZone('NZ');
   array_multisort($all_available_subject_name_array_column, SORT_ASC, $all_available_subject_level_array_column, SORT_ASC, $all_available_subject_array);
 
   for($b=0;$b<sizeof($subject_array_tutee);$b++)
-  { if(is_int(substr($subject_array_tutee[$b][1], -1))){
-    $subject_array_tutee[$b][5] = substr($subject_array_tutee[$b][1], -1);
+  { if(is_numeric(substr($subject_array_tutee[$b][2], -1))){
+    $subject_array_tutee[$b][5] = substr($subject_array_tutee[$b][2], -1);
   }else{
     $subject_array_tutee[$b][5] = 0;
   }
@@ -308,8 +332,8 @@ $tz = new DateTimeZone('NZ');
   array_multisort($array_tutee_subject_name_array_column, SORT_ASC, $array_tutee_subject_level_array_column, SORT_ASC, $subject_array_tutee);
 
   for($b=0;$b<sizeof($subject_array_tutor);$b++)
-  { if(is_int(substr($subject_array_tutor[$b][1], -1))){
-    $subject_array_tutor[$b][5] = substr($subject_array_tutor[$b][1], -1);
+  { if(is_numeric(substr($subject_array_tutor[$b][2], -1))){
+    $subject_array_tutor[$b][5] = substr($subject_array_tutor[$b][2], -1);
   }else{
     $subject_array_tutor[$b][5] = 0;
   }
@@ -317,12 +341,14 @@ $tz = new DateTimeZone('NZ');
   $array_tutor_subject_level_array_column = array_column($subject_array_tutor, 5);
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
+
   ?>
-    
+
+
+
     <h1 class="text-center">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
-    <script src="content.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  
     
 
 <div class="container">
@@ -332,7 +358,7 @@ $tz = new DateTimeZone('NZ');
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="sys_img\legacy_icon.jpg" alt="Admin" class="rounded-circle" width="150">
+                    <img src="sys_img\dev_icon.jpg" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
                       <h4><?php echo $display_name ?></h4>
                     </div>
@@ -374,15 +400,14 @@ $tz = new DateTimeZone('NZ');
                         for($x=0;$x<sizeof($subject_array_tutor);$x++)
                         {
                           ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
-                          <?php echo "id=tutor_" . $subject_element_tutor_id."  ";//Give the element a unqiue id"; ?>
-                          data-toggle="modal" data-target="#remove_subject"><?php
+                          <?php echo " id='" . $subject_array_tutor[$x][2]."' ";//Give the element a unqiue id"; ?> data-bs-toggle="modal" data-bs-target="#remove_subject" data-is-global='<?php echo $subject_array_tutor[$x][1]?>' data-subject-id='<?php echo $subject_array_tutor[$x][0]?>' data-subject-status='0' data-user-id='<?php echo $user_id ?>'><?php
                           echo $subject_array_tutor[$x][2];
                           //Increment the id ?></button><?php
                           $subject_element_tutor_id += 1;
                         }
                       }
                     ?>
-                    <a class="btn btn-info btn-md" data-toggle="modal" data-target="#add_subject_tutor">Add subjects</a>
+                    <a class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#add_subject_tutor">Add subjects</a>
                     </div>
                   </div>
                   <hr>
@@ -398,15 +423,14 @@ $tz = new DateTimeZone('NZ');
                         for($x=0;$x<sizeof($subject_array_tutee);$x++)
                         {
                           ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
-                          <?php echo "id=tutor_" . $subject_element_tutee_id."  ";//Give the element a unqiue id"; ?>
-                          data-toggle="modal" data-target="#remove_subject"><?php
+                          <?php echo " id='" . $subject_array_tutee[$x][2]."' ";//Give the element a unqiue id"; ?> data-bs-toggle="modal" data-bs-target="#remove_subject" data-is-global='<?php echo $subject_array_tutee[$x][1]?>' data-subject-id='<?php echo $subject_array_tutee[$x][0]?>' data-subject-status='1' data-user-id='<?php echo $user_id ?>'><?php
                           echo $subject_array_tutee[$x][2];
                           //Increment the id ?></button><?php
                           $subject_element_tutee_id += 1;
                         }
                       }
                     ?>
-                    <a class="btn btn-info btn-md" data-toggle="modal" data-target="#add_subject_tutee">Add subjects</a>
+                    <a class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#add_subject_tutee">Add subjects</a>
                     </div>
                   </div>
                   <hr>
@@ -419,45 +443,115 @@ $tz = new DateTimeZone('NZ');
               </div>       
               </div>
     </div>
-
   <div class="modal fade" id="add_subject_tutor" tabindex="-1" role="dialog" aria-labelledby="add_subject_tutor" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
-        <a class="close btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h5 class="modal-title">Select subjects</h5>
+        <form action="info_setting.php" method="get">
+            <label for="Level">Select level:</label>
+            <select name="level" id="level">
+<?php if ($level == 0){
+                 ?>
+                <option value="0" selected>Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif ($level == 1){
+                 ?>
+                <option value="0">Any level</option>
+                <option value="1" selected>Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 2){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2" selected>Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 3){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3" selected>Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level == 4){
+?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4" selected>Non-NCEA</option>
+
+<?php } ?>
+            </select>
+            <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+        </form>
+        <a class="close btn" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
       </div>
-      <div class="modal-body">
+      <div class="modal-body"> 
       <div id="tutoring_subjects_checkbox_tutoring">
-        <div class="row row-cols-1 row-cols-md-3">
+      <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-          ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+            if($level == 0){
+              ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+            }elseif($level == 1){
+              if ($all_available_subject_array[$i][5] == 1){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+              }
+            }elseif($level == 2){
+              if ($all_available_subject_array[$i][5] == 2){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+              }
+            }elseif($level == 3){
+              if ($all_available_subject_array[$i][5] == 3){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+              }
+            }elseif($level == 4){
+              if ($all_available_subject_array[$i][5] == 0){
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
+              }
+            }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][4] == true) 
-            {              
-              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+            {
+              //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
-              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer border border-danger border-5"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>   already selected" ?> </div> <?php
+              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div></div>
+              <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?> </div> <?php
             } //Create a checked checkbox
             else 
             {
-              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
-              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox'>" ?> </div> <?php
+              <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div></div>
+              <div class="card-footer"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
               } //Create an empty checkbox 
-            ?></div></div></div>
+            ?></div></div>
             <?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
             }?>
-      </div></div>
-
-      </div>
+      </div></div></div>
       <div class="modal-footer">
-        <a class="btn btn-secondary" data-dismiss="modal">Close</a>
-        <a class="btn btn-primary">Add subjects</a>
+        <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+        <a id='tutor_save_subjects_btn' class="btn btn-primary">Add subjects</a>
       </div>
     </div>
   </div>
@@ -468,42 +562,113 @@ $tz = new DateTimeZone('NZ');
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
-        <a class="close btn" data-dismiss="modal" aria-label="Close">
+        <form action="info_setting.php" method="get">
+            <label for="Level_tutee">Select level:</label>
+            <select name="level_tutee" id="level_tutee">
+<?php if ($level_tutee == 0){
+                 ?>
+                <option value="0" selected>Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif ($level_tutee == 1){
+                 ?>
+                <option value="0">Any level</option>
+                <option value="1" selected>Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 2){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2" selected>Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 3){
+  ?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3" selected>Level 3</option>
+                <option value="4">Non-NCEA</option>
+<?php
+} elseif($level_tutee == 4){
+?>
+                <option value="0">Any level</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4" selected>Non-NCEA</option>
+
+<?php } ?>
+            </select>
+            <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+        </form>
+        <a class="close btn" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
                     </a>
       </div>
       <div class="modal-body">
-
       <div id="tutoring_subjects_checkbox_studying">
-      <div class="row  row-cols-1 row-cols-md-3">
+      <div class="row row-cols-1 row-cols-md-3">
             <?php 
           for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
-            ?><div class="col"><div class="card mx-auto border border-warning" style="width: auto;"><div class="card-body"> <?php
+                 if($level_tutee == 0){
+              ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+            }elseif($level_tutee == 1){
+              if ($all_available_subject_array[$i][5] == 1){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 2){
+              if ($all_available_subject_array[$i][5] == 2){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 3){
+              if ($all_available_subject_array[$i][5] == 3){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }elseif($level_tutee == 4){
+              if ($all_available_subject_array[$i][5] == 0){
+                ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }else{
+                ?> <div class="col" style="display: none" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
+              }
+            }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
             if($all_available_subject_array[$i][3] == true) 
             {
-              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer border border-danger border-5"> <?php echo "<input id=" . $checkbox_id . " type='checkbox' checked>   already selected" ?></div> <?php
+              <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutee_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?></div> <?php
             } //Create a checked checkbox
             else {
-              echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
+              //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
-              <div class="card-footer"> <?php echo "<input id=" . $checkbox_id . " type='checkbox'>" ?> </div> <?php
+              <div class="card-footer"> <?php echo "<input id=checkbox_tutee_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
              } //Create an empty checkbox 
             ?></div></div></div><?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
             }?>
         </div>
         </div>
-
-      </div>
+        </div>
       <div class="modal-footer">
-        <a class="btn btn-secondary" data-dismiss="modal">Close</a>
-        <a class="btn btn-primary">Add subjects</a>
+        <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+        <a id='tutee_save_subjects_btn' class="btn btn-primary">Add subjects</a>
       </div>
     </div>
   </div>
@@ -514,24 +679,66 @@ $tz = new DateTimeZone('NZ');
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Remove Subject</h5>
-        <a type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+        <a type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </a>
       </div>
       <div class="modal-body">
         <h3>Are you sure you want to remove this subject?</h3>
+        <?php
+          $user_id = $_COOKIE['user_id'];
+          $subject_status = $_COOKIE['subject_status'];
+          $is_global = $_COOKIE['is_global'];
+          $subject_id = $_COOKIE['subject_id'];
+          ?>
+        <?php
+        echo $user_id."<br>";
+        echo $subject_status."<br>";
+        echo $is_global."<br>";
+        echo $subject_id."<br>";
+        ?>
       </div>
       <div class="modal-footer">
-        <a type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a>
-        <a type="button" class="btn btn-danger" href="">Remove subject</a>
+        <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+        <form action="process.php" method="post">
+        <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id?>">
+        <input type="hidden" id="subject_status" name="subject_status" value="<?php echo $subject_status?>">
+        <input type="hidden" id="is_global" name="is_global" value="<?php echo $is_global?>">
+        <input type="hidden" id="subject_id" name="subject_id" value="<?php echo $subject_id?>">
+        <input type="submit" class="btn btn-danger" value="remove subject">
+        </form>
       </div>
     </div>
   </div>
 </div>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script>
+          const remove_subject = document.getElementById('remove_subject')
+          if (remove_subject) {
+            remove_subject.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const button = event.relatedTarget;
+            // Extract info from data-bs-* attributes
+            const user_id = button.getAttribute('data-user-id')
+            const is_global = button.getAttribute('data-is-global')
+            const subject_id = button.getAttribute('data-subject-id')
+            const subject_status = button.getAttribute('data-subject-status')
+
+            console.log(user_id)
+            console.log(is_global)
+            console.log(subject_id)
+            console.log(subject_status)
+
+            document.cookie = "user_id=" + user_id
+            document.cookie = "is_global=" + is_global
+            document.cookie = "subject_id=" + subject_id
+            document.cookie = "subject_status=" + subject_status
+            
+            javascript:alert(document.cookie)
+          })
+          }
+</script>
+
   </body>
 </html>
 <style>
@@ -711,14 +918,18 @@ button:hover {
         $card_id = $available_session_times_data[$i][4];
   
         ?> <div class="col">   <div id=<?php echo $card_id; ?> class='card mx-auto border border-grey p-3' style="width: 15rem;"><?php
-        echo ($name."<br>".date("l h:i:s A", $potential_starttime) . "<br>");
+        echo (date("l h:i:s A", $potential_starttime) . "<br>");
         echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
         ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a></div></div>  <?php }?> </div>  <?php } ?>
 
 
     <div id='calendar'></div>
+    <div id='profile'></div>
     <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
+
   </body>
 </html>

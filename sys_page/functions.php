@@ -42,25 +42,28 @@ function get_session_data($sql,$conn)
             if($data['phone'] == NULL) {$phone = "Not set by user";}
             else {$phone = $data['phone'];}
             $tutor_session_data[$session_index][11] = array($email,$phone);
-
+            if(isset($row['global_subject_id'])){
             //Each tutor session can only have a single subject. This program will filter out any id that is zero
             if($row['global_subject_id'] == 0) {$tutor_session_data[$session_index][7] = $row['local_subject_id'];
-            //Query the subject list to get the subjects's name
-            $subject_id = $tutor_session_data[$session_index][7];
-            $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
-            $result_subject = $conn->query($sql_subject_name);
-            $data2 = $result_subject->fetch_assoc();
-            $tutor_session_data[$session_index][8] = $data2['name'];//Subject english name
-      
-            } //Session subject
-            else { $tutor_session_data[$session_index][7] = $row['global_subject_id']; //Session subject id
-            //Query the subject list to get the subjects's name
-            $subject_id = $tutor_session_data[$session_index][7];
-            $sql_subject_name = "SELECT name FROM subjects WHERE id=$subject_id";
-            $result_subject = $conn->query($sql_subject_name);
-            $data2 = $result_subject->fetch_assoc();
-            $tutor_session_data[$session_index][8] = $data2['name'];//Subject english name
+              //Query the subject list to get the subjects's name
+              $subject_id = $tutor_session_data[$session_index][7];
+              $sql_subject_name = "SELECT name FROM 6969_subjects WHERE id=$subject_id";
+              $result_subject = $conn->query($sql_subject_name);
+              $data2 = $result_subject->fetch_assoc();
+              $tutor_session_data[$session_index][8] = $data2['name'];//Subject english name
+        
+              } //Session subject
+              else { $tutor_session_data[$session_index][7] = $row['global_subject_id']; //Session subject id
+              //Query the subject list to get the subjects's name
+              $subject_id = $tutor_session_data[$session_index][7];
+              $sql_subject_name = "SELECT name FROM subjects WHERE id=$subject_id";
+              $result_subject = $conn->query($sql_subject_name);
+              $data2 = $result_subject->fetch_assoc();
+              $tutor_session_data[$session_index][8] = $data2['name'];//Subject english name
+              }
+              
             }
+
             
             //Increment the session index the data is stored under
             $tutor_session_data[$session_index][9] = $row['is_active'];

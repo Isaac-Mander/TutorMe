@@ -169,7 +169,7 @@ if($error) $page += -1; //Stop progression if error with user input
                   </div>
                   <div class="form-outline mb-4">
                     <label class="form-label" for="password">Password</label>
-                    <input type="text" id="password" name= "password" class="form-control" />
+                    <input type="password" id="password" name= "password" class="form-control" />
                   </div>
     
                   <button type="submit" class="btn btn-success btn-lg mb-1">Submit</button>

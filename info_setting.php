@@ -292,7 +292,10 @@ $tz = new DateTimeZone('NZ');
 </style>
   </head>
   <body>
+    
+  <link rel="stylesheet" href="sys_page/styles.css">
   <?php
+
   $level = 0;
   $level_tutee =0;
     if (isset($_GET['level'])){
@@ -318,8 +321,8 @@ $tz = new DateTimeZone('NZ');
   array_multisort($all_available_subject_name_array_column, SORT_ASC, $all_available_subject_level_array_column, SORT_ASC, $all_available_subject_array);
 
   for($b=0;$b<sizeof($subject_array_tutee);$b++)
-  { if(is_int(substr($subject_array_tutee[$b][1], -1))){
-    $subject_array_tutee[$b][5] = substr($subject_array_tutee[$b][1], -1);
+  { if(is_numeric(substr($subject_array_tutee[$b][2], -1))){
+    $subject_array_tutee[$b][5] = substr($subject_array_tutee[$b][2], -1);
   }else{
     $subject_array_tutee[$b][5] = 0;
   }
@@ -329,8 +332,8 @@ $tz = new DateTimeZone('NZ');
   array_multisort($array_tutee_subject_name_array_column, SORT_ASC, $array_tutee_subject_level_array_column, SORT_ASC, $subject_array_tutee);
 
   for($b=0;$b<sizeof($subject_array_tutor);$b++)
-  { if(is_int(substr($subject_array_tutor[$b][1], -1))){
-    $subject_array_tutor[$b][5] = substr($subject_array_tutor[$b][1], -1);
+  { if(is_numeric(substr($subject_array_tutor[$b][2], -1))){
+    $subject_array_tutor[$b][5] = substr($subject_array_tutor[$b][2], -1);
   }else{
     $subject_array_tutor[$b][5] = 0;
   }
@@ -338,7 +341,10 @@ $tz = new DateTimeZone('NZ');
   $array_tutor_subject_level_array_column = array_column($subject_array_tutor, 5);
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
+
   ?>
+
+
 
     <h1 class="text-center">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
@@ -394,14 +400,14 @@ $tz = new DateTimeZone('NZ');
                         for($x=0;$x<sizeof($subject_array_tutor);$x++)
                         {
                           ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
-                          <?php echo " id='" . $subject_array_tutor[$x][2]."' ";//Give the element a unqiue id"; ?> data-toggle="modal" data-target="#remove_subject"><?php
+                          <?php echo " id='" . $subject_array_tutor[$x][2]."' ";//Give the element a unqiue id"; ?> data-bs-toggle="modal" data-bs-target="#remove_subject" data-is-global='<?php echo $subject_array_tutor[$x][1]?>' data-subject-id='<?php echo $subject_array_tutor[$x][0]?>' data-subject-status='0' data-user-id='<?php echo $user_id ?>'><?php
                           echo $subject_array_tutor[$x][2];
                           //Increment the id ?></button><?php
                           $subject_element_tutor_id += 1;
                         }
                       }
                     ?>
-                    <a class="btn btn-info btn-md" data-toggle="modal" data-target="#add_subject_tutor">Add subjects</a>
+                    <a class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#add_subject_tutor">Add subjects</a>
                     </div>
                   </div>
                   <hr>
@@ -417,14 +423,14 @@ $tz = new DateTimeZone('NZ');
                         for($x=0;$x<sizeof($subject_array_tutee);$x++)
                         {
                           ?><button type="button" class="btn btn-outline-light btn-rounded btn-success"
-                          <?php echo " id='" . $subject_array_tutee[$x][2]."' ";//Give the element a unqiue id"; ?> data-toggle="modal" data-target="#remove_subject"><?php
+                          <?php echo " id='" . $subject_array_tutee[$x][2]."' ";//Give the element a unqiue id"; ?> data-bs-toggle="modal" data-bs-target="#remove_subject" data-is-global='<?php echo $subject_array_tutee[$x][1]?>' data-subject-id='<?php echo $subject_array_tutee[$x][0]?>' data-subject-status='1' data-user-id='<?php echo $user_id ?>'><?php
                           echo $subject_array_tutee[$x][2];
                           //Increment the id ?></button><?php
                           $subject_element_tutee_id += 1;
                         }
                       }
                     ?>
-                    <a class="btn btn-info btn-md" data-toggle="modal" data-target="#add_subject_tutee">Add subjects</a>
+                    <a class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#add_subject_tutee">Add subjects</a>
                     </div>
                   </div>
                   <hr>
@@ -489,37 +495,37 @@ $tz = new DateTimeZone('NZ');
             </select>
             <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
         </form>
-        <a class="close btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <a class="close btn" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
       </div>
       <div class="modal-body"> 
       <div id="tutoring_subjects_checkbox_tutoring">
       <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
             if($level == 0){
-              ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+              ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
             }elseif($level == 1){
               if ($all_available_subject_array[$i][5] == 1){
-                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }else{
-                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }
             }elseif($level == 2){
               if ($all_available_subject_array[$i][5] == 2){
-                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }else{
-                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }
             }elseif($level == 3){
               if ($all_available_subject_array[$i][5] == 3){
-                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }else{
-                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+                ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }
             }elseif($level == 4){
               if ($all_available_subject_array[$i][5] == 0){
-                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+                ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }else{
-                ?> <div class="col" style="display: none" ><div class="card mx-auto border border-secondary" style="width: auto;"> <div class="card-body"><?php
+                ?> <div class="col" style="display: none" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }
             }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
@@ -544,7 +550,7 @@ $tz = new DateTimeZone('NZ');
             }?>
       </div></div></div>
       <div class="modal-footer">
-        <a class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
         <a id='tutor_save_subjects_btn' class="btn btn-primary">Add subjects</a>
       </div>
     </div>
@@ -603,7 +609,7 @@ $tz = new DateTimeZone('NZ');
             </select>
             <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
         </form>
-        <a class="close btn" data-dismiss="modal" aria-label="Close">
+        <a class="close btn" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
                     </a>
       </div>
@@ -661,7 +667,7 @@ $tz = new DateTimeZone('NZ');
         </div>
         </div>
       <div class="modal-footer">
-        <a class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
         <a id='tutee_save_subjects_btn' class="btn btn-primary">Add subjects</a>
       </div>
     </div>
@@ -673,24 +679,66 @@ $tz = new DateTimeZone('NZ');
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Remove Subject</h5>
-        <a type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+        <a type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </a>
       </div>
       <div class="modal-body">
         <h3>Are you sure you want to remove this subject?</h3>
+        <?php
+          $user_id = $_COOKIE['user_id'];
+          $subject_status = $_COOKIE['subject_status'];
+          $is_global = $_COOKIE['is_global'];
+          $subject_id = $_COOKIE['subject_id'];
+          ?>
+        <?php
+        echo $user_id."<br>";
+        echo $subject_status."<br>";
+        echo $is_global."<br>";
+        echo $subject_id."<br>";
+        ?>
       </div>
       <div class="modal-footer">
-        <a type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</a>
-        <a type="button" class="btn btn-danger" href="">Remove subject</a>
+        <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+        <form action="process.php" method="post">
+        <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id?>">
+        <input type="hidden" id="subject_status" name="subject_status" value="<?php echo $subject_status?>">
+        <input type="hidden" id="is_global" name="is_global" value="<?php echo $is_global?>">
+        <input type="hidden" id="subject_id" name="subject_id" value="<?php echo $subject_id?>">
+        <input type="submit" class="btn btn-danger" value="remove subject">
+        </form>
       </div>
     </div>
   </div>
 </div>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script>
+          const remove_subject = document.getElementById('remove_subject')
+          if (remove_subject) {
+            remove_subject.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const button = event.relatedTarget;
+            // Extract info from data-bs-* attributes
+            const user_id = button.getAttribute('data-user-id')
+            const is_global = button.getAttribute('data-is-global')
+            const subject_id = button.getAttribute('data-subject-id')
+            const subject_status = button.getAttribute('data-subject-status')
+
+            console.log(user_id)
+            console.log(is_global)
+            console.log(subject_id)
+            console.log(subject_status)
+
+            document.cookie = "user_id=" + user_id
+            document.cookie = "is_global=" + is_global
+            document.cookie = "subject_id=" + subject_id
+            document.cookie = "subject_status=" + subject_status
+            
+            javascript:alert(document.cookie)
+          })
+          }
+</script>
+
   </body>
 </html>
 <style>
@@ -879,6 +927,9 @@ button:hover {
     <div id='profile'></div>
     <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
+
   </body>
 </html>

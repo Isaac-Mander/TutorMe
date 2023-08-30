@@ -218,6 +218,14 @@ $tz = new DateTimeZone('NZ');
 <!doctype html>
 <html lang="en">
   <head>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="content.js"></script>
+
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
@@ -443,6 +451,8 @@ $tz = new DateTimeZone('NZ');
               </div>       
               </div>
     </div>
+<?php
+?>
   <div class="modal fade" id="add_subject_tutor" tabindex="-1" role="dialog" aria-labelledby="add_subject_tutor" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -493,7 +503,8 @@ $tz = new DateTimeZone('NZ');
 
 <?php } ?>
             </select>
-            <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+            <input type="hidden" id="modal_sorting_id" name="modal_sorting_id" value="1">
+            <input type="submit" name="submit" class="btn btn-success btn-md" value="Sort!">
         </form>
         <a class="close btn" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
       </div>
@@ -607,7 +618,8 @@ $tz = new DateTimeZone('NZ');
 
 <?php } ?>
             </select>
-            <input type="submit" name="submit" class="btn btn-success btn-md" value="Submit">
+            <input type="hidden" id="modal_sorting_id" name="modal_sorting_id" value="2">
+            <input type="submit" name="submit" class="btn btn-success btn-md" value="Sort!">
         </form>
         <a class="close btn" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -711,7 +723,30 @@ $tz = new DateTimeZone('NZ');
     </div>
   </div>
 </div>
+<?php
 
+if (isset($_GET['modal_sorting_id'])){
+  $modal_sorting_id = $_GET['modal_sorting_id'];
+  if ($modal_sorting_id == 1){
+    ?>
+    <script>
+    const add_subject_tutor = new bootstrap.Modal(document.getElementById('add_subject_tutor'))
+    add_subject_tutor.show()
+    </script>
+    
+    <?php
+    $modal_sorting_id = 0;
+  }elseif ($modal_sorting_id == 2){
+    ?>
+    <script>
+    const add_subject_tutee = new bootstrap.Modal(document.getElementById('add_subject_tutee'))
+    add_subject_tutee.show()
+    </script>
+    <?php
+    $modal_sorting_id = 0;
+  }
+}
+?>
 <script>
           const remove_subject = document.getElementById('remove_subject')
           if (remove_subject) {
@@ -925,10 +960,6 @@ button:hover {
 
     <div id='calendar'></div>
     <div id='profile'></div>
-    <script src="content.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
 
   </body>

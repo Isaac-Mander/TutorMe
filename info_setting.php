@@ -354,7 +354,7 @@ $tz = new DateTimeZone('NZ');
 
 
 
-    <h1 class="text-center">Setup page</h1>
+    <h1 class="text-center" style="padding-top: 7rem">Setup page</h1>
     <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
   
     
@@ -746,11 +746,6 @@ if (isset($_GET['modal_sorting_id'])){
             const is_global = button.getAttribute('data-is-global');
             const subject_id = button.getAttribute('data-subject-id');
             const subject_status = button.getAttribute('data-subject-status');
-
-            console.log(user_id);
-            console.log(is_global);
-            console.log(subject_id);
-            console.log(subject_status);
 
             document.cookie = "user_id=" + user_id;
             document.cookie = "is_global=" + is_global;

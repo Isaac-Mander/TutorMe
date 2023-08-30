@@ -697,26 +697,14 @@ $tz = new DateTimeZone('NZ');
       </div>
       <div class="modal-body">
         <h3>Are you sure you want to remove this subject?</h3>
-        <?php
-          $user_id = $_COOKIE['user_id'];
-          $subject_status = $_COOKIE['subject_status'];
-          $is_global = $_COOKIE['is_global'];
-          $subject_id = $_COOKIE['subject_id'];
-          ?>
-        <?php
-        echo $user_id."<br>";
-        echo $subject_status."<br>";
-        echo $is_global."<br>";
-        echo $subject_id."<br>";
-        ?>
       </div>
       <div class="modal-footer">
         <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
         <form action="process.php" method="post">
-        <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id?>">
-        <input type="hidden" id="subject_status" name="subject_status" value="<?php echo $subject_status?>">
-        <input type="hidden" id="is_global" name="is_global" value="<?php echo $is_global?>">
-        <input type="hidden" id="subject_id" name="subject_id" value="<?php echo $subject_id?>">
+        <input type="hidden" id="user_id" name="user_id" value="<?php echo 'null'; ?>">
+        <input type="hidden" id="subject_status" name="subject_status" value="<?php echo 'null'; ?>">
+        <input type="hidden" id="is_global" name="is_global" value="<?php echo 'null'; ?>">
+        <input type="hidden" id="subject_id" name="subject_id" value="<?php echo 'null'; ?>">
         <input type="submit" class="btn btn-danger" value="remove subject">
         </form>
       </div>
@@ -754,22 +742,26 @@ if (isset($_GET['modal_sorting_id'])){
             // Button that triggered the modal
             const button = event.relatedTarget;
             // Extract info from data-bs-* attributes
-            const user_id = button.getAttribute('data-user-id')
-            const is_global = button.getAttribute('data-is-global')
-            const subject_id = button.getAttribute('data-subject-id')
-            const subject_status = button.getAttribute('data-subject-status')
+            const user_id = button.getAttribute('data-user-id');
+            const is_global = button.getAttribute('data-is-global');
+            const subject_id = button.getAttribute('data-subject-id');
+            const subject_status = button.getAttribute('data-subject-status');
 
-            console.log(user_id)
-            console.log(is_global)
-            console.log(subject_id)
-            console.log(subject_status)
+            console.log(user_id);
+            console.log(is_global);
+            console.log(subject_id);
+            console.log(subject_status);
 
-            document.cookie = "user_id=" + user_id
-            document.cookie = "is_global=" + is_global
-            document.cookie = "subject_id=" + subject_id
-            document.cookie = "subject_status=" + subject_status
+            document.cookie = "user_id=" + user_id;
+            document.cookie = "is_global=" + is_global;
+            document.cookie = "subject_id=" + subject_id;
+            document.cookie = "subject_status=" + subject_status;
             
-            javascript:alert(document.cookie)
+            document.getElementById("user_id").value = user_id;
+            document.getElementById("is_global").value = is_global;
+            document.getElementById("subject_id").value = subject_id;
+            document.getElementById("subject_status").value = subject_status;
+            
           })
           }
 </script>

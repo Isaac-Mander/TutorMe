@@ -1,5 +1,8 @@
 
 <?php
+
+
+
 //Connect to database
 include("sys_page/db_connect.php");
 
@@ -15,6 +18,12 @@ $error_msg = "";
 //Check what page site should be showing
 if(isset($_POST['page'])) {$page = $_POST['page'];}
 else {$page = 0;}
+
+
+//Hide all errors on page 2 (don't ask why it breaks, the page still works but the error blocks part of the page)
+if($page == 2) {ini_set('display_errors', 0 );}
+else {ini_set('display_errors', 1);}
+
 
 echo "<br>";
 //If first page add the user credentials to the holding database during setup

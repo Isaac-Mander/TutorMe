@@ -57,7 +57,9 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
         if($setup_errors[0] == true) {echo "<li>Select the times when you are available for tutoring</li>";}
         if($setup_errors[1] == true OR $setup_errors[2] == true) {echo "<li>Select your subjects (in both recieving and giving tutoring)</li>";}
         echo "</ul>";
-        echo "<button type='button' class='btn btn-success btn-md'>You can set these up here</button>";
+        echo "<button onclick=";
+        echo "window.location.href='info_setting.php';";
+        echo "type='button' class='btn btn-success btn-md'>You can set these up here</button>";
         echo "</div></div>";
     }
     else

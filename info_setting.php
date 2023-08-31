@@ -558,7 +558,12 @@ $tz = new DateTimeZone('NZ');
             ?></div></div>
             <?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
-            }?>
+            }
+            if (sizeof($all_available_subject_array) == 0) {
+              echo "there are no subjects in the catagory";
+
+            }
+            ?>
       </div></div></div>
       <div class="modal-footer">
         <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>

@@ -71,7 +71,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 $subject = $session_combined_data[$i][8]; //setting subject name
                 $session_id = $session_combined_data[$i][0];
 
-                ?>   <div class="col"> <div name="card" id="session_card" class='card' ><?php
+                ?><div class="col"> <div name="card" id="session_card" class='card' ><?php
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
                 <p class="card-text"><?php echo $day?></p>

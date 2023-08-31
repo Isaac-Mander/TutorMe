@@ -63,7 +63,7 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
     //Change the query type depending if the subject is global or local
     //Global
     if($subject_array_tutor[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutor` INNER JOIN `subjects` ON `6969_subjects_tutor`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutor`.`tutor_id`=$user_id AND `global_subject_id`=$subject_id;";}
-    
+
     //Local
     else {$subject_name_sql = "SELECT * FROM `6969_subjects_tutor` INNER JOIN `6969_subjects` ON `6969_subjects_tutor`.`local_subject_id`=`6969_subjects`.`id` WHERE `6969_subjects_tutor`.`tutor_id`=$user_id AND `local_subject_id`=$subject_id;";}
 
@@ -74,7 +74,7 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
       $subject_array_tutor[$i][2] = $row['name'];
     }
   }
-  
+
 }
 else
 {
@@ -119,7 +119,7 @@ if ($subject_tutee_result->num_rows > 0) { //If the number of rows are not zero
     //Change the query type depending if the subject is global or local
     //Global
     if($subject_array_tutee[$i][1] == True) {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `subjects` ON `6969_subjects_tutee`.`global_subject_id`=`subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id AND `global_subject_id`=$subject_id;";}
-    
+
     //Local
     else {$subject_name_sql = "SELECT * FROM `6969_subjects_tutee` INNER JOIN `6969_subjects` ON `6969_subjects_tutee`.`local_subject_id`=`6969_subjects`.`id` WHERE `6969_subjects_tutee`.`tutee_id`=$user_id AND `local_subject_id`=$subject_id;";}
 
@@ -146,17 +146,17 @@ if(!$no_tutee_subjects)
   //Check if the subject is currently selected by the user as a subject they wish to be tutored in
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
   {
-    
+
     //Loop though the subject names in the array to find a match
     for($x=0;$x<sizeof($subject_array_tutee);$x++)
     {
       //If a match is found, set [2] to be true and exit loop
-      if(trim($subject_array_tutee[$x][2]) == trim($all_available_subject_array[$b][1])) 
+      if(trim($subject_array_tutee[$x][2]) == trim($all_available_subject_array[$b][1]))
       {
         $all_available_subject_array[$b][3] = 1;
         break;
       }
-      else 
+      else
       {
         $all_available_subject_array[$b][3] = 0;
       }
@@ -169,37 +169,29 @@ if(!$no_tutor_subjects)
   //Check if the subject is currently selected by the user as a subject they wish to be tutored in
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
   {
-    
+
     //Loop though the subject names in the array to find a match
     for($x=0;$x<sizeof($subject_array_tutor);$x++)
     {
       //If a match is found, set [2] to be true and exit loop
-      if(trim($subject_array_tutor[$x][2]) == trim($all_available_subject_array[$b][1])) 
+      if(trim($subject_array_tutor[$x][2]) == trim($all_available_subject_array[$b][1]))
       {
         $all_available_subject_array[$b][4] = 1;
         break;
       }
-      else 
+      else
       {
         $all_available_subject_array[$b][4] = 0;
       }
     }
   }
 }
-for($b=0;$b<sizeof($all_available_subject_array);$b++){
-  if (is_numeric(substr($all_available_subject_array[$b][1],-1,1))){
-    $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1],-1,1);
-  }else{
-    $all_available_subject_array[$b][5] = 0;
-  }
-}
-
 // Get a user's average ratings ==============================================================================================================================
 $ratings_data = average_ratings($conn,$user_id);
 $average_prod = $ratings_data[0];
 $average_expe = $ratings_data[1];
 
-$subject_element_tutee_id = 0; //This id allows for a unique id to be set to each subject for js purposes 
+$subject_element_tutee_id = 0; //This id allows for a unique id to be set to each subject for js purposes
 $subject_element_tutor_id = 0;
 $checkbox_id_increment = 0; //Checkbox id for js
 
@@ -212,19 +204,18 @@ $tz = new DateTimeZone('NZ');
   $time_minute = $dt ->format('i');// out: ':46'
   $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
   $date =  $time_year . "-" . $time_month . "-" . $time_day;
-  
+
   //calling the events function, and setting the events?>
-  
+
 <!doctype html>
 <html lang="en">
   <head>
 
-
+    <!-- linking the JavaScript libraries & bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="content.js"></script>
-
+    <link rel="stylesheet" href="sys_page/styles.css">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -245,16 +236,15 @@ $tz = new DateTimeZone('NZ');
     $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=$user_id";
     $available_session_times_data = get_available_session_data($available_session_times_sql, $conn);
     //pulls all the potential times from the database, runs through function
-    //$events = grab_events($conn);
     //calling the events function, and setting the events?>
-        <link rel="stylesheet" href="sys_page/styles.css"> 
+    <link rel="stylesheet" href="sys_page/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src='fullcalendar-6.1.5\fullcalendar-6.1.5\dist\index.global.js'></script>
 <script>
 //loading in the calender
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    <?php 
+    <?php
 
     $JsonEvents = json_encode($events); //putting the array into a format the calendar can read ?>
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -284,7 +274,7 @@ $tz = new DateTimeZone('NZ');
   });
 </script>
 <style>
-
+ /* styling for calendar */
   body {
     margin: 40px 10px;
     padding: 0;
@@ -300,10 +290,9 @@ $tz = new DateTimeZone('NZ');
 </style>
   </head>
   <body>
-    
-  <link rel="stylesheet" href="sys_page/styles.css">
-  <?php
 
+  <?php
+  //setting the sorting option (how the subjects are sorted)
   $level = 0;
   $level_tutee =0;
     if (isset($_GET['level'])){
@@ -313,8 +302,9 @@ $tz = new DateTimeZone('NZ');
       $level_tutee = $_GET['level_tutee'];
     }
 
+  //Setting the subject level & a indentifing id for the all_avaliable_subject_array
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
-  { 
+  {
     $all_available_subject_array[$b][1000] = $b;
     if(is_numeric(substr($all_available_subject_array[$b][1], -1))){
     $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
@@ -324,10 +314,13 @@ $tz = new DateTimeZone('NZ');
     $all_available_subject_array[$b][5] = 0;
   }
   }
+  //setting a column of data as an array, and using that data sorting the all_avaliable_subject_array array
   $all_available_subject_level_array_column = array_column($all_available_subject_array, 5);
   $all_available_subject_name_array_column = array_column($all_available_subject_array, 1);
   array_multisort($all_available_subject_name_array_column, SORT_ASC, $all_available_subject_level_array_column, SORT_ASC, $all_available_subject_array);
 
+
+  //Setting the subject level for the subject_array_tutee
   for($b=0;$b<sizeof($subject_array_tutee);$b++)
   { if(is_numeric(substr($subject_array_tutee[$b][2], -1))){
     $subject_array_tutee[$b][5] = substr($subject_array_tutee[$b][2], -1);
@@ -335,10 +328,13 @@ $tz = new DateTimeZone('NZ');
     $subject_array_tutee[$b][5] = 0;
   }
   }
+  //setting a column of data as an array, and using that data sorting the subject_array_tutee array
   $array_tutee_subject_level_array_column = array_column($subject_array_tutee, 5);
   $array_tutee_subject_name_array_column = array_column($subject_array_tutee, 2);
   array_multisort($array_tutee_subject_name_array_column, SORT_ASC, $array_tutee_subject_level_array_column, SORT_ASC, $subject_array_tutee);
 
+
+  //Setting the subject level for the subject_array_tutor
   for($b=0;$b<sizeof($subject_array_tutor);$b++)
   { if(is_numeric(substr($subject_array_tutor[$b][2], -1))){
     $subject_array_tutor[$b][5] = substr($subject_array_tutor[$b][2], -1);
@@ -346,6 +342,7 @@ $tz = new DateTimeZone('NZ');
     $subject_array_tutor[$b][5] = 0;
   }
   }
+  //setting a column of data as an array, and using that data sorting the subject_array_tutor array
   $array_tutor_subject_level_array_column = array_column($subject_array_tutor, 5);
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
@@ -353,12 +350,12 @@ $tz = new DateTimeZone('NZ');
   ?>
 
 
+  <!-- text at top of page -->
+  <h1 class="text-center" style="padding-top: 7rem">Setup page</h1>
+  <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
 
-    <h1 class="text-center" style="padding-top: 7rem">Setup page</h1>
-    <p class="text-center">On this page you can set your subjects and the times in which you are free</p>
-  
-    
 
+<!-- the profile card & subjects -->
 <div class="container">
     <div class="main-body">
           <div class="row gutters-sm">
@@ -366,6 +363,7 @@ $tz = new DateTimeZone('NZ');
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
+                      <!-- image and name box on the side -->
                     <img src="sys_img\dev_icon.jpg" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
                       <h4><?php echo $display_name ?></h4>
@@ -374,10 +372,10 @@ $tz = new DateTimeZone('NZ');
                 </div>
               </div>
             </div>
+            <!-- Card that holds the email, phone number, tutoring subjects, and subjects that they need help with  -->
             <div class="col-md-8">
               <div class="card mb-3">
                 <div class="card-body">
-                  
                   <div class="row">
                     <div class="col-sm-3">
                       <h6 class="mb-0">Email</h6>
@@ -415,6 +413,7 @@ $tz = new DateTimeZone('NZ');
                         }
                       }
                     ?>
+                    <!-- linking to the modal for adding subjects for tutoring-->
                     <a class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#add_subject_tutor">Add subjects</a>
                     </div>
                   </div>
@@ -438,26 +437,30 @@ $tz = new DateTimeZone('NZ');
                         }
                       }
                     ?>
+                    <!-- linking to the modal for adding subjects for needing help-->
                     <a class="btn btn-info btn-md" data-bs-toggle="modal" data-bs-target="#add_subject_tutee">Add subjects</a>
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-12">
+                      <!-- button for editing things on the profile page-->
                       <a class="btn btn-success btn-md" id=profile_edit_button>Edit</a>
                     </div>
                   </div>
                 </div>
-              </div>       
+              </div>
               </div>
     </div>
-<?php
-?>
+
+  <!-- The modal for the adding subjects for the tutor -->
   <div class="modal fade" id="add_subject_tutor" tabindex="-1" role="dialog" aria-labelledby="add_subject_tutor" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        <!-- modal title & header -->
         <h5 class="modal-title">Select subjects</h5>
+        <!-- The sorting dropdown box to sort the subjects in the modal -->
         <form action="info_setting.php" method="get">
             <label for="Level">Select level:</label>
             <select name="level" id="level">
@@ -468,6 +471,7 @@ $tz = new DateTimeZone('NZ');
                 <option value="2">Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4">Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php
 } elseif ($level == 1){
                  ?>
@@ -476,6 +480,7 @@ $tz = new DateTimeZone('NZ');
                 <option value="2">Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4">Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php
 } elseif($level == 2){
   ?>
@@ -484,6 +489,7 @@ $tz = new DateTimeZone('NZ');
                 <option value="2" selected>Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4">Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php
 } elseif($level == 3){
   ?>
@@ -492,6 +498,7 @@ $tz = new DateTimeZone('NZ');
                 <option value="2">Level 2</option>
                 <option value="3" selected>Level 3</option>
                 <option value="4">Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php
 } elseif($level == 4){
 ?>
@@ -500,18 +507,21 @@ $tz = new DateTimeZone('NZ');
                 <option value="2">Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4" selected>Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 
 <?php } ?>
             </select>
             <input type="hidden" id="modal_sorting_id" name="modal_sorting_id" value="1">
             <input type="submit" name="submit" class="btn btn-success btn-md" value="Sort!">
+            <!-- form that submits the sorting data and a hidden field to identify which modal to open on reload-->
         </form>
         <a class="close btn" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
       </div>
-      <div class="modal-body"> 
+      <div class="modal-body">
       <div id="tutoring_subjects_checkbox_tutoring">
       <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
+          //check which sorting choice is choosen then disables the selected subjects and hids the ones that are not
             if($level == 0){
               ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
             }elseif($level == 1){
@@ -541,20 +551,20 @@ $tz = new DateTimeZone('NZ');
             }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutor_subjects) $all_available_subject_array[$i][4] = false; //If there are no subjects make sure the checkbox it unticked
-            if($all_available_subject_array[$i][4] == true) 
+            if($all_available_subject_array[$i][4] == true)
             {
               //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div></div>
               <div class="card-footer border border-danger border-5"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox' checked>   already selected" ?> </div> <?php
             } //Create a checked checkbox
-            else 
+            else
             {
               //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div></div>
               <div class="card-footer"> <?php echo "<input id=checkbox_tutor_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
-              } //Create an empty checkbox 
+              } //Create an empty checkbox
             ?></div></div>
             <?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
@@ -566,6 +576,7 @@ $tz = new DateTimeZone('NZ');
             ?>
       </div></div></div>
       <div class="modal-footer">
+        <!-- buttons the closes the modal and adds subjects -->
         <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
         <a id='tutor_save_subjects_btn' class="btn btn-primary">Add subjects</a>
       </div>
@@ -573,11 +584,14 @@ $tz = new DateTimeZone('NZ');
   </div>
 </div>
 
+  <!-- The modal for the adding subjects for the tutee -->
 <div class="modal fade" id="add_subject_tutee" tabindex="-1" role="dialog" aria-labelledby="add_subject_tutee" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        <!-- modal title & header -->
         <h5 class="modal-title" id="exampleModalLabel">Select subjects</h5>
+        <!-- The sorting dropdown box to sort the subjects in the modal -->
         <form action="info_setting.php" method="get">
             <label for="Level_tutee">Select level:</label>
             <select name="level_tutee" id="level_tutee">
@@ -588,6 +602,7 @@ $tz = new DateTimeZone('NZ');
                 <option value="2">Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4">Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php
 } elseif ($level_tutee == 1){
                  ?>
@@ -596,6 +611,7 @@ $tz = new DateTimeZone('NZ');
                 <option value="2">Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4">Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php
 } elseif($level_tutee == 2){
   ?>
@@ -604,6 +620,7 @@ $tz = new DateTimeZone('NZ');
                 <option value="2" selected>Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4">Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php
 } elseif($level_tutee == 3){
   ?>
@@ -612,6 +629,7 @@ $tz = new DateTimeZone('NZ');
                 <option value="2">Level 2</option>
                 <option value="3" selected>Level 3</option>
                 <option value="4">Non-NCEA</option>
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php
 } elseif($level_tutee == 4){
 ?>
@@ -620,11 +638,12 @@ $tz = new DateTimeZone('NZ');
                 <option value="2">Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4" selected>Non-NCEA</option>
-
+                <!-- options of the drop down box, with the currently selected one selected -->
 <?php } ?>
             </select>
             <input type="hidden" id="modal_sorting_id" name="modal_sorting_id" value="2">
             <input type="submit" name="submit" class="btn btn-success btn-md" value="Sort!">
+            <!-- form that submits the sorting data and a hidden field to identify which modal to open on reload-->
         </form>
         <a class="close btn" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -633,7 +652,7 @@ $tz = new DateTimeZone('NZ');
       <div class="modal-body">
       <div id="tutoring_subjects_checkbox_studying">
       <div class="row row-cols-1 row-cols-md-3">
-            <?php 
+            <?php
           for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
                  if($level_tutee == 0){
               ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
@@ -664,7 +683,7 @@ $tz = new DateTimeZone('NZ');
             }
             $checkbox_id = "checkbox_" . $checkbox_id_increment;//Set what the id of the checkbox should be
             if($no_tutee_subjects) $all_available_subject_array[$i][3] = false; //If there are no subjects make sure the checkbox it unticked
-            if($all_available_subject_array[$i][3] == true) 
+            if($all_available_subject_array[$i][3] == true)
             {
               //echo "<img class='subject_icon card-image-top img-fluid' src='sys_img\subject_icon.jpg' alt=''>";
               ?>
@@ -676,7 +695,7 @@ $tz = new DateTimeZone('NZ');
               ?>
               <div class="card-text"> <?php echo $all_available_subject_array[$i][1];?></div>
               <div class="card-footer"> <?php echo "<input id=checkbox_tutee_" . $all_available_subject_array[$i][1000] . " type='checkbox'>" ?> </div> <?php
-             } //Create an empty checkbox 
+             } //Create an empty checkbox
             ?></div></div></div><?php
             $checkbox_id_increment += 1; //Increment the checkbox id by 1
             }?>
@@ -684,6 +703,7 @@ $tz = new DateTimeZone('NZ');
         </div>
         </div>
       <div class="modal-footer">
+        <!-- buttons the closes the modal and adds subjects -->
         <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
         <a id='tutee_save_subjects_btn' class="btn btn-primary">Add subjects</a>
       </div>
@@ -691,10 +711,12 @@ $tz = new DateTimeZone('NZ');
   </div>
 </div>
 
+<!-- modal for removing subjects -->
 <div class="modal fade" id="remove_subject" tabindex="-1" role="dialog" aria-labelledby="remove_subject" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        <!-- modal header where you can close + title -->
         <h5 class="modal-title" id="exampleModalLabel">Remove Subject</h5>
         <a type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -702,10 +724,13 @@ $tz = new DateTimeZone('NZ');
       </div>
       <div class="modal-body">
         <h3>Are you sure you want to remove this subject?</h3>
+         <!-- modal body text -->
       </div>
       <div class="modal-footer">
         <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+        <!-- button to close the modal -->
         <form action="process.php" method="post">
+        <!-- form to send the information used to remove the subject, with the values being submitted via JavaScript -->
         <input type="hidden" id="user_id" name="user_id" value="<?php echo 'null'; ?>">
         <input type="hidden" id="subject_status" name="subject_status" value="<?php echo 'null'; ?>">
         <input type="hidden" id="is_global" name="is_global" value="<?php echo 'null'; ?>">
@@ -717,19 +742,22 @@ $tz = new DateTimeZone('NZ');
   </div>
 </div>
 <?php
-
+//checks if the modal sorting is set
 if (isset($_GET['modal_sorting_id'])){
+  //sets the variable
   $modal_sorting_id = $_GET['modal_sorting_id'];
   if ($modal_sorting_id == 1){
+    //if the tutor modal was the one that was sorted, open the tutor modal
     ?>
     <script>
     const add_subject_tutor = new bootstrap.Modal(document.getElementById('add_subject_tutor'))
     add_subject_tutor.show()
     </script>
-    
+
     <?php
     $modal_sorting_id = 0;
   }elseif ($modal_sorting_id == 2){
+    //if the tutee modal was the one that was sorted, open the tutee modal
     ?>
     <script>
     const add_subject_tutee = new bootstrap.Modal(document.getElementById('add_subject_tutee'))
@@ -741,27 +769,27 @@ if (isset($_GET['modal_sorting_id'])){
 }
 ?>
 <script>
-          const remove_subject = document.getElementById('remove_subject')
-          if (remove_subject) {
-            remove_subject.addEventListener('show.bs.modal', event => {
-            // Button that triggered the modal
-            const button = event.relatedTarget;
-            // Extract info from data-bs-* attributes
-            const user_id = button.getAttribute('data-user-id');
-            const is_global = button.getAttribute('data-is-global');
-            const subject_id = button.getAttribute('data-subject-id');
-            const subject_status = button.getAttribute('data-subject-status');
+const remove_subject = document.getElementById('remove_subject')
+if (remove_subject) {
+  remove_subject.addEventListener('show.bs.modal', event => {
+  // Button that triggered the modal
+  const button = event.relatedTarget;
+  // Extract info from data-bs-* attributes
+  const user_id = button.getAttribute('data-user-id');
+  const is_global = button.getAttribute('data-is-global');
+  const subject_id = button.getAttribute('data-subject-id');
+  const subject_status = button.getAttribute('data-subject-status');
+  //setting cookies as variables
+  document.cookie = "user_id=" + user_id;
+  document.cookie = "is_global=" + is_global;
+  document.cookie = "subject_id=" + subject_id;
+  document.cookie = "subject_status=" + subject_status;
+  //setting values for the form to be sent to the process page
+  document.getElementById("user_id").value = user_id;
+  document.getElementById("is_global").value = is_global;
+  document.getElementById("subject_id").value = subject_id;
+  document.getElementById("subject_status").value = subject_status;
 
-            document.cookie = "user_id=" + user_id;
-            document.cookie = "is_global=" + is_global;
-            document.cookie = "subject_id=" + subject_id;
-            document.cookie = "subject_status=" + subject_status;
-            
-            document.getElementById("user_id").value = user_id;
-            document.getElementById("is_global").value = is_global;
-            document.getElementById("subject_id").value = subject_id;
-            document.getElementById("subject_status").value = subject_status;
-            
           })
           }
 </script>
@@ -772,7 +800,7 @@ if (isset($_GET['modal_sorting_id'])){
   body{
     margin-top:20px;
     color: #1a202c;
-    text-align: left; 
+    text-align: left;
 }
 .main-body {
     padding: 15px;
@@ -843,10 +871,12 @@ button:hover {
 </style>
   </head>
   <body>
+    <!-- adding time to the calendar -->
     <div class="card mx-auto w-75">
     <form action='calendar_2.php' method='post'>
     <div class="card-body">
     <div class="form-group row">
+        <!-- adding the time -->
         <label for="start_time" class="col-sm-2 col-form-label"><b>Earliest Start time</b></label>
         <div class="col-sm-10">
         <input type="time" class="form-control" id="start_time" placeholder="Start time" name="start_time" required><br>
@@ -859,7 +889,7 @@ button:hover {
         <input type="time" class="form-control" id="end_time" placeholder="End time" name="end_time" required><br>
         </div>
         </div>
-
+        <!-- choosing the day for the time -->
         <fieldset class="form-group">
           <div class="row">
             <legend class="col-form-label col-sm-2 pt-0">Day of week</legend>
@@ -909,10 +939,11 @@ button:hover {
             </div>
           </div>
   </fieldset>
+        <!-- submitting the time to the database -->
         <input type="hidden" id="student_id" name="student_id" value="<?php echo $user_id ?>">
         <input type="submit">
     </div>
-    </form> 
+    </form>
     </div>
     </div>
 
@@ -932,27 +963,27 @@ button:hover {
           $potential_starttime = $potential_starttime_rough; //if so the times need no change
           $potential_endtime = $potential_endtime_rough;
 
-        } elseif (date('N') > $day_of_week){ //if it is different 
+        } elseif (date('N') > $day_of_week){ //if it is different
           $time_diff = date('N') - $day_of_week; //find the time difference
           $potential_starttime = $potential_starttime_rough - ($time_diff * 86400);//accounts for the diffence
           $potential_endtime = $potential_endtime_rough - ($time_diff * 86400);
 
         } elseif(date('N') < $day_of_week){//if it is different
-          $time_diff = $day_of_week - date('N'); //finds the time difference 
+          $time_diff = $day_of_week - date('N'); //finds the time difference
           $potential_starttime = $potential_starttime_rough + ($time_diff * 86400); //acounts for the difference
           $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
         }
         $card_id = $available_session_times_data[$i][4];
-  
+
         ?> <div class="col">   <div id=<?php echo $card_id; ?> class='card mx-auto border border-grey p-3' style="width: 15rem;"><?php
         echo (date("l h:i:s A", $potential_starttime) . "<br>");
         echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
         ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a></div></div>  <?php }?> </div>  <?php } ?>
 
-
+    <!-- opening the calendar -->
     <div id='calendar'></div>
     <div id='profile'></div>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
-
+    <script src="content.js"></script>
   </body>
 </html>

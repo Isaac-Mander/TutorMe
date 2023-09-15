@@ -779,11 +779,6 @@ if (remove_subject) {
   const is_global = button.getAttribute('data-is-global');
   const subject_id = button.getAttribute('data-subject-id');
   const subject_status = button.getAttribute('data-subject-status');
-  //setting cookies as variables
-  document.cookie = "user_id=" + user_id;
-  document.cookie = "is_global=" + is_global;
-  document.cookie = "subject_id=" + subject_id;
-  document.cookie = "subject_status=" + subject_status;
   //setting values for the form to be sent to the process page
   document.getElementById("user_id").value = user_id;
   document.getElementById("is_global").value = is_global;

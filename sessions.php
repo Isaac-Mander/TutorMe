@@ -61,6 +61,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 $hour = substr($session_combined_data[$i][2],11,2);
                 $minutes = substr($session_combined_data[$i][2],14,2);
                 $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+                //getting the time of the session as seconds from the first of january 1970
+                //if session is in the future
                 if ($time < $session_time) {
                 //looping through all of the lines of the array
                 $day = substr($session_combined_data[$i][1],0,10); //setting the day value
@@ -70,7 +72,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 $tutor = $session_combined_data[$i][6]; //setting tutor name
                 $subject = $session_combined_data[$i][8]; //setting subject name
                 $session_id = $session_combined_data[$i][0];
-
+                
+                //prints out the information on a card
                 ?><div class="col"> <div name="card" id="session_card" class='card' ><?php
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
@@ -131,6 +134,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $hour = substr($session_combined_data[$i][2],11,2);
         $minutes = substr($session_combined_data[$i][2],14,2);
         $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        //getting the time of the session as seconds from the first of january 1970
+        //if session is in the future
         if ($time < $session_time){
                           //looping through all of the lines of the array
               $day = substr($session_combined_data[$i][1],0,10); //setting the day value
@@ -163,15 +168,16 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 }
 
 ?>
+  <!-- The pop-up info that will show when a confirmed session is clicked. -->
   <div id="contact_detail_popup" class="contact_detail_popup">
     <div class="contact_detail_popup_content">
       <span class="contact_detail_close">&times;</span>
       <div id="contact_detail_content">
         <div class="row">
           <div class="col"></div>
-        <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
+        <!-- <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
         <p class="col text-center">And</p>
-        <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
+        <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt=""> -->
         </div>
         <h3>General info</h3>
         <p>Tutor name</p>
@@ -199,13 +205,12 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
       </div>
     </div>
   </div>
+  
+
 
 
 
   <?php
-  //THIS IS JUST THE PAST SESSION CODE COPY AND PASTED ==================================================================
-  //IT IS NOT BUG TESTED NOR CHECKED APART FROM A BASIC SCAN
-
 $check = 0;
 //Get the sessions this user is tutoring today
 $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";
@@ -221,7 +226,10 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
   } else {
     // Handle the case where one or both variables is not an array
     // For example:
-    $session_combined_data = array();};
+    $session_combined_data = array();
+    if(is_array($session_today_tutor_data)) {$session_combined_data = $session_today_tutor_data;}
+    if(is_array($session_today_tutee_data)) {$session_combined_data = $session_today_tutee_data;}
+  };
   if (is_array($session_combined_data)) { ?>
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
@@ -237,6 +245,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $hour = substr($session_combined_data[$i][2],11,2);
         $minutes = substr($session_combined_data[$i][2],14,2);
         $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        //getting the time of the session as seconds from the first of january 1970
+        //if session is in the past
         if ($time > $session_time){
               $check = 1;
               //looping through all of the lines of the array

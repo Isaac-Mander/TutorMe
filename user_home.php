@@ -52,7 +52,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     {
         echo "<div class='flex-row d-flex justify-content-centre pb-5'><div class='card mx-auto p-2'>";
         //Echo welcome text
-        echo "<h3>You are currently logged in as, ". $_SESSION['user'].", but you haven't finished setting up your account</h3>";
+        echo "<h3>You are currently logged in as : ". $_SESSION['user'].", but you haven't finished setting up your account</h3>";
         echo "<ul>";
         if($setup_errors[0] == true) {echo "<li>Select the times when you are available for tutoring</li>";}
         if($setup_errors[1] == true OR $setup_errors[2] == true) {echo "<li>Select your subjects (in both recieving and giving tutoring)</li>";}
@@ -65,7 +65,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
     else
     {
         echo "<div class='flex-row d-flex justify-content-centre pb-5'><div class='card mx-auto p-5'>";
-        echo "<h3>You are currently logged in as, ". $_SESSION['user']."</h3>";
+        echo "<h3>You are currently logged in as : ". $_SESSION['user']."</h3>";
         echo "</div></div>";
     }
     ?>

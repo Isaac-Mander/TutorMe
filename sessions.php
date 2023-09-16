@@ -144,6 +144,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
               $tutee =  $session_combined_data[$i][4]; //setting tutee name
               $tutor = $session_combined_data[$i][6]; //setting tutor name
               $subject = $session_combined_data[$i][8]; //setting subject name
+
         ?>   <div class="col" > <div name="card" id="session_card" class='card'><?php
         echo "<div class=row>" . "<p class=col>Tutor: </p><p class=col id=tutor>".$tutor."</p>" . "</div>";
         echo "<div class=row>" . "<p class=col>Tutee: </p><p class=col id=tutee>".$tutee."</p>" . "</div>";
@@ -168,45 +169,47 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 }
 
 ?>
-  <!-- The pop-up info that will show when a confirmed session is clicked. -->
-  <div id="contact_detail_popup" class="contact_detail_popup">
-    <div class="contact_detail_popup_content">
-      <span class="contact_detail_close">&times;</span>
-      <div id="contact_detail_content">
-        <div class="row">
-          <div class="col"></div>
-        <!-- <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
-        <p class="col text-center">And</p>
-        <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt=""> -->
-        </div>
-        <h3>General info</h3>
-        <p>Tutor name</p>
-        <p>Tutee name</p>
-        <p>Subject Name</p>
-        <p>Date</p>
-        <p>Start time</p>
-        <p>End time</p>
+  
+<div class="modal fade" id="contact_detail_popup_test" tabindex="-1" role="dialog" aria-labelledby="contact_detail_popup_test" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal header where you can close + title -->
+        <h5 class="modal-title" id="exampleModalLabel">General info</h5>
+        <a type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div id="contact_detail_content_test" class="modal-body">
+                <p>Tutor name</p>
+                <p>Tutee name</p>
+                <p>Subject Name</p>
+                <p>Date</p>
+                <p>Start time</p>
+                <p>End time</p>
 
-        <h3>Contact info</h3>
-        <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
-        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
+                <h3>Contact info</h3>
+                <p>Email/Phone number</p>
+                <p>Email/Phone number</p>
+                <p>Email/Phone number</p>
+                <p>Email/Phone number</p>
+      </div>
+      <div class="modal-footer">
+      <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
         <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
-        <div id=foo style="display:none">
-        Dear (Insert Name),
+          <div id=foo style="display:none">
+          Dear (Insert Name),
 
-        I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
+          I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
 
-        Sincerely (Your Name)
-        </div>
-
+          Sincerely (Your Name)
+          </div>
+        <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+        <!-- button to close the modal -->
       </div>
     </div>
   </div>
-  
-
+</div>
 
 
 

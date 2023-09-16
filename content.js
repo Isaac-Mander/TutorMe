@@ -408,27 +408,10 @@ if(document.getElementById("session_matching"))
 //If the sessions page is present
 if(document.getElementById("session_page_marker"))
 {
-    var contact_detail_content = document.getElementById("contact_detail_content");
+    var contact_detail_content = document.getElementById("contact_detail_content_test");
 
     // Get the modal
-    var contact_detail_modal = document.getElementById("contact_detail_popup");
-
-    // Get the <span> element that closes the modal
-    var contact_detail_span = document.getElementsByClassName("contact_detail_close")[0];
-
-
-
-    // When the user clicks on <span> (x), close the modal
-    contact_detail_span.onclick = function() {
-        contact_detail_modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == contact_detail_modal) {
-            contact_detail_modal.style.display = "none";
-        }
-    }
+    var contact_detail_modal = document.getElementById("contact_detail_popup_test");
 
     sesssion_cards = [];
     //Find all the elements with card as name
@@ -454,33 +437,34 @@ if(document.getElementById("session_page_marker"))
             
         
 
-
+            const contact_detail_popup_test = new bootstrap.Modal(document.getElementById('contact_detail_popup_test'))
+            contact_detail_popup_test.show()
 
             //Make the popup visible
-            contact_detail_modal.style.display = "block";
+            //contact_detail_modal.style.display = "block";
 
             //Set tutor name
-            contact_detail_content.children[2].innerHTML = "<b>Tutor:</b> "+tutor;
+            contact_detail_content.children[0].innerHTML = "<b>Tutor:</b> "+tutor;
             //Set tutee name
-            contact_detail_content.children[3].innerHTML = "<b>Tutee:</b> "+tutee;
+            contact_detail_content.children[1].innerHTML = "<b>Tutee:</b> "+tutee;
             //Set Subject name
-            contact_detail_content.children[4].innerHTML = "<b>Subject:</b> "+subject;
+            contact_detail_content.children[2].innerHTML = "<b>Subject:</b> "+subject;
             //Set date
-            contact_detail_content.children[5].innerHTML = "<b>Date:</b> "+date
+            contact_detail_content.children[3].innerHTML = "<b>Date:</b> "+date
             //Set Start time
-            contact_detail_content.children[6].innerHTML = "<b>Earliest start time:</b> "+starttime;
+            contact_detail_content.children[4].innerHTML = "<b>Earliest start time:</b> "+starttime;
             //Set End time
-            contact_detail_content.children[7].innerHTML = "<b>Latest end time:</b> "+endtime;
+            contact_detail_content.children[5].innerHTML = "<b>Latest end time:</b> "+endtime;
 
             //Set Contact Details
 
             //Tutor Contact
-            contact_detail_content.children[9].innerHTML = "<b>Tutor Email:</b> "+tutor_email;
-            contact_detail_content.children[10].innerHTML = "<b>Tutor Phone Num:</b> "+tutor_phone;
+            contact_detail_content.children[7].innerHTML = "<b>Tutor Email:</b> "+tutor_email;
+            contact_detail_content.children[8].innerHTML = "<b>Tutor Phone Num:</b> "+tutor_phone;
             
             //Tutor Contact
-            contact_detail_content.children[11].innerHTML = "<b>Tutee Email:</b> "+tutee_email;
-            contact_detail_content.children[12].innerHTML = "<b>Tutee Phone Num:</b> "+tutee_phone;
+            contact_detail_content.children[9].innerHTML = "<b>Tutee Email:</b> "+tutee_email;
+            contact_detail_content.children[10].innerHTML = "<b>Tutee Phone Num:</b> "+tutee_phone;
         }
     }
 }

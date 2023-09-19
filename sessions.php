@@ -12,6 +12,7 @@ $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 //Get the sessions this user is being tutored today
 $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
+
 ?>
 
 

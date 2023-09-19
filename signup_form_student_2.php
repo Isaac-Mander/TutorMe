@@ -153,7 +153,7 @@ if($error) $page += -1; //Stop progression if error with user input
 </head>
 <body>
   
-  <p><?php echo $error_msg; //can you make this a notification <______________________________________________________________________________________________________________>?></p>
+  <p><?php echo $error_msg; //can you make this a notification ?></p>
   <form method="post" action="signup_form_student_2.php">
     <input type="hidden" name="page" value=<?php echo $page + 1; ?> />
     <?php
@@ -276,7 +276,6 @@ if($error) $page += -1; //Stop progression if error with user input
       ';
     }
     ?>
-  <!-- <br><button type="submit">Send</button> -->
   </form>
 </body>
 

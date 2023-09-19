@@ -11,6 +11,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
 
 //Split the id into it constituent variables
 $raw_id = $_GET['id'];
+$user_id = $_SESSION['user_id'];
 //Scan through and find each info block split up by -
 $array_index = 0;
 $info_array = array();
@@ -36,13 +37,49 @@ $start_time = $info_array[4];
 $end_time = $info_array[5];
 $is_global = $info_array[6];
 $date = $info_array[7] ."-". $info_array[8] ."-". substr($info_array[9],0,2);
+$overlap = 0;
 
 $start_combined = $date . " " . $start_time;
 $end_combined = $date . " " . $end_time;
 
-
+include("sys_page/functions.php");
 include("sys_page/db_connect.php");
 
+
+$session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";
+$session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
+
+
+//Get the sessions this user is being tutored today
+$session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
+$session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
+
+if (is_array($session_today_tutor_data)){
+for($i=0; $i<sizeof($session_today_tutor_data); $i++){
+    if (($start_time > $session_today_tutor_data[$i][1]) && ($start_time < $session_today_tutor_data[$i][2])){
+        //there is overlap
+        $overlap = $overlap + 1;
+    }
+    if (($start_time < $session_today_tutor_data[$i][1]) && ($end_time >= $session_today_tutor_data[$i][1])){
+        //there is overlap
+        $overlap = $overlap + 1;
+    }
+}}
+
+if (is_array($session_today_tutee_data)){
+for($i=0; $i<sizeof($session_today_tutee_data); $i++){
+    if (($start_time > $session_today_tutee_data[$i][1]) && ($start_time < $session_today_tutee_data[$i][2])){
+        //there is overlap
+        $overlap = $overlap + 1;
+    }
+    if (($start_time < $session_today_tutee_data[$i][1]) && ($end_time >= $session_today_tutee_data[$i][1])){
+        //there is overlap
+        $overlap = $overlap + 1;
+    }
+}}
+
+
+if($overlap == 0){
 if($is_global)
 {
     $sql = "INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `session_start`, `session_end`, `global_subject_id`, `local_subject_id`, `is_active`) VALUES ('$tutee_id','$tutor_id','0','0','$start_combined','$end_combined','$subject_id','0','0')";
@@ -61,9 +98,10 @@ else
     echo "Error: " . $sql . "<br>" . $conn->error;
     $alert = 2;
 }
-
 $conn->close();
-
+}else{
+ $alert = 3;
+}
 header("Location: action.php?alert=" . $alert);
 
 ?>

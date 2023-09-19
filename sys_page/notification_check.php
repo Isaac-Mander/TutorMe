@@ -90,7 +90,6 @@ if ($result->num_rows > 0) {
 }
 else echo "nodata";
 if ($check ==1){
-    echo "nodata";
+    //echo "no data";
 }
-
 ?>

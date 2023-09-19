@@ -12,6 +12,7 @@ $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 //Get the sessions this user is being tutored today
 $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
+
 ?>
 
 
@@ -61,6 +62,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 $hour = substr($session_combined_data[$i][2],11,2);
                 $minutes = substr($session_combined_data[$i][2],14,2);
                 $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+                //getting the time of the session as seconds from the first of january 1970
+                //if session is in the future
                 if ($time < $session_time) {
                 //looping through all of the lines of the array
                 $day = substr($session_combined_data[$i][1],0,10); //setting the day value
@@ -70,8 +73,9 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 $tutor = $session_combined_data[$i][6]; //setting tutor name
                 $subject = $session_combined_data[$i][8]; //setting subject name
                 $session_id = $session_combined_data[$i][0];
-
-                ?>   <div class="col"> <div name="card" id="session_card" class='card' ><?php
+                
+                //prints out the information on a card
+                ?><div class="col"> <div name="card" id="session_card" class='card' ><?php
                 ?><h5 class="card-title" >Pending</h5>
                 <p class="card-text"><?php echo $tutor." tutoring ".$tutee." in ".$subject  ?></p>
                 <p class="card-text"><?php echo $day?></p>
@@ -131,6 +135,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $hour = substr($session_combined_data[$i][2],11,2);
         $minutes = substr($session_combined_data[$i][2],14,2);
         $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        //getting the time of the session as seconds from the first of january 1970
+        //if session is in the future
         if ($time < $session_time){
                           //looping through all of the lines of the array
               $day = substr($session_combined_data[$i][1],0,10); //setting the day value
@@ -139,6 +145,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
               $tutee =  $session_combined_data[$i][4]; //setting tutee name
               $tutor = $session_combined_data[$i][6]; //setting tutor name
               $subject = $session_combined_data[$i][8]; //setting subject name
+
         ?>   <div class="col" > <div name="card" id="session_card" class='card'><?php
         echo "<div class=row>" . "<p class=col>Tutor: </p><p class=col id=tutor>".$tutor."</p>" . "</div>";
         echo "<div class=row>" . "<p class=col>Tutee: </p><p class=col id=tutee>".$tutee."</p>" . "</div>";
@@ -163,49 +170,51 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
 }
 
 ?>
-  <div id="contact_detail_popup" class="contact_detail_popup">
-    <div class="contact_detail_popup_content">
-      <span class="contact_detail_close">&times;</span>
-      <div id="contact_detail_content">
-        <div class="row">
-          <div class="col"></div>
-        <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
-        <p class="col text-center">And</p>
-        <img class="rounded-circle img-fluid w-25 col" src="sys_img/dev_icon.jpg" alt="">
-        </div>
-        <h3>General info</h3>
-        <p>Tutor name</p>
-        <p>Tutee name</p>
-        <p>Subject Name</p>
-        <p>Date</p>
-        <p>Start time</p>
-        <p>End time</p>
+  
+<div class="modal fade" id="contact_detail_popup_test" tabindex="-1" role="dialog" aria-labelledby="contact_detail_popup_test" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal header where you can close + title -->
+        <h5 class="modal-title" id="exampleModalLabel">General info</h5>
+        <a type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div id="contact_detail_content_test" class="modal-body">
+                <p>Tutor name</p>
+                <p>Tutee name</p>
+                <p>Subject Name</p>
+                <p>Date</p>
+                <p>Start time</p>
+                <p>End time</p>
 
-        <h3>Contact info</h3>
-        <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
-        <p>Email/Phone number</p>
-        <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
+                <h3>Contact info</h3>
+                <p>Email/Phone number</p>
+                <p>Email/Phone number</p>
+                <p>Email/Phone number</p>
+                <p>Email/Phone number</p>
+      </div>
+      <div class="modal-footer">
+      <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
         <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
-        <div id=foo style="display:none">
-        Dear (Insert Name),
+          <div id=foo style="display:none">
+          Dear (Insert Name),
 
-        I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
+          I am contacting you to talk about organising a place for the tutoring program that has been agreed upon. Would you be able to go to (Place 1) or (Place 2)? And what times are you able to be there between (start time) and (End time)? If not do you have any suggestions?
 
-        Sincerely (Your Name)
-        </div>
-
+          Sincerely (Your Name)
+          </div>
+        <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+        <!-- button to close the modal -->
       </div>
     </div>
   </div>
+</div>
 
 
 
   <?php
-  //THIS IS JUST THE PAST SESSION CODE COPY AND PASTED ==================================================================
-  //IT IS NOT BUG TESTED NOR CHECKED APART FROM A BASIC SCAN
-
 $check = 0;
 //Get the sessions this user is tutoring today
 $session_today_tutor_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutor_id=6969_students.id WHERE 6969_students.id=$user_id";
@@ -221,7 +230,10 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
   } else {
     // Handle the case where one or both variables is not an array
     // For example:
-    $session_combined_data = array();};
+    $session_combined_data = array();
+    if(is_array($session_today_tutor_data)) {$session_combined_data = $session_today_tutor_data;}
+    if(is_array($session_today_tutee_data)) {$session_combined_data = $session_today_tutee_data;}
+  };
   if (is_array($session_combined_data)) { ?>
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
@@ -237,6 +249,8 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $hour = substr($session_combined_data[$i][2],11,2);
         $minutes = substr($session_combined_data[$i][2],14,2);
         $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        //getting the time of the session as seconds from the first of january 1970
+        //if session is in the past
         if ($time > $session_time){
               $check = 1;
               //looping through all of the lines of the array

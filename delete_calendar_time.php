@@ -24,5 +24,5 @@ $conn->close();
 
 
 //Redirect user back to the calendar page
-header("Location: calendar_1.php");
+header("Location: info_setting.php");
 ?>

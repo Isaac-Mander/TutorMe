@@ -229,6 +229,7 @@ if(document.getElementById("notification_bell"))
                     //Check if any data was returned
                     if(this.responseText != "nodata")
                     {
+                        console.log("Response text:", this.responseText);
                         // Converting JSON-encoded string to JS object
                         var notif_data = JSON.parse(this.responseText);
                         //Set the number of notifications to the length of the parsed array
@@ -312,29 +313,6 @@ if(document.getElementById("session_matching"))
 
     // Get the modal
     var modal_session_match = document.getElementById("session_accept_popup");
-
-    // Get the button that opens the modal
-
-    // Get the <span> element that closes the modal
-    var span_session = document.getElementsByClassName("close_session_match")[0];
-
-    var session_match_close_button = document.getElementById("session_match_close");
-
-    // When the user clicks on <span> (x), close the modal
-    span_session.onclick = function() {
-        modal_session_match.style.display = "none";
-    }
-
-    session_match_close_button.onclick = function() {
-        modal_session_match.style.display = "none";
-    }
-    
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal_session_match) {
-            modal_session_match.style.display = "none";
-        }
-    }
     //Get the cards on the page
     pot_sesssion_cards = [];
     //A card has an id formatted as
@@ -347,7 +325,10 @@ if(document.getElementById("session_matching"))
     
     for(var i = 0; i < pot_sesssion_cards.length; i++){
         pot_sesssion_cards[i].onclick = function() {
-            modal_session_match.style.display = "block";
+            const session_accept_popup_test = new bootstrap.Modal(document.getElementById('session_popup_test'))
+            session_accept_popup_test.show()
+
+            //modal_session_match.style.display = "block";
             modal_session_match.children[0].children[0].innerHTML = this.children[0].children[0].innerHTML;
             modal_session_match.children[0].children[1].innerHTML = this.children[0].children[3].innerHTML;
             modal_session_match.children[0].children[2].innerHTML = this.children[0].children[4].innerHTML;
@@ -376,7 +357,7 @@ if(document.getElementById("session_matching"))
                     option.id = potential_date.getFullYear() + "-" + (potential_date.getMonth()+1) + "-" + potential_date.getDate() + " " + (potential_date.getHours()+1) + ":" + (potential_date.getMinutes()+1) + ":" + (potential_date.getSeconds()+1) + ":" + "000000";
                     dropdown_date.appendChild(option);
                     option.onclick = function() {
-                        modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + this.id;         
+                        modal_session_match.children[1].children[0].href="tutor_accept.php?id=" + id_part_1 + "-" + this.id;         
                     }
                 }
             }
@@ -398,9 +379,15 @@ if(document.getElementById("session_matching"))
             
             modal_session_match.children[0].children[3].innerHTML = "Max Session Length: " + final_time;
 
+            dropdown_date.onclick = function() {
+                var options = dropdown_date.options;
+                var id      = options[options.selectedIndex].id;
+                modal_session_match.children[1].children[0].href="tutor_accept.php?id=" + id_part_1 + "-" + id;
+            }
 
+            console.log("tutor_accept.php?id=" + id_part_1 + "-" + id)
             //Set the id of the session card as a value to send if submit is pressed
-            modal_session_match.children[0].children[6].href="tutor_accept.php?id=" + id_part_1 + "-" + id;
+            modal_session_match.children[1].children[0].href="tutor_accept.php?id=" + id_part_1 + "-" + id;
         }
     }
 }
@@ -408,27 +395,10 @@ if(document.getElementById("session_matching"))
 //If the sessions page is present
 if(document.getElementById("session_page_marker"))
 {
-    var contact_detail_content = document.getElementById("contact_detail_content");
+    var contact_detail_content = document.getElementById("contact_detail_content_test");
 
     // Get the modal
-    var contact_detail_modal = document.getElementById("contact_detail_popup");
-
-    // Get the <span> element that closes the modal
-    var contact_detail_span = document.getElementsByClassName("contact_detail_close")[0];
-
-
-
-    // When the user clicks on <span> (x), close the modal
-    contact_detail_span.onclick = function() {
-        contact_detail_modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == contact_detail_modal) {
-            contact_detail_modal.style.display = "none";
-        }
-    }
+    var contact_detail_modal = document.getElementById("contact_detail_popup_test");
 
     sesssion_cards = [];
     //Find all the elements with card as name
@@ -451,36 +421,31 @@ if(document.getElementById("session_page_marker"))
             var tutee_email = this.children[8].innerHTML;
             var tutee_phone = this.children[9].innerHTML;
 
-            
-        
-
-
-
-            //Make the popup visible
-            contact_detail_modal.style.display = "block";
+            const contact_detail_popup_test = new bootstrap.Modal(document.getElementById('contact_detail_popup_test'))
+            contact_detail_popup_test.show()
 
             //Set tutor name
-            contact_detail_content.children[2].innerHTML = "<b>Tutor:</b> "+tutor;
+            contact_detail_content.children[0].innerHTML = "<b>Tutor:</b> "+tutor;
             //Set tutee name
-            contact_detail_content.children[3].innerHTML = "<b>Tutee:</b> "+tutee;
+            contact_detail_content.children[1].innerHTML = "<b>Tutee:</b> "+tutee;
             //Set Subject name
-            contact_detail_content.children[4].innerHTML = "<b>Subject:</b> "+subject;
+            contact_detail_content.children[2].innerHTML = "<b>Subject:</b> "+subject;
             //Set date
-            contact_detail_content.children[5].innerHTML = "<b>Date:</b> "+date
+            contact_detail_content.children[3].innerHTML = "<b>Date:</b> "+date
             //Set Start time
-            contact_detail_content.children[6].innerHTML = "<b>Earliest start time:</b> "+starttime;
+            contact_detail_content.children[4].innerHTML = "<b>Earliest start time:</b> "+starttime;
             //Set End time
-            contact_detail_content.children[7].innerHTML = "<b>Latest end time:</b> "+endtime;
+            contact_detail_content.children[5].innerHTML = "<b>Latest end time:</b> "+endtime;
 
             //Set Contact Details
 
             //Tutor Contact
-            contact_detail_content.children[9].innerHTML = "<b>Tutor Email:</b> "+tutor_email;
-            contact_detail_content.children[10].innerHTML = "<b>Tutor Phone Num:</b> "+tutor_phone;
+            contact_detail_content.children[7].innerHTML = "<b>Tutor Email:</b> "+tutor_email;
+            contact_detail_content.children[8].innerHTML = "<b>Tutor Phone Num:</b> "+tutor_phone;
             
             //Tutor Contact
-            contact_detail_content.children[11].innerHTML = "<b>Tutee Email:</b> "+tutee_email;
-            contact_detail_content.children[12].innerHTML = "<b>Tutee Phone Num:</b> "+tutee_phone;
+            contact_detail_content.children[9].innerHTML = "<b>Tutee Email:</b> "+tutee_email;
+            contact_detail_content.children[10].innerHTML = "<b>Tutee Phone Num:</b> "+tutee_phone;
         }
     }
 }

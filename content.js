@@ -229,6 +229,7 @@ if(document.getElementById("notification_bell"))
                     //Check if any data was returned
                     if(this.responseText != "nodata")
                     {
+                        console.log("Response text:", this.responseText);
                         // Converting JSON-encoded string to JS object
                         var notif_data = JSON.parse(this.responseText);
                         //Set the number of notifications to the length of the parsed array

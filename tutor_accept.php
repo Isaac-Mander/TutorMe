@@ -54,38 +54,31 @@ $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 
+if (is_array($session_today_tutor_data)){
 for($i=0; $i<sizeof($session_today_tutor_data); $i++){
-    if (($start_time > $session_today_tutor_data[$i][1]) && ($start_time >= $session_today_tutor_data[$i][2])){
-        //there is no overlap
-    }
     if (($start_time > $session_today_tutor_data[$i][1]) && ($start_time < $session_today_tutor_data[$i][2])){
         //there is overlap
         $overlap = $overlap + 1;
-    }
-    if (($start_time < $session_today_tutor_data[$i][1]) && ($end_time < $session_today_tutor_data[$i][1])){
-        //there is no overlap
     }
     if (($start_time < $session_today_tutor_data[$i][1]) && ($end_time >= $session_today_tutor_data[$i][1])){
         //there is overlap
         $overlap = $overlap + 1;
     }
-}
+}}
+
+if (is_array($session_today_tutee_data)){
 for($i=0; $i<sizeof($session_today_tutee_data); $i++){
-    if (($start_time > $session_today_tutee_data[$i][1]) && ($start_time >= $session_today_tutee_data[$i][2])){
-        //there is no overlap
-    }
     if (($start_time > $session_today_tutee_data[$i][1]) && ($start_time < $session_today_tutee_data[$i][2])){
         //there is overlap
         $overlap = $overlap + 1;
-    }
-    if (($start_time < $session_today_tutee_data[$i][1]) && ($end_time < $session_today_tutee_data[$i][1])){
-        //there is no overlap
     }
     if (($start_time < $session_today_tutee_data[$i][1]) && ($end_time >= $session_today_tutee_data[$i][1])){
         //there is overlap
         $overlap = $overlap + 1;
     }
-}
+}}
+
+
 if($overlap == 0){
 if($is_global)
 {

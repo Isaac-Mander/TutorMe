@@ -309,7 +309,14 @@ function grab_events($conn,$id)
     } else {
       // Handle the case where one or both variables is not an array
       // For example:
-      $session_combined_data = array();};
+      if (is_array($session_today_tutor_data)){
+        $session_combined_data = $session_today_tutor_data;
+      }elseif (is_array($session_today_tutee_data)){
+        $session_combined_data = $session_today_tutee_data;
+      }else{
+        $session_combined_data = array();
+      }
+      };
     if (is_array($session_combined_data)) {
       for($i=0; $i<sizeof($session_combined_data); $i++){
         //looping through all of the lines of the array
@@ -337,11 +344,11 @@ function grab_events($conn,$id)
         return $all_events;
         //merging the arrays to be input into the calendar api
       }else {
-        return '(」゜ロ゜)」';
+        return 'There are no events';
       }
     } else {
       // Assign an array value to $session_today_tutor_data
-      return '(」゜ロ゜)」';
+      return 'there are no events';
     }
 }
 

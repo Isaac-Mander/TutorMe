@@ -22,6 +22,7 @@ $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sessions</title>
+    <!-- linking to bootstrap and the style sheet -->
     <link rel="stylesheet" href="sys_page/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
@@ -35,6 +36,7 @@ $time_year = $dt->format('Y'); // output: '2023'
 $time_hours = $dt->format('H'); // output: '2023'
 $time_minutes = $dt->format('i'); // output: '2023'
 $time = mktime($time_hours,$time_minutes,0,$time_month,$time_day,$time_year);
+//getting the current time since january 1970 in seconds
 
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
     $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
@@ -100,6 +102,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 //Check if the current user is a tutee, if so add an accept button
                 if($session_combined_data[$i][3] == $user_id)
                 {
+                  //the buttons for the user to accept or reject the pending sessions
                   echo "
                     <div class='col'><a href='a_or_r_session.php?action=1&id=$session_id&page=action.php'><button id='accept' value='$session_id'>Accept</button></a></div>
                     <div class='col'><a href='a_or_r_session.php?action=2&id=$session_id&page=action.php'><button id='reject' value='$session_id'>Reject</button></a></div>
@@ -118,9 +121,11 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
               }
               }
         }if ($check == 0){
+          //a message so that the user knows what is happening
           ?><div class="col"><div class="card"><h3>There are no pending sessions</h3></div></div><?php
         }     ?> </div></div></div>
 
+    <!-- the element for the confirmed sessions -->
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
             <h3 class="col text-center py-1 m-0">Confirmed sessions (click to contact other user)</h3>
@@ -135,17 +140,20 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $hour = substr($session_combined_data[$i][2],11,2);
         $minutes = substr($session_combined_data[$i][2],14,2);
         $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        //setting the times from the confirmed sessions
         //getting the time of the session as seconds from the first of january 1970
+
         //if session is in the future
         if ($time < $session_time){
-                          //looping through all of the lines of the array
-              $day = substr($session_combined_data[$i][1],0,10); //setting the day value
-              $starttime = substr($session_combined_data[$i][1],11,8); //setting the start time
-              $endtime = substr($session_combined_data[$i][2],11,8); //setting the end time
-              $tutee =  $session_combined_data[$i][4]; //setting tutee name
-              $tutor = $session_combined_data[$i][6]; //setting tutor name
-              $subject = $session_combined_data[$i][8]; //setting subject name
+          //looping through all of the lines of the array
+            $day = substr($session_combined_data[$i][1],0,10); //setting the day value
+            $starttime = substr($session_combined_data[$i][1],11,8); //setting the start time
+            $endtime = substr($session_combined_data[$i][2],11,8); //setting the end time
+            $tutee =  $session_combined_data[$i][4]; //setting tutee name
+            $tutor = $session_combined_data[$i][6]; //setting tutor name
+            $subject = $session_combined_data[$i][8]; //setting subject name
 
+        //printing out a card with all of the information needed for the confirmed sessions
         ?>   <div class="col" > <div name="card" id="session_card" class='card'><?php
         echo "<div class=row>" . "<p class=col>Tutor: </p><p class=col id=tutor>".$tutor."</p>" . "</div>";
         echo "<div class=row>" . "<p class=col>Tutee: </p><p class=col id=tutee>".$tutee."</p>" . "</div>";
@@ -162,15 +170,17 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         }
       }
     }if ($check == 0){
+      //message for the user so that they know what is happening
       ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
     } elseif ($check ==1){
+      //message for the user so that they know what is happening
       ?><div class="col"><div class="card"><h3>There are no confirmed sessions</h3></div></div><?php
     }
     ?> </div></div><?php
 }
 
 ?>
-  
+<!-- this is the modal for the user to get the contact details for the confirmed sessions -->
 <div class="modal fade" id="contact_detail_popup_test" tabindex="-1" role="dialog" aria-labelledby="contact_detail_popup_test" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -181,6 +191,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
           <span aria-hidden="true">&times;</span>
         </a>
       </div>
+      <!-- the main content of the modal which will be changed via JavaScript to have the right data -->
       <div id="contact_detail_content_test" class="modal-body">
                 <p>Tutor name</p>
                 <p>Tutee name</p>
@@ -196,6 +207,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
                 <p>Email/Phone number</p>
       </div>
       <div class="modal-footer">
+      <!-- the button that copys an emailing guide to the clip board, the hidden emailing guide and the link to the visible version -->
       <p><button onclick="copyToClip(document.getElementById('foo').innerHTML)">Click to copy email template</button></p>
         <p><a href="../TutorMe/contact.php">Emailing Guide</a></p>
           <div id=foo style="display:none">
@@ -225,6 +237,7 @@ $session_today_tutor_data = get_session_data($session_today_tutor_sql,$conn);
 $session_today_tutee_sql = "SELECT * FROM 6969_students INNER JOIN 6969_tutor_session ON 6969_tutor_session.tutee_id=6969_students.id WHERE 6969_students.id=$user_id";
 $session_today_tutee_data = get_session_data($session_today_tutee_sql,$conn);
 
+//when they are both arrays they are merged
 if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) {
     $session_combined_data = array_merge($session_today_tutor_data, $session_today_tutee_data);
   } else {
@@ -234,6 +247,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
     if(is_array($session_today_tutor_data)) {$session_combined_data = $session_today_tutor_data;}
     if(is_array($session_today_tutee_data)) {$session_combined_data = $session_today_tutee_data;}
   };
+  //when there is a merged array
   if (is_array($session_combined_data)) { ?>
     <div class="upcoming_week_sessions container text-center border border-2 border-dark extra_rounded mt-4">
         <div class="row">
@@ -249,6 +263,7 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
         $hour = substr($session_combined_data[$i][2],11,2);
         $minutes = substr($session_combined_data[$i][2],14,2);
         $session_time = mktime($hour,$minutes,0,$month,$day,$year);
+        //setting the times from the confirmed sessions
         //getting the time of the session as seconds from the first of january 1970
         //if session is in the past
         if ($time > $session_time){
@@ -262,23 +277,28 @@ if (is_array($session_today_tutor_data) && is_array($session_today_tutee_data)) 
               $subject = $session_combined_data[$i][8]; //setting subject name
 
               $session_id = $session_combined_data[$i][0];
+
+        //printing out all of the past sessions with all of the information needed to identify them.
         ?>   <a href="<?php echo 'feedback.php?session_id=' . $session_id; ?>"><div class="col" > <div id="session_card" class='card'><?php
         echo ($tutor." tutoring ".$tutee."<br>"."Subject: ".$subject."<br>".$day."<br>"."Start time: ".$starttime . "<br>"."End time: ".$endtime);?> </div> </div>  <?php
         $check=3;
         }
       }
     }if ($check == 0){
+      //a message for the users so they know what's happening
       ?><div class="col"><div class="card"><h3>There have been no confirmed sessions</h3></div></div><?php
     } elseif ($check ==1){
+      //a message for the users so they know what's happening
       ?><div class="col"><div class="card"><h3>There have been no confirmed sessions</h3></div></div><?php
     } elseif ($check ==2){
+      //a message for the users so they know what's happening
       ?><div class="col"><div class="card"><h3>There have been no confirmed sessions</h3></div></div><?php
     }
     ?> </div></div></a><?php
 }
 ?>
+    <!-- a div tag marker and linking to the javascript library -->
     <div id="session_page_marker"></div>
-    <link rel="stylesheet" href="sys_page/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   </body>
 </html>

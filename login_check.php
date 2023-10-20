@@ -30,7 +30,8 @@ if ($result->num_rows > 0) { //If the number of rows are not zero
         header("Location: user_home.php");
     }
     else
-    {
+    {   
+        //if the password didn't fit
         echo "Username or password is incorrect";
         header("Location: login_form.php?error=Inccorect login details");
     }

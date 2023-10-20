@@ -26,16 +26,18 @@ if(isset($_GET['action']) && isset($_GET['id']) && isset($_GET['page']))
     //Accept session
     if($action == "1")
     {
+        //sets the sql to update the session to make it so that it's active
         $sql = "UPDATE `6969_tutor_session` SET `is_active`='1' WHERE `id`=$id";
         $alert_state = "3";
     }
     //Reject session
     else if($action == "2")
     {
+        //sets the sql to delete the potential session from the database
         $sql = "DELETE FROM `6969_tutor_session` WHERE `id`=$id";
         $alert_state = "4";
     }
-
+    //if the query works echo the successful message, if it doesn't echo the error.
     if ($conn->query($sql) === TRUE) {
         echo "Record altered successfully";
       } else {
@@ -43,9 +45,10 @@ if(isset($_GET['action']) && isset($_GET['id']) && isset($_GET['page']))
         $alert_state = "2";
       }
     $conn->close();
+    //redirect back to the page with the alert set
     header("Location: " . $page . "?alert=$alert_state");
 }
-
+//if the right variables are not set this error message is echoed.
 else
 {
     echo "error, get variables were not set";

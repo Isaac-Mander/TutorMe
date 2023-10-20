@@ -14,6 +14,7 @@ $id_to_del = $_GET['id'];
 //Delete id from free times table
 $sql = "DELETE FROM 6969_student_times WHERE `6969_student_times`.`id` = $id_to_del";
 
+//the code for running the query and echoing out an error if it doesn't work
 if ($conn->query($sql) === TRUE) {
   echo "Worked";
 } else {

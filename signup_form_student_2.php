@@ -25,7 +25,6 @@ if($page == 2) {ini_set('display_errors', 0 );}
 else {ini_set('display_errors', 1);}
 
 
-echo "<br>";
 //If first page add the user credentials to the holding database during setup
 if($page == 1)
 {
@@ -51,7 +50,9 @@ if($page == 1)
         if ($conn->query($sql) === TRUE) {
           //echo "New record created successfully in holding login table";
         } else {
-          echo "Error: " . $sql . "<br>" . $conn->error;
+          ?>
+          <script>alert("<?php echo 'Error: ' . $sql . '<br>' . $conn->error; ?>")</script>
+          <?php
         }
       }
   }
@@ -123,13 +124,17 @@ if($page == 2)
 
     //If insertion was successful redirect to login page
     if ($conn->query($sql) === TRUE) {
-      echo "New record created successfully in " . $table;
+      ?>
+      <script>alert("<?php echo 'New record created successfully in ' . $table; ?>")</script>
+      <?php
       //Clear session
       session_reset();
       header("Location: login_form.php"); //Send to the shadow realm (login screen)
       
     } else {
-      echo "Error: " . $sql . "<br>" . $conn->error;
+      ?>
+      <script>alert("<?php echo 'Error: ' . $sql . '<br>' . $conn->error; ?>")</script>
+      <?php
     }
   }
 }
@@ -152,17 +157,21 @@ if($error) $page += -1; //Stop progression if error with user input
     <title>Signup</title>
 </head>
 <body>
-  
-  <p><?php echo $error_msg; //can you make this a notification ?></p>
+  <?php if(isset($error_msg)){?>
+    <script> alert("<?php echo $error_msg; ?>")</script>
+    <?php}
+  ?>
   <form method="post" action="signup_form_student_2.php">
     <input type="hidden" name="page" value=<?php echo $page + 1; ?> />
     <?php
     //TO EDIT THESE JUST COPY AND PASTE THE HTML TO GET THE SYNTAX RIGHT
     //Page 1
+    //the code below is the html elements for the sign up forms, with the user having to input their email and password which is checked
+    //then setting their username, name and school, this is all formated with bootstrap and css
     if($page == 0)
     {
       echo ' 
-      <section class="h-500 h-custom" style="background-color: #8fc4b7;">
+      <section class="h-500" style="background-color: #8fc4b7; padding-top: 10rem;">
       <div class="container py-5 h-300">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-lg-8 col-xl-6">
@@ -200,6 +209,7 @@ if($error) $page += -1; //Stop progression if error with user input
   }
   body {
     overflow: hidden;
+    background-color: #8fc4b7;
   }
   </style>  
       ';
@@ -209,7 +219,7 @@ if($error) $page += -1; //Stop progression if error with user input
     if($page == 1)
     {
       echo '
-      <section class="h-500 h-custom" style="background-color: #8fc4b7;">
+      <section class="h-500 h-custom" style="background-color: #8fc4b7; padding-top: 5rem;">
         <div class="container py-5 h-300">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-lg-8 col-xl-6">
@@ -271,6 +281,7 @@ if($error) $page += -1; //Stop progression if error with user input
     }
     body {
       overflow: hidden;
+      background-color: #8fc4b7;
     }
     </style>
       ';

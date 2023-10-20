@@ -1,4 +1,33 @@
 <?php
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+
 //Check if user is logged in
 session_start();
 if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in redirect to login page
@@ -14,19 +43,11 @@ $school_code = $_SESSION['school_code'];
 include("sys_page/header.html");
 include("sys_page/db_connect.php");
 include("sys_page/functions.php");
-
-$tz = new DateTimeZone('NZ');
-  $dt = new DateTime('now',$tz);
-  $time_day = $dt->format('d'); // output: '1' - '31'
-  $time_month = $dt->format('m'); // output: '1' - '12'cc
-  $time_year = $dt->format('Y'); // output: '2023'
-  $time_hour = $dt ->format('h');// output: '09'
-  $time_minute = $dt ->format('i');// out: ':46'
-  $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
-  $date =  $time_year . "-" . $time_month . "-" . $time_day;
-  
-  //calling the events function, and setting the events?>
-  
+?>
+<!-- links to the bootstrap and JavaScript tables -->
+<script src="content.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    
 <!doctype html>
 <html lang="en">
   <head>
@@ -41,8 +62,8 @@ $tz = new DateTimeZone('NZ');
     $time_year = $dt->format('Y'); // output: '2023'
     $time_hour = $dt ->format('h');// output: '09'
     $time_minute = $dt ->format('i');// out: ':46'
-    $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
-    $date =  $time_year . "-" . $time_month . "-" . $time_day;
+    $date =  $time_year . "-" . $time_month . "-" . $time_day; //setting the day for the calendar to use.
+
 
     $events = grab_events($conn,$user_id);
 
@@ -104,16 +125,19 @@ $tz = new DateTimeZone('NZ');
 </style>
   </head>
   <body>
+    <!-- this is used to set up the different potential times for the user, and will be posted to calendar_2 page which will process it-->
     <div class="card mx-auto w-75">
     <form action='calendar_2.php' method='post'>
     <div class="card-body">
     <div class="form-group row">
+        <!-- input type time field to enter the start time for a potential time -->
         <label for="start_time" class="col-sm-2 col-form-label"><b>Start time</b></label>
         <div class="col-sm-10">
         <input type="time" class="form-control" id="start_time" placeholder="Start time" name="start_time" required><br>
         </div>
         </div>
 
+        <!-- input type time field to enter the end time for a potential time -->
         <div class="form-group row">
         <label for="end_time" class="col-sm-2 col-form-label"><b>End time</b></label>
         <div class="col-sm-10">
@@ -121,47 +145,55 @@ $tz = new DateTimeZone('NZ');
         </div>
         </div>
 
+        <!-- the input field for the user to input the day of the week this free time is on -->
         <fieldset class="form-group">
           <div class="row">
             <legend class="col-form-label col-sm-2 pt-0">Day of week</legend>
             <div class="col-sm-10">
               <div class="form-check">
+                <!-- input for monday, setting the day of week value to 1 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week1" value=1>
                 <label class="form-check-label" for="gridRadios1">
                   Monday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for tuesday, setting the day of week value to 2 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week2" value=2>
                 <label class="form-check-label" for="gridRadios2">
                   Tuesday
                 </label>
               </div>
-              <div class="form-check disabled">
+              <div class="form-check">
+                <!-- input for wednesday, setting the day of week value to 3 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week3" value=3>
                 <label class="form-check-label" for="gridRadios3">
                   Wednesday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for thursday, setting the day of week value to 4 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week4" value=4>
                 <label class="form-check-label" for="gridRadios4">
                   Thursday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for friday, setting the day of week value to 5 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week5" value=5>
                 <label class="form-check-label" for="gridRadios5">
                   Friday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for saturday, setting the day of week value to 6 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week6" value=6>
                 <label class="form-check-label" for="gridRadios6">
                   Saturday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for sunday, setting the day of week value to 7 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week7" value=7>
                 <label class="form-check-label" for="gridRadios7">
                   Sunday
@@ -170,6 +202,8 @@ $tz = new DateTimeZone('NZ');
             </div>
           </div>
   </fieldset>
+        <!-- hidden input field because the form needs to have the student id to process the data -->
+        <!-- this allows the form to send through the id without allowing the user to tamper with it and potentially cause an error -->
         <input type="hidden" id="student_id" name="student_id" value="<?php echo $user_id ?>">
         <input type="submit">
     </div>
@@ -178,6 +212,7 @@ $tz = new DateTimeZone('NZ');
     </div>
 
     <?php
+    //if there are potential sessions set
     if (is_array($available_session_times_data)) {
       //if is array
       for($i=0; $i<sizeof($available_session_times_data); $i++){
@@ -210,19 +245,16 @@ $tz = new DateTimeZone('NZ');
           $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
         }
 
-
+        //setting the card id
         $card_id = $available_session_times_data[$i][4];
-  
+        //prints out the cards with the details of the potential times
         ?>    <div id=<?php echo $card_id; ?> class='card mx-auto' style="width: 35rem;"><?php
         echo ($name."<br>".date("l h:i:s A", $potential_starttime) . "<br>");
         echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
-        ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a>     </div>   <?php      }
+        ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a>     </div>   <?php //the removal link to remove the potential session times     }
     }?>
 
-
+    <!-- the div tag to call the calendar-->
     <div id='calendar'></div>
-    <script src="content.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    
   </body>
 </html>

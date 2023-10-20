@@ -43,7 +43,7 @@ else
     {
       $subject_delete_sql = "DELETE FROM `6969_subjects_tutor` WHERE `tutor_id`='$user_id';";
     }
-    
+    //if it works echo 0, if it doesn't echo out the error
     if ($conn->query($subject_delete_sql) === TRUE) {
       echo "0";
     } else {
@@ -56,6 +56,7 @@ else
       {
         if($real_subject_string[$x] == "1")
         {
+          //if the cases are satisfied insert into the tutee subjects, if it works echo 0, if it doesn't echo out the error
           $subject_id = $subjects_to_check[$x][2];  
           $global_state = $subjects_to_check[$x][0];
           if($global_state == true) {$subject_update_sql = "INSERT INTO `6969_subjects_tutee`(`tutee_id`, `global_subject_id`, `local_subject_id`) VALUES ('$user_id','$subject_id','0');";}
@@ -71,6 +72,7 @@ else
       {
         if($real_subject_string[$x] == "1")
         {
+          //if the cases are satisfied insert into the tutor subjects, if it works echo 0, if it doesn't echo out the error
           $subject_id = $subjects_to_check[$x][2];  
           $global_state = $subjects_to_check[$x][0];
           if($global_state == true) {$subject_update_sql = "INSERT INTO `6969_subjects_tutor`(`tutor_id`, `global_subject_id`, `local_subject_id`) VALUES ('$user_id','$subject_id','0');";}

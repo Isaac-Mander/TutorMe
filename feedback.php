@@ -118,6 +118,9 @@ else //Get the info about the session
     else //If session is value show feedback form, this form is then sent to log_feedback.php
     {
         //Set the session id as a session variable as it is used in the log feedback page
+        //the elements used to for the form with the various inputs for the experience, the productivity, 
+        //and the future implementation of recurring sessions
+        //this is an input form, and it shows the details of the past session
         $_SESSION['session_id'] = $session_id;
         echo "        
         <section class= 'h-3000 h-custom' style='background-color:#8fc4b7;'>
@@ -192,8 +195,9 @@ else //Get the info about the session
         ";
     }?>
 
-
+<!-- marker for the page -->
 <div id="feedback_page_marker"></div>
 </body>
+<!-- linking the javascript library -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </html>

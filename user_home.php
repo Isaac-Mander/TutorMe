@@ -53,6 +53,7 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
         echo "<div class='flex-row d-flex justify-content-centre pb-5'><div class='card mx-auto p-2'>";
         //Echo welcome text
         echo "<h3>You are currently logged in as : ". $_SESSION['user'].", but you haven't finished setting up your account</h3>";
+        //echo in the logged message
         echo "<ul>";
         if($setup_errors[0] == true) {echo "<li>Select the times when you are available for tutoring</li>";}
         if($setup_errors[1] == true OR $setup_errors[2] == true) {echo "<li>Select your subjects (in both recieving and giving tutoring)</li>";}
@@ -61,18 +62,23 @@ if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SES
         echo "window.location.href='info_setting.php';";
         echo "type='button' class='btn btn-success btn-md'>You can set these up here</button>";
         echo "</div></div>";
+        //just echoing comments that helps the user get started with the website
     }
     else
-    {
+    {   
+        //if the website is sorted making sure the user is clear on what is happening in the website
         echo "<div class='flex-row d-flex justify-content-centre pb-5'><div class='card mx-auto p-5'>";
         echo "<h3>You are currently logged in as : ". $_SESSION['user']."</h3>";
         echo "</div></div>";
     }
     ?>
+    <!-- redirecting the user to the guide so that they always know how to operate the website -->
     <div class='flex-row d-flex justify-content-centre'><div class='p-2 mx-auto border-bottom'>
     <h3>Unsure how to use TutorMe?</h3>
     <a type="button" href="guide.php" class="btn btn-success btn-md ">We have a guide</a>
     </div></div>
+
+    <!-- linking to the bootstrap JavaScript library and the JavaScript page -->
     <script src="content.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> 
 </body>

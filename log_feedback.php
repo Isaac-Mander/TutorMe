@@ -32,9 +32,7 @@ if(isset($_POST['experience']) && isset($_POST['productivity']))
 }
 else
 {
-    echo"
-
-    ";
+    echo"form error";
 }
 
 ?>

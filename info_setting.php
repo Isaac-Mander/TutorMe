@@ -21,6 +21,7 @@ $sql = "SELECT * FROM " . $school_code . "_students WHERE id=" . $user_id;
 $result = $conn->query($sql); //Query database
 if ($result->num_rows > 0) { //If the number of rows are not zero
   $data = $result->fetch_assoc();
+  //gets and sets variables for the user information
   $display_name = $_SESSION['user'];
   $desc = $data['description'];
   $email = $data['email'];
@@ -28,7 +29,7 @@ if ($result->num_rows > 0) { //If the number of rows are not zero
   $hours_tutored = $data['hours_tutored'];
   $sessions_tutored = $data['sessions_tutored'];
 }
-//End of section ==========================================================================================================================================================
+
 
 
 
@@ -41,9 +42,11 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
   while($row = $subject_tutor_result->fetch_assoc()) {
     //Check which subject ID to use (if = 0 ignore ID)
     $is_global = false;
+    //if it is global set the variable as true
     if($row['global_subject_id'] == "0") {$is_global = false;}
     else {$is_global = true;}
 
+    //setting the subject based on whether they are local
     if($is_global) {$subject_tutor_id = $row['global_subject_id'];}
     else {$subject_tutor_id = $row['local_subject_id'];}
     //Add the id to an array
@@ -70,6 +73,7 @@ if ($subject_tutor_result->num_rows > 0) { //If the number of rows are not zero
     //Query the database to find the subject name
     $subject_name_result = $conn->query($subject_name_sql); //Query database
     if ($subject_name_result->num_rows > 0) { //If the number of rows are not zero
+      //queries the database to get the name of the tutor
       $row = $subject_name_result->fetch_assoc();
       $subject_array_tutor[$i][2] = $row['name'];
     }
@@ -95,10 +99,13 @@ if ($subject_tutee_result->num_rows > 0) { //If the number of rows are not zero
 
   while($row = $subject_tutee_result->fetch_assoc()) {
     //Check which subject ID to use (if = 0 ignore ID)
+
+    //if it is global set the variable as true
     $is_global = false;
     if($row['global_subject_id'] == "0") {$is_global = false;}
     else {$is_global = true;}
 
+    //setting the subject based on whether they are local
     if($is_global) {$subject_tutee_id = $row['global_subject_id'];}
     else {$subject_tutee_id = $row['local_subject_id'];}
     //Add the id to an array
@@ -126,6 +133,7 @@ if ($subject_tutee_result->num_rows > 0) { //If the number of rows are not zero
     //Query the database to find the subject name
     $subject_name_result = $conn->query($subject_name_sql); //Query database
     if ($subject_name_result->num_rows > 0) { //If the number of rows are not zero
+      //queries the database to get the name of the tutee
       $row = $subject_name_result->fetch_assoc();
       $subject_array_tutee[$i][2] = $row['name'];
     }
@@ -194,18 +202,7 @@ $average_expe = $ratings_data[1];
 $subject_element_tutee_id = 0; //This id allows for a unique id to be set to each subject for js purposes
 $subject_element_tutor_id = 0;
 $checkbox_id_increment = 0; //Checkbox id for js
-
-$tz = new DateTimeZone('NZ');
-  $dt = new DateTime('now',$tz);
-  $time_day = $dt->format('d'); // output: '1' - '31'
-  $time_month = $dt->format('m'); // output: '1' - '12'cc
-  $time_year = $dt->format('Y'); // output: '2023'
-  $time_hour = $dt ->format('h');// output: '09'
-  $time_minute = $dt ->format('i');// out: ':46'
-  $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
-  $date =  $time_year . "-" . $time_month . "-" . $time_day;
-
-  //calling the events function, and setting the events?>
+?>
 
 <!doctype html>
 <html lang="en">
@@ -228,10 +225,11 @@ $tz = new DateTimeZone('NZ');
     $time_year = $dt->format('Y'); // output: '2023'
     $time_hour = $dt ->format('h');// output: '09'
     $time_minute = $dt ->format('i');// out: ':46'
-    $time =  $time_year . "-" . $time_month . "-" . $time_day ." " . $time_hour . ":" . $time_minute;
     $date =  $time_year . "-" . $time_month . "-" . $time_day;
+    //setting the day so that it can be inputted into the calendar
 
     $events = grab_events($conn,$user_id);
+    //calling the events function, and setting the events
 
     $available_session_times_sql = "SELECT * FROM 6969_students INNER JOIN 6969_student_times ON 6969_student_times.student_id=6969_students.id WHERE 6969_students.id=$user_id";
     $available_session_times_data = get_available_session_data($available_session_times_sql, $conn);
@@ -240,6 +238,7 @@ $tz = new DateTimeZone('NZ');
     <link rel="stylesheet" href="sys_page/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src='fullcalendar-6.1.5\fullcalendar-6.1.5\dist\index.global.js'></script>
+    <!-- linking to the different style sheets, calenadar, and bootstrap -->
 <script>
 //loading in the calender
   document.addEventListener('DOMContentLoaded', function() {
@@ -295,23 +294,27 @@ $tz = new DateTimeZone('NZ');
   //setting the sorting option (how the subjects are sorted)
   $level = 0;
   $level_tutee =0;
+    //if the tutor level has been set, set it
     if (isset($_GET['level'])){
       $level = $_GET['level'];
     }
+    //if the tutee level has been set, set it
     if (isset($_GET['level_tutee'])){
       $level_tutee = $_GET['level_tutee'];
     }
-
   //Setting the subject level & a indentifing id for the all_avaliable_subject_array
+
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
   {
     $all_available_subject_array[$b][1000] = $b;
     if(is_numeric(substr($all_available_subject_array[$b][1], -1))){
+    //setting the subject level, i.e. level 1, level 2 level 3 etc
     $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
   }
   else
   {
     $all_available_subject_array[$b][5] = 0;
+    //if it doesn't have a level set it to 0
   }
   }
   //setting a column of data as an array, and using that data sorting the all_avaliable_subject_array array
@@ -324,8 +327,10 @@ $tz = new DateTimeZone('NZ');
   for($b=0;$b<sizeof($subject_array_tutee);$b++)
   { if(is_numeric(substr($subject_array_tutee[$b][2], -1))){
     $subject_array_tutee[$b][5] = substr($subject_array_tutee[$b][2], -1);
+    //setting the subject level, i.e. level 1, level 2 level 3 etc
   }else{
     $subject_array_tutee[$b][5] = 0;
+    //if it doesn't have a level set it to 0
   }
   }
   //setting a column of data as an array, and using that data sorting the subject_array_tutee array
@@ -338,8 +343,10 @@ $tz = new DateTimeZone('NZ');
   for($b=0;$b<sizeof($subject_array_tutor);$b++)
   { if(is_numeric(substr($subject_array_tutor[$b][2], -1))){
     $subject_array_tutor[$b][5] = substr($subject_array_tutor[$b][2], -1);
+    //setting the subject level, i.e. level 1, level 2 level 3 etc
   }else{
     $subject_array_tutor[$b][5] = 0;
+    //if it doesn't have a level set it to 0
   }
   }
   //setting a column of data as an array, and using that data sorting the subject_array_tutor array
@@ -378,6 +385,7 @@ $tz = new DateTimeZone('NZ');
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-3">
+                      <!-- the email card for the user -->
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
@@ -387,6 +395,7 @@ $tz = new DateTimeZone('NZ');
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
+                      <!-- the phone number card for the user -->
                       <h6 class="mb-0">Phone</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
@@ -396,6 +405,7 @@ $tz = new DateTimeZone('NZ');
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
+                      <!-- the card for the different subjects that the user might want to tutor -->
                       <h6 class="mb-0">Tutoring subjects:</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
@@ -420,6 +430,7 @@ $tz = new DateTimeZone('NZ');
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
+                      <!-- the card for the different subjects that the user might want to be tutored in -->
                       <h6 class="mb-0">Need help with:</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
@@ -464,6 +475,7 @@ $tz = new DateTimeZone('NZ');
         <form action="info_setting.php" method="get">
             <label for="Level">Select level:</label>
             <select name="level" id="level">
+              <!-- sets the options based on which level is being sorted by -->
 <?php if ($level == 0){
                  ?>
                 <option value="0" selected>Any level</option>
@@ -522,27 +534,33 @@ $tz = new DateTimeZone('NZ');
       <div class="row row-cols-1 row-cols-md-3">
           <?php for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
           //check which sorting choice is choosen then disables the selected subjects and hids the ones that are not
+          //this is for the tutor subject cards
             if($level == 0){
+              //if the level is 0, then all cards are shown
               ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
             }elseif($level == 1){
+              //if the level is one, and the subject is level 1 then it will be displayed, else it is hidden
               if ($all_available_subject_array[$i][5] == 1){
                 ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }
             }elseif($level == 2){
+              //if the level is two, and the subject is level 2 then it will be displayed, else it is hidden
               if ($all_available_subject_array[$i][5] == 2){
                 ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }
             }elseif($level == 3){
+              //if the level is three, and the subject is level 3 then it will be displayed, else it is hidden
               if ($all_available_subject_array[$i][5] == 3){
                 ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }
             }elseif($level == 4){
+              //if the level is four, and the subject is not level then it will be displayed, else it is hidden
               if ($all_available_subject_array[$i][5] == 0){
                 ?> <div class="col" ><div class="card mx-auto border border-secondary" style="width: auto;"><div class="card-body"><?php
               }else{
@@ -655,27 +673,32 @@ $tz = new DateTimeZone('NZ');
             <?php
           for($i=0;$i<sizeof($all_available_subject_array);$i++){ //Check if subject should be ticked on start
                  if($level_tutee == 0){
+                //if the level is 0, then all cards are shown
               ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
             }elseif($level_tutee == 1){
               if ($all_available_subject_array[$i][5] == 1){
+                //if the level is one, and the subject is level 1 then it will be displayed, else it is hidden
                 ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
               }
             }elseif($level_tutee == 2){
               if ($all_available_subject_array[$i][5] == 2){
+                //if the level is two, and the subject is level 2 then it will be displayed, else it is hidden
                 ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
               }
             }elseif($level_tutee == 3){
               if ($all_available_subject_array[$i][5] == 3){
+                //if the level is three, and the subject is level 3 then it will be displayed, else it is hidden
                 ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none"><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
               }
             }elseif($level_tutee == 4){
               if ($all_available_subject_array[$i][5] == 0){
+                //if the level is four, and the subject doesn't have a level then it will be displayed, else it is hidden
                 ?> <div class="col" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
               }else{
                 ?> <div class="col" style="display: none" ><div class="card mx-auto border border-warning" style="width: auto;"> <div class="card-body"><?php
@@ -791,6 +814,7 @@ if (remove_subject) {
 
   </body>
 </html>
+<!-- styling for the page -->
 <style>
   body{
     margin-top:20px;
@@ -890,42 +914,49 @@ button:hover {
             <legend class="col-form-label col-sm-2 pt-0">Day of week</legend>
             <div class="col-sm-10">
               <div class="form-check">
+                <!-- input for monday, setting the day of week value to 1 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week1" value=1>
                 <label class="form-check-label" for="gridRadios1">
                   Monday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for tuesday, setting the day of week value to 2 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week2" value=2>
                 <label class="form-check-label" for="gridRadios2">
                   Tuesday
                 </label>
               </div>
-              <div class="form-check disabled">
+              <div class="form-check">
+                <!-- input for wednesday, setting the day of week value to 3 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week3" value=3>
                 <label class="form-check-label" for="gridRadios3">
                   Wednesday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for thursday, setting the day of week value to 4 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week4" value=4>
                 <label class="form-check-label" for="gridRadios4">
                   Thursday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for friday, setting the day of week value to 5 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week5" value=5>
                 <label class="form-check-label" for="gridRadios5">
                   Friday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for saturday, setting the day of week value to 6 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week6" value=6>
                 <label class="form-check-label" for="gridRadios6">
                   Saturday
                 </label>
               </div>
               <div class="form-check">
+                <!-- input for sunday, setting the day of week value to 7 -->
                 <input class="form-check-input" type="radio" name="day_of_week" id="day_of_week7" value=7>
                 <label class="form-check-label" for="gridRadios7">
                   Sunday
@@ -935,6 +966,8 @@ button:hover {
           </div>
   </fieldset>
         <!-- submitting the time to the database -->
+        <!-- hidden input field because the form needs to have the student id to process the data -->
+        <!-- this allows the form to send through the id without allowing the user to tamper with it and potentially cause an error -->
         <input type="hidden" id="student_id" name="student_id" value="<?php echo $user_id ?>">
         <input type="submit">
     </div>
@@ -954,6 +987,8 @@ button:hover {
         $potential_end_time_session = $available_session_times_data[$i][2]; //setting potential end time
         $potential_starttime_rough = strtotime($day.$potential_start_time_session); //getting a time value
         $potential_endtime_rough = strtotime($day.$potential_end_time_session); //getting a time value
+        
+        
         if (date('N') == $day_of_week){ //checking if the date is the same
           $potential_starttime = $potential_starttime_rough; //if so the times need no change
           $potential_endtime = $potential_endtime_rough;
@@ -968,17 +1003,18 @@ button:hover {
           $potential_starttime = $potential_starttime_rough + ($time_diff * 86400); //acounts for the difference
           $potential_endtime = $potential_endtime_rough + ($time_diff * 86400);
         }
+        //setting the card id
         $card_id = $available_session_times_data[$i][4];
 
+        //prints out the cards with the details of the potential times
         ?> <div class="col">   <div id=<?php echo $card_id; ?> class='card mx-auto border border-grey p-3' style="width: 15rem;"><?php
         echo (date("l h:i:s A", $potential_starttime) . "<br>");
         echo date("l h:i:s A", $potential_endtime); //prints out the cards of the time sessions.
         ?> <a href="delete_calendar_time.php?id=<?php echo $card_id; ?>">Remove</a></div></div>  <?php }?> </div>  <?php } ?>
 
-    <!-- opening the calendar -->
+    <!-- the div tag to call the calendar and referencing the javascript page-->
     <div id='calendar'></div>
     <div id='profile'></div>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
     <script src="content.js"></script>
   </body>
 </html>

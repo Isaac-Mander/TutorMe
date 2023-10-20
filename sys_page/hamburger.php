@@ -24,19 +24,17 @@ session_start(); ?>
 if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in
 {
     echo "<p><a href='../login_form.php' class='list-group-item list-group-item-action'>Login</a></p>"; //Show login button
-    ?>
+    //the list of different pages the user should be able to use when they are logged in, but are disabled?>
     <a class="list-group-item disabled list-group-item-action">Sessions & tutoring</a>
     <a class="list-group-item disabled list-group-item-action">Student Home</a>
     <a class="list-group-item disabled list-group-item-action">Profile</a>
-    <!-- <a class="list-group-item disabled list-group-item-action">Tutorials</a>
-    <a class="list-group-item disabled list-group-item-action">Admin Dashboard</a>--><?php 
+<?php 
 }
-else {echo "<p><a href='logout.php' class='list-group-item list-group-item-action'>Logout</a></p>"; ?>
+else {echo "<p><a href='logout.php' class='list-group-item list-group-item-action'>Logout</a></p>"; 
+    //the list of different pages the user should be able to use when they are logged in and will redirect them to the page?>
     <a class="list-group-item list-group-item-action" href="../action.php">Sessions & tutoring</a> 
     <a class="list-group-item list-group-item-action" href="../user_home.php">Student Home</a> 
     <a class="list-group-item list-group-item-action" href="../info_setting.php">Profile</a> 
-    <!-- <a class="list-group-item list-group-item-action" href="../tutorial.php">Tutorials</a>  -->
-    <!-- <a class="list-group-item list-group-item-action" href="../admin_view.php">Admin Dashboard</a>  -->
 <?php
 
 }?></div>

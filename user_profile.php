@@ -1,4 +1,34 @@
 <?php
+
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+//THIS IS A REDUNDANT PAGE, IT IS NO LONGER BEING USED
+
 session_start();
 if(!isset($_SESSION['user']) && !isset($_SESSION['school_code']) && !isset($_SESSION['user_id'])) //If not logged in redirect to login page
 {
@@ -204,40 +234,53 @@ $checkbox_id_increment = 0; //Checkbox id for js
   </head>
   <body>
     <?php
+  //running through all of the subjects and getting the level
   for($b=0;$b<sizeof($all_available_subject_array);$b++)
   { if(is_int(substr($all_available_subject_array[$b][1], -1))){
+    //if it has a level set it to the level
     $all_available_subject_array[$b][5] = substr($all_available_subject_array[$b][1], -1);
   }else{
+    //if it doesn't set it to 0
     $all_available_subject_array[$b][5] = 0;
   }
   }
+    //this code sorts all subjects by name and level
   $all_available_subject_level_array_column = array_column($all_available_subject_array, 5);
   $all_available_subject_name_array_column = array_column($all_available_subject_array, 1);
   array_multisort($all_available_subject_name_array_column, SORT_ASC, $all_available_subject_level_array_column, SORT_ASC, $all_available_subject_array);
-
+  
+  //running through all of the tutee subjects and getting the level
   for($b=0;$b<sizeof($subject_array_tutee);$b++)
   { if(is_int(substr($subject_array_tutee[$b][1], -1))){
+    //if it has a level set it to the level
     $subject_array_tutee[$b][5] = substr($subject_array_tutee[$b][1], -1);
   }else{
+    //if it doesn't set it to 0
     $subject_array_tutee[$b][5] = 0;
   }
   }
+  //this code sorts the tutee subjects by name and level
   $array_tutee_subject_level_array_column = array_column($subject_array_tutee, 5);
   $array_tutee_subject_name_array_column = array_column($subject_array_tutee, 2);
   array_multisort($array_tutee_subject_name_array_column, SORT_ASC, $array_tutee_subject_level_array_column, SORT_ASC, $subject_array_tutee);
 
+  //running through all of the tutor subjects and getting the level
   for($b=0;$b<sizeof($subject_array_tutor);$b++)
   { if(is_int(substr($subject_array_tutor[$b][1], -1))){
+    //if it has a level set it to the level
     $subject_array_tutor[$b][5] = substr($subject_array_tutor[$b][1], -1);
   }else{
+    //if it doesn't set it to 0
     $subject_array_tutor[$b][5] = 0;
   }
   }
+    //this code sorts the tutor subjects by name and level
   $array_tutor_subject_level_array_column = array_column($subject_array_tutor, 5);
   $array_tutor_subject_name_array_column = array_column($subject_array_tutor, 2);
   array_multisort($array_tutor_subject_name_array_column, SORT_ASC, $array_tutor_subject_level_array_column, SORT_ASC, $subject_array_tutor);
   ?>
     
+    <!-- the header and the top of the page showing the subjects of the user -->
     <h1><p class="text-center"><?php echo $display_name."'s profile";?></p></h1>
     <div class="container text-center border border-3 border-dark extra_rounded">
               <div class="row">
@@ -296,7 +339,7 @@ $checkbox_id_increment = 0; //Checkbox id for js
 
 
 
-
+    <!-- the header for the part where the user can see the subjects they are willing to help with -->
     <div class="container text-center border border-3 border-dark extra_rounded">
               <div class="row">
                 <h3 class="col text-center py-3 m-0">Tutoring</h3>
@@ -349,6 +392,7 @@ $checkbox_id_increment = 0; //Checkbox id for js
         </div>
       </div>
     </div>
+    <!-- this is the description that shows the various tutoring metrics of an individual -->
     <button class="btn btn-success btn-md" id=profile_edit_button>Edit</button>
     <div class="card mx-auto">
       <div class="card-header text-white bg-primary">       <h3>Description</h3>   </div>

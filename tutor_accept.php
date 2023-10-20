@@ -82,12 +82,15 @@ for($i=0; $i<sizeof($session_today_tutee_data); $i++){
 if($overlap == 0){
 if($is_global)
 {
+    //if the subject is global the sql takes that into consideration
     $sql = "INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `session_start`, `session_end`, `global_subject_id`, `local_subject_id`, `is_active`) VALUES ('$tutee_id','$tutor_id','0','0','$start_combined','$end_combined','$subject_id','0','0')";
 }
 else
 {
+    //if the subject is local the sql takes that into consideration
     $sql = "INSERT INTO `6969_tutor_session`(`tutee_id`, `tutor_id`, `teacher_id`, `ext_tutor_id`, `session_start`, `session_end`, `global_subject_id`, `local_subject_id`, `is_active`) VALUES ('$tutee_id','$tutor_id','0','0','$start_combined','$end_combined','0','$subject_id','0')";
 }
+//if the query works then echo out the success message, if not echo out the error
 if ($conn->query($sql) === TRUE)
 {
     echo "New record created successfully";
@@ -99,6 +102,7 @@ else
     $alert = 2;
 }
 $conn->close();
+//if there is overlap change alert to 3 as this session could not be set.
 }else{
  $alert = 3;
 }

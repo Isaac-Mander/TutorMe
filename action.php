@@ -11,6 +11,7 @@ include("sys_page/header.html");
 include("sys_page/db_connect.php");
 include("sys_page/functions.php");
 ?>
+<!-- this is the text elements for the top of the action page -->
 <h1 class="text-center" style="padding-top: 9rem">Action page</h1>
 <p class="text-center">On this page you can view your pending, scheduled, and past tutoring sessions, as well as propose new tutoring sessions.</p>
 <?php
@@ -23,6 +24,7 @@ echo "<br>";
 echo "<br>";
 echo "<br>";
 ?>
+<!-- the text elements seperating the code for the sessions page and the session matching page -->
 <h1 class="text-center">Tutor someone</h1>
 <div class="flex-row d-flex justify-content-centre"><div class="card mx-auto p-5"><p class="border-bottom"><strong>Please note this will only show possible sessions with people who have the same subject and have an overlapping free time</strong></p></div></div></div>
 <p class="text-center">Not enough choices? Try increasing the times you are free <a href="info_setting.php">here</a></p>
